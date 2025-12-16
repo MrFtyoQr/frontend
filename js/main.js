@@ -343,3 +343,24 @@ if (ctaExperiencias && typeof gsap !== 'undefined') {
     }
 });
 
+// Redirigir botones de "Solicita un protocolo personalizado" a Telegram
+document.addEventListener('DOMContentLoaded', function() {
+    // Botón CTA principal (hero section)
+    const ctaButton = document.querySelector('.cta-button');
+    if (ctaButton) {
+        ctaButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.open('https://t.me/ClinicaCamsa_bot', '_blank');
+        });
+    }
+    
+    // Botón CTA Primary (sección protocolo)
+    const ctaPrimary = document.querySelector('.cta-primary');
+    if (ctaPrimary) {
+        ctaPrimary.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.open('https://t.me/ClinicaCamsa_bot', '_blank');
+        });
+    }
+});
+
