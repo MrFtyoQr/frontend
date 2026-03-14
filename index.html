@@ -191,19 +191,55 @@
                     Elige cómo quieres comenzar: puedes enviar tu solicitud de protocolo, completar el cuestionario de longevidad o hacer ambos de forma independiente.
                 </p>
 
-                <div class="formulario-cards">
-                    <article class="formulario-card">
-                        <h3 class="formulario-card-title">Solicitud de protocolo</h3>
-                        <p class="formulario-card-text">
-                            Comparte tus datos de contacto, síntomas, diagnóstico y medicamentos para que el equipo CAMSA diseñe un protocolo a tu medida.
-                        </p>
-                        <ul class="formulario-card-list">
-                            <li>Envío directo por WhatsApp a la clínica.</li>
-                            <li>Ideal como primer acercamiento y valoración.</li>
-                        </ul>
-                        <button type="button" class="btn-form-card" id="btn-abrir-form1">Completar formulario</button>
-                    </article>
+                <!-- Formulario Solicitud de Protocolo anclado en la sección -->
+                <div class="formulario-protocolo-anclado" id="formulario-protocolo-anclado">
+                    <!--<h3 class="formulario-anclado-title">Solicitud de protocolo personalizado</h3>-->
+                    <form class="formulario-form" id="protocolo-form" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="form-group form-group-with-icon">
+                                <img data-rs="i1" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon">
+                                <input type="text" id="nombre" name="nombre" placeholder="Nombre completo*" required>
+                            </div>
+                            <div class="form-group form-group-with-icon">
+                                <img data-rs="i2" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon">
+                                <input type="tel" id="telefono" name="telefono" placeholder="Número de teléfono (WhatsApp)*" required>
+                            </div>
+                        </div>
+                        <div class="form-group form-group-with-icon">
+                            <img data-rs="i3" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon form-field-icon-lg">
+                            <textarea id="preocupaciones" name="preocupaciones" rows="7" placeholder="¿Qué le duele, qué le preocupa o qué quisiera mejorar?*
+- Quiero tener más energía
+- Quiero mejorar mi estado de salud
+- Quiero poder disfrutar de mis nietos" required></textarea>
+                        </div>
+                        <div class="form-group form-group-with-icon">
+                            <img data-rs="i4" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon">
+                            <textarea id="diagnostico" name="diagnostico" rows="7" placeholder="Diagnóstico*
+- Diabetes
+- Hipertensión
+- Lumbalgia" required></textarea>
+                        </div>
+                        <div class="form-group form-group-with-icon">
+                            <img data-rs="i5" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon form-field-icon-lg">
+                            <textarea id="medicamentos" name="medicamentos" rows="7" placeholder="Lista de medicamentos y suplementos con dosis*
+- Aspirina 100mg
+- Vitamina C 1000mg
+- Citrato de magnesio 500mg" required></textarea>
+                        </div>
+                        <div class="form-group form-group-with-icon">
+                            <img data-rs="i6" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon">
+                            <div class="form-field-wrapper">
+                                <div class="file-upload-container">
+                                    <input type="text" id="estudios" name="estudios" value="Últimos estudios realizados: (Deberán ser adjuntados manualmente por WhatsApp)" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="form-legend">*Campos obligatorios</p>
+                        <button type="submit" class="btn-enviar">Enviar por WhatsApp</button>
+                    </form>
+                </div>
 
+                <div class="formulario-cards">
                     <article class="formulario-card">
                         <h3 class="formulario-card-title">Cuestionario de longevidad</h3>
                         <p class="formulario-card-text">
@@ -269,62 +305,6 @@
             </div>
         </div>
     </footer>
-
-    <!-- Modal Formulario 1: Solicitud de protocolo -->
-    <div id="modal-form1" class="modal-overlay modal-form1" role="dialog" aria-modal="true" aria-labelledby="modal-form1-title" hidden>
-        <div class="modal-form1-backdrop" aria-hidden="true"></div>
-        <div class="modal-form1-box">
-            <button type="button" class="modal-form1-close" id="modal-form1-close" aria-label="Cerrar formulario">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </button>
-            <div class="modal-form1-scroll">
-                <h3 id="modal-form1-title" class="modal-form1-title">Solicitud de protocolo personalizado</h3>
-                <form class="formulario-form" id="protocolo-form" enctype="multipart/form-data">
-                    <div class="form-row">
-                        <div class="form-group form-group-with-icon">
-                            <img data-rs="i1" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon">
-                            <input type="text" id="nombre" name="nombre" placeholder="Nombre completo*" required>
-                        </div>
-                        <div class="form-group form-group-with-icon">
-                            <img data-rs="i2" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon">
-                            <input type="tel" id="telefono" name="telefono" placeholder="Número de teléfono (WhatsApp)*" required>
-                        </div>
-                    </div>
-                    <div class="form-group form-group-with-icon">
-                        <img data-rs="i3" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon form-field-icon-lg">
-                        <textarea id="preocupaciones" name="preocupaciones" rows="7" placeholder="¿Qué le duele, qué le preocupa o qué quisiera mejorar?*
-- Quiero tener más energía
-- Quiero mejorar mi estado de salud
-- Quiero poder disfrutar de mis nietos" required></textarea>
-                    </div>
-                    <div class="form-group form-group-with-icon">
-                        <img data-rs="i4" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon">
-                        <textarea id="diagnostico" name="diagnostico" rows="7" placeholder="Diagnóstico*
-- Diabetes
-- Hipertensión
-- Lumbalgia" required></textarea>
-                    </div>
-                    <div class="form-group form-group-with-icon">
-                        <img data-rs="i5" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon form-field-icon-lg">
-                        <textarea id="medicamentos" name="medicamentos" rows="7" placeholder="Lista de medicamentos y suplementos con dosis*
-- Aspirina 100mg
-- Vitamina C 1000mg
-- Citrato de magnesio 500mg" required></textarea>
-                    </div>
-                    <div class="form-group form-group-with-icon">
-                        <img data-rs="i6" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon">
-                        <div class="form-field-wrapper">
-                            <div class="file-upload-container">
-                                <input type="text" id="estudios" name="estudios" value="Últimos estudios realizados: (Deberán ser adjuntados manualmente por WhatsApp)" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="form-legend">*Campos obligatorios</p>
-                    <button type="submit" class="btn-enviar">Enviar por WhatsApp</button>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <!-- Modal Cuestionario de Longevidad -->
     <div id="modal-longevity" class="modal-overlay modal-longevity" role="dialog" aria-modal="true" aria-labelledby="modal-longevity-title" hidden>

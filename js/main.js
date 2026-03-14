@@ -133,46 +133,6 @@ if (protocoloForm) {
     });
 }
 
-// Modal Formulario 1: abrir/cerrar
-function showForm1Modal() {
-    var modal = document.getElementById('modal-form1');
-    if (modal) {
-        modal.removeAttribute('hidden');
-        modal.offsetHeight;
-        modal.classList.add('active');
-    }
-}
-
-function hideForm1Modal() {
-    var modal = document.getElementById('modal-form1');
-    if (modal) {
-        modal.classList.remove('active');
-        setTimeout(function() { modal.setAttribute('hidden', ''); }, 300);
-    }
-}
-
-var btnAbrirForm1 = document.getElementById('btn-abrir-form1');
-if (btnAbrirForm1) {
-    btnAbrirForm1.addEventListener('click', showForm1Modal);
-}
-
-var modalForm1Close = document.getElementById('modal-form1-close');
-if (modalForm1Close) {
-    modalForm1Close.addEventListener('click', hideForm1Modal);
-}
-
-var modalForm1Backdrop = document.querySelector('.modal-form1-backdrop');
-if (modalForm1Backdrop) {
-    modalForm1Backdrop.addEventListener('click', hideForm1Modal);
-}
-
-var modalForm1 = document.getElementById('modal-form1');
-if (modalForm1) {
-    modalForm1.addEventListener('click', function(e) {
-        if (e.target === this) hideForm1Modal();
-    });
-}
-
 // Modal Cuestionario de Longevidad: abrir/cerrar
 function showLongevityModal() {
     var modal = document.getElementById('modal-longevity');
@@ -317,10 +277,8 @@ document.addEventListener('keydown', function(e) {
     if (e.key !== 'Escape') return;
     var mw = document.getElementById('modal-whatsapp');
     var ml = document.getElementById('modal-longevity');
-    var mf = document.getElementById('modal-form1');
     if (mw && mw.classList.contains('active')) hideModal();
     else if (ml && ml.classList.contains('active')) hideLongevityModal();
-    else if (mf && mf.classList.contains('active')) hideForm1Modal();
 });
 
 // Carrusel Shorts: móvil 1 frame; desktop 3 frames (centro + laterales pequeños y blurred)
