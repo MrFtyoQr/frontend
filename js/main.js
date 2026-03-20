@@ -24,6 +24,9 @@ var pendingWhatsAppUrl = null;
 var longevityResult = null;
 
 function getLongevityInterpretacion(total) {
+    if (typeof window.getLongevityInterpretacionText === 'function') {
+        return window.getLongevityInterpretacionText(total);
+    }
     if (total >= 90) return 'Perfil óptimo de longevidad';
     if (total >= 80) return 'Salud preventiva sólida';
     if (total >= 70) return 'Riesgo metabólico moderado';

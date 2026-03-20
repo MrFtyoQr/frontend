@@ -11,6 +11,15 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <!-- Selector de idioma: posición fija, no afecta el navbar -->
+    <div class="lang-switcher lang-switcher-fixed" role="group" aria-label="Idioma">
+        <span class="lang-label" data-i18n="lang_heading">Cambiar idioma</span>
+        <div class="lang-buttons">
+            <button type="button" class="lang-btn active" id="btn-lang-es" data-lang="es" data-i18n="lang_es_full" aria-pressed="true" onclick="if(window.applyLanguage){var e=arguments[0]||window.event;if(e){e.preventDefault();e.stopPropagation();}window.applyLanguage('es');}return false;">Español</button>
+            <span class="lang-sep">|</span>
+            <button type="button" class="lang-btn" id="btn-lang-en" data-lang="en" data-i18n="lang_en_full" aria-pressed="false" onclick="if(window.applyLanguage){var e=arguments[0]||window.event;if(e){e.preventDefault();e.stopPropagation();}window.applyLanguage('en');}return false;">English</button>
+        </div>
+    </div>
     <header class="header">
         <nav class="nav">
             <div class="nav-container">
@@ -23,10 +32,10 @@
                     <span></span>
                 </button>
                 <ul class="nav-menu">
-                    <li><a href="#inicio">Inicio</a></li>
-                    <li><a href="#protocolo">Protocolo</a></li>
-                    <li><a href="#pacientes">Pacientes</a></li>
-                    <li><a href="#formulario">Formulario</a></li>
+                    <li><a href="#inicio" data-i18n="nav_inicio">Inicio</a></li>
+                    <li><a href="#protocolo" data-i18n="nav_protocolo">Protocolo</a></li>
+                    <li><a href="#pacientes" data-i18n="nav_pacientes">Pacientes</a></li>
+                    <li><a href="#formulario" data-i18n="nav_formulario">Formulario</a></li>
                 </ul>
             </div>
         </nav>
@@ -37,13 +46,13 @@
             <div class="hero-container">
                 <div class="hero-left">
                     <h2 class="hero-title">
-                        <span class="title-line1">Esta puede ser tu</span>
-                        <span class="title-line2">mejor década</span>
+                        <span class="title-line1" data-i18n="hero_line1">Esta puede ser tu</span>
+                        <span class="title-line2" data-i18n="hero_line2">mejor década</span>
                     </h2>
-                    <p class="hero-description">
+                    <p class="hero-description" data-i18n="hero_description">
                         Regenera tu cuerpo a nivel celular, optimiza tu salud sistémica y extiende tus años de vitalidad con ciencia de vanguardia.
                     </p>
-                    <a href="#formulario" class="cta-button">Solicita un protocolo personalizado</a>
+                    <a href="#formulario" class="cta-button" data-i18n="hero_cta">Solicita un protocolo personalizado</a>
                 </div>
                 <div class="hero-right">
                     <img data-rs="ic" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Células" class="cell-background-image">
@@ -56,7 +65,7 @@
                         <img data-rs="ip" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Plan Integral" class="plan-image">
                     </div>
                     <div class="plan-text">
-                        <p>Plan Integral de Medicina Regenerativa y Longevidad con Células Madre</p>
+                        <p data-i18n="plan_text">Plan Integral de Medicina Regenerativa y Longevidad con Células Madre</p>
                     </div>
                 </div>
             </section>
@@ -67,8 +76,8 @@
                 <!-- Carrusel de texto superior -->
                 <div class="text-carousel top-carousel">
                     <div class="carousel-content">
-                        <span class="carousel-text">NO IMPORTA LA EDAD NI LA ENFERMEDAD, PUEDES TENER CALIDAD DE VIDA.</span>
-                        <span class="carousel-text">NO IMPORTA LA EDAD NI LA ENFERMEDAD, PUEDES TENER CALIDAD DE VIDA.</span>
+                        <span class="carousel-text" data-i18n="carousel_top">NO IMPORTA LA EDAD NI LA ENFERMEDAD, PUEDES TENER CALIDAD DE VIDA.</span>
+                        <span class="carousel-text" data-i18n="carousel_top">NO IMPORTA LA EDAD NI LA ENFERMEDAD, PUEDES TENER CALIDAD DE VIDA.</span>
                     </div>
                 </div>
 
@@ -87,8 +96,8 @@
                 <!-- Carrusel de texto inferior -->
                 <div class="text-carousel bottom-carousel">
                     <div class="carousel-content">
-                        <span class="carousel-text">PUEDES TENER CALIDAD DE VIDA. NO IMPORTA LA EDAD NI LA ENFERMEDAD,</span>
-                        <span class="carousel-text">PUEDES TENER CALIDAD DE VIDA. NO IMPORTA LA EDAD NI LA ENFERMEDAD,</span>
+                        <span class="carousel-text" data-i18n="carousel_bottom">PUEDES TENER CALIDAD DE VIDA. NO IMPORTA LA EDAD NI LA ENFERMEDAD,</span>
+                        <span class="carousel-text" data-i18n="carousel_bottom">PUEDES TENER CALIDAD DE VIDA. NO IMPORTA LA EDAD NI LA ENFERMEDAD,</span>
                     </div>
                 </div>
             </div>
@@ -98,10 +107,10 @@
             <div class="protocolo-container">
                 <div class="protocolo-header">
                     <h2 class="protocolo-title">
-                        El camino hacia tu<br class="protocolo-title-br"> calidad de vida
-                        <span class="protocolo-title-highlight">en 6 pasos</span>
+                        <span data-i18n="protocolo_title">El camino hacia tu</span><br class="protocolo-title-br"><span data-i18n="protocolo_title_br"> calidad de vida</span>
+                        <span class="protocolo-title-highlight" data-i18n="protocolo_highlight">en 6 pasos</span>
                     </h2>
-                    <p class="protocolo-subtitle">Cada fase se adapta al protocolo<br class="protocolo-subtitle-br"> personalizado de cada paciente</p>
+                    <p class="protocolo-subtitle" data-i18n="protocolo_subtitle">Cada fase se adapta al protocolo personalizado de cada paciente</p>
                 </div>
 
                 <div class="steps-grid">
@@ -118,9 +127,9 @@
                         <video class="cta-secondary-video" autoplay muted loop playsinline webkit-playsinline>
                           <source data-rs="it" type="video/mp4">
                         </video>
-                        <span class="cta-secondary-text">Ver testimonios</span>
+                        <span class="cta-secondary-text" data-i18n="cta_testimonios">Ver testimonios</span>
                     </a>                      
-                    <a href="#formulario" class="cta-primary">Solicita un protocolo personalizado</a>
+                    <a href="#formulario" class="cta-primary" data-i18n="cta_protocolo">Solicita un protocolo personalizado</a>
                 </div>
             </div>
         </section>
@@ -130,14 +139,14 @@
                 <div class="pacientes-content">
                     <div class="pacientes-left">
                         <h2 class="pacientes-title">
-                            <span>Extranjeros</span>
-                            <span class="pacientes-title-highlight">confían</span>
-                            <span>en nosotros</span>
+                            <span data-i18n="pacientes_title1">Extranjeros</span>
+                            <span class="pacientes-title-highlight" data-i18n="pacientes_title2">confían</span>
+                            <span data-i18n="pacientes_title3">en nosotros</span>
                         </h2>
-                        <p class="pacientes-description">
+                        <p class="pacientes-description" data-i18n="pacientes_description">
                             Nuestros pacientes foráneos confían en nuestros protocolos y viajan desde sus países para mejorar su calidad de vida en Clínica Camsa
                         </p>
-                        <button type="button" class="cta-experiencias" id="btn-ver-experiencias">Ver experiencias</button>
+                        <button type="button" class="cta-experiencias" id="btn-ver-experiencias" data-i18n="cta_experiencias">Ver experiencias</button>
                     </div>
                     <div class="pacientes-right">
                         <img data-rs="im" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Mapa mundial" class="mapa-image">
@@ -149,8 +158,8 @@
                 </div>
 
                 <div id="testimonios" class="shorts-carousel-section">
-                    <h2 class="shorts-carousel-title">La voz de nuestros<br><span class="shorts-carousel-title-highlight">pacientes</span></h2>
-                    <p class="shorts-carousel-subtitle">Descubre sus historias y permite que la tuya también forme parte de ellas</p>
+                    <h2 class="shorts-carousel-title"><span data-i18n="testimonios_title">La voz de nuestros</span><br><span class="shorts-carousel-title-highlight" data-i18n="testimonios_title_hl">pacientes</span></h2>
+                    <p class="shorts-carousel-subtitle" data-i18n="testimonios_subtitle">Descubre sus historias y permite que la tuya también forme parte de ellas</p>
                     <div class="shorts-carousel-wrapper">
                         <button type="button" class="shorts-carousel-arrow shorts-carousel-prev" aria-label="Video anterior">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
@@ -185,9 +194,9 @@
         <section id="formulario" class="formulario-section">
             <div class="formulario-container">
                 <h2 class="formulario-title">
-                    Solicita un protocolo <span class="formulario-title-highlight">personalizado</span>
+                    <span data-i18n="formulario_title">Solicita un protocolo</span> <span class="formulario-title-highlight" data-i18n="formulario_title_hl">personalizado</span>
                 </h2>
-                <p class="formulario-description">
+                <p class="formulario-description" data-i18n="formulario_description">
                     Elige cómo quieres comenzar: puedes enviar tu solicitud de protocolo, completar el cuestionario de longevidad o hacer ambos de forma independiente.
                 </p>
 
@@ -198,11 +207,11 @@
                         <div class="form-row">
                             <div class="form-group form-group-with-icon">
                                 <img data-rs="i1" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon">
-                                <input type="text" id="nombre" name="nombre" placeholder="Nombre completo*" required>
+                                <input type="text" id="nombre" name="nombre" placeholder="Nombre completo*" data-i18n-placeholder="ph_nombre" required>
                             </div>
                             <div class="form-group form-group-with-icon">
                                 <img data-rs="i2" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon">
-                                <input type="tel" id="telefono" name="telefono" placeholder="Número de teléfono (WhatsApp)*" required>
+                                <input type="tel" id="telefono" name="telefono" placeholder="Número de teléfono (WhatsApp)*" data-i18n-placeholder="ph_telefono" required>
                             </div>
                         </div>
                         <div class="form-group form-group-with-icon">
@@ -210,21 +219,21 @@
                             <textarea id="preocupaciones" name="preocupaciones" rows="7" placeholder="¿Qué le duele, qué le preocupa o qué quisiera mejorar?*
 - Quiero tener más energía
 - Quiero mejorar mi estado de salud
-- Quiero poder disfrutar de mis nietos" required></textarea>
+- Quiero poder disfrutar de mis nietos" data-i18n-placeholder="ph_preocupaciones" required></textarea>
                         </div>
                         <div class="form-group form-group-with-icon">
                             <img data-rs="i4" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon">
                             <textarea id="diagnostico" name="diagnostico" rows="7" placeholder="Diagnóstico*
 - Diabetes
 - Hipertensión
-- Lumbalgia" required></textarea>
+- Lumbalgia" data-i18n-placeholder="ph_diagnostico" required></textarea>
                         </div>
                         <div class="form-group form-group-with-icon">
                             <img data-rs="i5" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon form-field-icon-lg">
                             <textarea id="medicamentos" name="medicamentos" rows="7" placeholder="Lista de medicamentos y suplementos con dosis*
 - Aspirina 100mg
 - Vitamina C 1000mg
-- Citrato de magnesio 500mg" required></textarea>
+- Citrato de magnesio 500mg" data-i18n-placeholder="ph_medicamentos" required></textarea>
                         </div>
                         <div class="form-group form-group-with-icon">
                             <img data-rs="i6" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="" class="form-field-icon">
@@ -234,31 +243,31 @@
                                 </div>
                             </div>
                         </div>
-                        <p class="form-legend">*Campos obligatorios</p>
-                        <button type="submit" class="btn-enviar">Enviar por WhatsApp</button>
+                        <p class="form-legend" data-i18n="form_legend">*Campos obligatorios</p>
+                        <button type="submit" class="btn-enviar" data-i18n="btn_enviar_wa">Enviar por WhatsApp</button>
                     </form>
                 </div>
 
                 <div class="formulario-cards">
                     <article class="formulario-card">
-                        <h3 class="formulario-card-title">Cuestionario de longevidad</h3>
-                        <p class="formulario-card-text">
+                        <h3 class="formulario-card-title" data-i18n="card_longevidad_title">Cuestionario de longevidad</h3>
+                        <p class="formulario-card-text" data-i18n="card_longevidad_text">
                             Evalúa tus hábitos de salud, sueño, nutrición y prevención para obtener tu Longevity Score.
                         </p>
                         <ul class="formulario-card-list">
-                            <li>Puede llenarse de forma independiente.</li>
-                            <li>Complementa de la solicitud de protocolo.</li>
+                            <li data-i18n="card_longevidad_li1">Puede llenarse de forma independiente.</li>
+                            <li data-i18n="card_longevidad_li2">Complementa de la solicitud de protocolo.</li>
                         </ul>
-                        <button type="button" class="btn-form-card" id="btn-abrir-longevity">Completar cuestionario</button>
+                        <button type="button" class="btn-form-card" id="btn-abrir-longevity" data-i18n="card_longevidad_btn">Completar cuestionario</button>
                     </article>
                 </div>
 
             </div>
 
             <div class="paciente-banner">
-                <h3 class="banner-title">SI ERES PACIENTE CAMSA, CONOCE TUS BENEFICIOS EXCLUSIVOS</h3>
-                <button class="btn-iniciar-sesion"><span>Iniciar sesión</span></button>
-                <p class="banner-note">*Solicita tu acceso en recepción</p>
+                <h3 class="banner-title" data-i18n="banner_title">SI ERES PACIENTE CAMSA, CONOCE TUS BENEFICIOS EXCLUSIVOS</h3>
+                <button class="btn-iniciar-sesion"><span data-i18n="banner_btn">Iniciar sesión</span></button>
+                <p class="banner-note" data-i18n="banner_note">*Solicita tu acceso en recepción</p>
             </div>
         </section>
     </main>
@@ -540,6 +549,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="js/assets.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

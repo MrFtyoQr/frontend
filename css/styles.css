@@ -105,6 +105,94 @@ body {
     color: var(--golden-brown);
 }
 
+/* Selector de idioma: posición fija esquina superior derecha (no en navbar) */
+.lang-switcher {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.lang-switcher-fixed {
+    position: fixed;
+    top: 1rem;
+    right: 1.25rem;
+    z-index: 9999;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(184, 134, 11, 0.2);
+}
+
+.lang-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--golden-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.lang-buttons {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.lang-btn {
+    padding: 6px 12px;
+    border: 1px solid rgba(184, 134, 11, 0.4);
+    background: transparent;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    pointer-events: auto;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.lang-btn:hover {
+    background: rgba(184, 134, 11, 0.12);
+    color: var(--golden-dark);
+    border-color: var(--golden-brown);
+}
+
+.lang-btn.active {
+    background: linear-gradient(135deg, var(--golden-dark), var(--golden-brown));
+    color: #fff;
+    border-color: var(--golden-brown);
+}
+
+.lang-sep {
+    color: rgba(0, 0, 0, 0.35);
+    font-size: 0.85rem;
+    user-select: none;
+}
+
+@media (max-width: 768px) {
+    .lang-switcher-fixed {
+        top: 5rem;
+        right: 0.75rem;
+        left: auto;
+        padding: 5px 8px;
+    }
+
+    .lang-switcher .lang-label {
+        display: none;
+    }
+
+    .lang-switcher .lang-buttons .lang-btn {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+
+    .lang-switcher .lang-buttons .lang-sep {
+        font-size: 0.7rem;
+    }
+}
+
 .menu-toggle {
     display: none;
     flex-direction: column;
@@ -215,7 +303,11 @@ body {
     max-width: fit-content;
     position: relative;
     overflow: hidden;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.1;
     text-decoration: none;
 }
 
@@ -606,7 +698,11 @@ body {
     width: 400px;
     white-space: nowrap;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.1;
 }
 
 .cta-primary:hover {

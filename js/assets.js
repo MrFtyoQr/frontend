@@ -24,9 +24,11 @@
         ix: _('aW1nL2NlbHVsYS5wbmc='),
         ip: _('aW1nL3BsYW5faW50ZWdyYWwucG5n'),
         iv: _('aW1nL2NhcmQtY2Fyb3VzZWwucG5n'),
+        iv_en: _('img/card-carouselEN.png'),
         iu: _('aW1nL3ZpcnVzLnBuZw=='),
         im: _('aW1nL21hcGEucG5n'),
         id: _('aW1nL2RvY3Rvci5wbmc='),
+        id_en: _('img/doctorEN.png'),
         il: _('aW1nL2xvZ28tZm90ZXIucG5n'),
         it: _('aW1nL3Rlc3RpbW9uaW8ubXA0'),
         ifb: _('aW1nL2ZiLnBuZw=='),
@@ -39,6 +41,12 @@
         s4: _('aW1nLzA0LnBuZw=='),
         s5: _('aW1nLzA1LnBuZw=='),
         s6: _('aW1nLzA2LnBuZw=='),
+        s1_en: _('img/01EN.png'),
+        s2_en: _('img/02EN.png'),
+        s3_en: _('img/03EN.png'),
+        s4_en: _('img/04EN.png'),
+        s5_en: _('img/05EN.png'),
+        s6_en: _('img/06EN.png'),
         fw: _('NTI3NDQzNTE0MTQ5')
     };
     window.__rs = function(k) { return R[k] || ''; };
