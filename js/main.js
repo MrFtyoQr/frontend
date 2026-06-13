@@ -21,6 +21,16 @@ if (estudiosFile && estudiosInput) {
 
 // Envío del formulario vía WhatsApp con modal de confirmación
 var pendingWhatsAppUrl = null;
+/** 'protocol' | 'longevity' | 'hormonal-mujer' | 'hormonal-hombre — origen del envío WhatsApp */
+var pendingWhatsAppSource = null;
+
+/** Usado por cuestionarios hormonales para abrir el modal de confirmación WhatsApp */
+function setPendingWhatsApp(url, source) {
+    pendingWhatsAppUrl = url;
+    pendingWhatsAppSource = source;
+    showModal();
+}
+window.setPendingWhatsApp = setPendingWhatsApp;
 var longevityResult = null;
 
 function getLongevityInterpretacion(total) {
@@ -125,6 +135,7 @@ function hideModal() {
         setTimeout(function() { modal.setAttribute('hidden', ''); }, 300);
     }
     pendingWhatsAppUrl = null;
+    pendingWhatsAppSource = null;
 }
 
 const protocoloForm = document.getElementById('protocolo-form');
@@ -132,6 +143,7 @@ if (protocoloForm) {
     protocoloForm.addEventListener('submit', function(e) {
         e.preventDefault();
         pendingWhatsAppUrl = buildWhatsAppUrl();
+        pendingWhatsAppSource = 'protocol';
         showModal();
     });
 }
@@ -149,13 +161,18 @@ function showLongevityModal() {
         var telefonoInput = document.getElementById('telefono');
         var longNombre = document.getElementById('long-nombre');
         var longContacto = document.getElementById('long-contacto');
-        if (longNombre && nombreInput) longNombre.value = nombreInput.value.trim();
-        if (longContacto && telefonoInput) longContacto.value = telefonoInput.value.trim();
+        if (longNombre && nombreInput && !longNombre.value.trim()) longNombre.value = nombreInput.value.trim();
+        if (longContacto && telefonoInput && !longContacto.value.trim()) longContacto.value = telefonoInput.value.trim();
         modal.removeAttribute('hidden');
         modal.offsetHeight;
         modal.classList.add('active');
+        if (window.CamsaFormPersistence && typeof window.CamsaFormPersistence.onLongevityModalOpened === 'function') {
+            window.CamsaFormPersistence.onLongevityModalOpened();
+        }
     }
 }
+// Expuesto para el módulo de persistencia (restaurar sesión y abrir modal)
+window.showLongevityModal = showLongevityModal;
 
 function hideLongevityModal() {
     var modal = document.getElementById('modal-longevity');
@@ -180,46 +197,54 @@ if (modalLongevityBackdrop) {
     modalLongevityBackdrop.addEventListener('click', hideLongevityModal);
 }
 
-// Cuestionario de longevidad (Paso 2): finalizar y obtener resultado
+// Cuestionario de longevidad: finalizar y obtener resultado (wizard o botón legacy)
+function finalizeLongevityQuestionnaire() {
+    var total = 0;
+    var answers = [];
+    for (var i = 1; i <= 20; i++) {
+        var name = 'q' + i;
+        var fieldset = document.querySelector('.longevity-fieldset[data-q="' + i + '"]');
+        var selected = document.querySelector('input[name="' + name + '"]:checked');
+        if (fieldset && selected) {
+            var pts = parseInt(selected.value, 10);
+            total += pts;
+            answers.push({
+                q: i,
+                question: fieldset.getAttribute('data-question') || fieldset.querySelector('legend').textContent,
+                answer: selected.getAttribute('data-answer') || selected.value,
+                points: pts
+            });
+        }
+    }
+    var interpretacion = getLongevityInterpretacion(total);
+    longevityResult = {
+        total: total,
+        interpretacion: interpretacion,
+        answers: answers,
+        datos: {
+            nombre: document.getElementById('long-nombre') && document.getElementById('long-nombre').value.trim(),
+            edad: document.getElementById('long-edad') && document.getElementById('long-edad').value.trim(),
+            sexo: document.getElementById('long-sexo') && document.getElementById('long-sexo').value.trim(),
+            fecha: document.getElementById('long-fecha') && document.getElementById('long-fecha').value.trim(),
+            profesion: document.getElementById('long-profesion') && document.getElementById('long-profesion').value.trim(),
+            contacto: document.getElementById('long-contacto') && document.getElementById('long-contacto').value.trim()
+        }
+    };
+    document.getElementById('longevity-total').textContent = total;
+    document.getElementById('longevity-interpretacion').textContent = interpretacion;
+    document.getElementById('longevity-result').removeAttribute('hidden');
+    var wiz = document.getElementById('longevity-wizard');
+    if (wiz) wiz.setAttribute('hidden', '');
+    document.getElementById('longevity-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (window.CamsaFormPersistence && typeof window.CamsaFormPersistence.onLongevityFinalized === 'function') {
+        window.CamsaFormPersistence.onLongevityFinalized();
+    }
+}
+window.finalizeLongevityQuestionnaire = finalizeLongevityQuestionnaire;
+
 var btnLongevityFinalizar = document.getElementById('btn-longevity-finalizar');
 if (btnLongevityFinalizar) {
-    btnLongevityFinalizar.addEventListener('click', function() {
-        var total = 0;
-        var answers = [];
-        for (var i = 1; i <= 20; i++) {
-            var name = 'q' + i;
-            var fieldset = document.querySelector('.longevity-fieldset[data-q="' + i + '"]');
-            var selected = document.querySelector('input[name="' + name + '"]:checked');
-            if (fieldset && selected) {
-                var pts = parseInt(selected.value, 10);
-                total += pts;
-                answers.push({
-                    q: i,
-                    question: fieldset.getAttribute('data-question') || fieldset.querySelector('legend').textContent,
-                    answer: selected.getAttribute('data-answer') || selected.value,
-                    points: pts
-                });
-            }
-        }
-        var interpretacion = getLongevityInterpretacion(total);
-        longevityResult = {
-            total: total,
-            interpretacion: interpretacion,
-            answers: answers,
-            datos: {
-                nombre: document.getElementById('long-nombre') && document.getElementById('long-nombre').value.trim(),
-                edad: document.getElementById('long-edad') && document.getElementById('long-edad').value.trim(),
-                sexo: document.getElementById('long-sexo') && document.getElementById('long-sexo').value.trim(),
-                fecha: document.getElementById('long-fecha') && document.getElementById('long-fecha').value.trim(),
-                profesion: document.getElementById('long-profesion') && document.getElementById('long-profesion').value.trim(),
-                contacto: document.getElementById('long-contacto') && document.getElementById('long-contacto').value.trim()
-            }
-        };
-        document.getElementById('longevity-total').textContent = total;
-        document.getElementById('longevity-interpretacion').textContent = interpretacion;
-        document.getElementById('longevity-result').removeAttribute('hidden');
-        document.getElementById('longevity-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    });
+    btnLongevityFinalizar.addEventListener('click', finalizeLongevityQuestionnaire);
 }
 
 // Guardar imagen del resultado
@@ -249,6 +274,7 @@ if (btnLongevityEnviar) {
         var url = buildLongevityWhatsAppUrl();
         if (!url) return;
         pendingWhatsAppUrl = url;
+        pendingWhatsAppSource = 'longevity';
         showModal();
     });
 }
@@ -260,6 +286,18 @@ if (modalConfirm) {
     modalConfirm.addEventListener('click', function() {
         if (pendingWhatsAppUrl) {
             window.open(pendingWhatsAppUrl, '_blank', 'noopener,noreferrer');
+            // Envío exitoso: eliminar progreso guardado del formulario correspondiente
+            if (window.CamsaFormPersistence) {
+                if (pendingWhatsAppSource === 'longevity' && typeof window.CamsaFormPersistence.clearLongevityProgress === 'function') {
+                    window.CamsaFormPersistence.clearLongevityProgress();
+                } else if (pendingWhatsAppSource === 'protocol' && typeof window.CamsaFormPersistence.clearProtocolProgress === 'function') {
+                    window.CamsaFormPersistence.clearProtocolProgress();
+                } else if (pendingWhatsAppSource === 'hormonal-mujer' && typeof window.CamsaFormPersistence.clearHormonalProgress === 'function') {
+                    window.CamsaFormPersistence.clearHormonalProgress('mujer');
+                } else if (pendingWhatsAppSource === 'hormonal-hombre' && typeof window.CamsaFormPersistence.clearHormonalProgress === 'function') {
+                    window.CamsaFormPersistence.clearHormonalProgress('hombre');
+                }
+            }
         }
         hideModal();
     });
@@ -282,6 +320,12 @@ document.addEventListener('keydown', function(e) {
     var ml = document.getElementById('modal-longevity');
     if (mw && mw.classList.contains('active')) hideModal();
     else if (ml && ml.classList.contains('active')) hideLongevityModal();
+    else if (document.querySelector('.modal-hormonal.active') && window.HormonalQuestionnaires && typeof window.HormonalQuestionnaires.closeAnyActive === 'function') {
+        window.HormonalQuestionnaires.closeAnyActive();
+    } else if (window.TfgCalculator && typeof window.TfgCalculator.close === 'function') {
+        var modalTfg = document.getElementById('modal-tfg');
+        if (modalTfg && modalTfg.classList.contains('active')) window.TfgCalculator.close();
+    }
 });
 
 // Carrusel Shorts: móvil 1 frame; desktop 3 frames (centro + laterales pequeños y blurred)

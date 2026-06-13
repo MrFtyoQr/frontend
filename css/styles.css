@@ -1127,6 +1127,37 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     border: 1px solid rgba(184, 134, 11, 0.2);
     transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.formulario-card--media {
+    padding: 0;
+}
+
+.formulario-card-figure {
+    margin: 0;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f5f0e8 0%, #e8dfd0 100%);
+}
+
+.formulario-card-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+}
+
+.formulario-card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 24px 24px 28px;
+}
+
+.formulario-card--media .form-recovery-indicator {
+    margin-bottom: 12px;
 }
 
 .formulario-card:hover {
@@ -1156,6 +1187,7 @@ body {
     line-height: 1.6;
 }
 
+.formulario-card-body .btn-form-card,
 .formulario-card .btn-form-card {
     margin-top: auto;
 }
@@ -1540,6 +1572,35 @@ body {
     accent-color: var(--golden-brown);
 }
 
+.q-wizard-step--section .longevity-section-title {
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+}
+
+.q-wizard-step--section .longevity-fieldset {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+}
+
+.q-wizard-step--section .longevity-fieldset legend {
+    font-size: 0.88rem;
+    margin-bottom: 4px;
+    line-height: 1.35;
+}
+
+.q-wizard-step--section .longevity-fieldset label {
+    padding: 3px 0;
+    font-size: 0.84rem;
+    gap: 8px;
+}
+
+.q-wizard-step--section .longevity-fieldset input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
 .btn-longevity-finalizar {
     display: block;
     margin-top: 24px;
@@ -1583,37 +1644,71 @@ body {
 
 .longevity-result-actions {
     display: flex;
-    flex-wrap: nowrap;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
     justify-content: center;
 }
 
 .longevity-result-actions .btn-longevity-action {
-    flex: 1;
+    flex: 1 1 calc(33.333% - 10px);
     min-width: 0;
 }
 
 .btn-longevity-action {
-    padding: 10px 18px;
-    font-size: 0.9rem;
+    padding: 10px 14px;
+    font-size: 0.84rem;
     font-weight: 600;
     border-radius: 50px;
     border: none;
     cursor: pointer;
     white-space: nowrap;
     transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+
+@media (max-width: 640px) {
+    .longevity-result-actions .btn-longevity-action {
+        flex: 1 1 100%;
+    }
 }
 
 .btn-longevity-imagen,
+.btn-longevity-compartir,
 .btn-longevity-enviar {
     background: linear-gradient(80deg, var(--golden-dark), var(--golden-light), var(--golden-brown) );
     color: #fff;
 }
 
 .btn-longevity-imagen:hover,
+.btn-longevity-compartir:hover,
 .btn-longevity-enviar:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(184, 134, 11, 0.35);
+}
+
+.form-share-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%) translateY(12px);
+    z-index: 10050;
+    max-width: min(92vw, 420px);
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: #2c2416;
+    color: #fff;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.form-share-toast--visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }
 
 .longevity-result-title {
@@ -1643,10 +1738,975 @@ body {
     line-height: 1.5;
 }
 
+/* Tests hormonales (mismo shell que longevidad) */
+.hormonal-legend-title {
+    margin: 0 0 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.hormonal-scale-legend {
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: rgba(184, 134, 11, 0.06);
+    border: 1px solid rgba(184, 134, 11, 0.22);
+}
+
+.hormonal-scale-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+}
+
+.hormonal-scale-item {
+    font-size: 0.8rem;
+    line-height: 1.35;
+    color: #444;
+    padding: 4px 8px;
+    background: #fff;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Datos generales — formulario estructurado (compacto) */
+.hormonal-datos {
+    margin-bottom: 20px;
+    padding: 14px 14px 12px;
+    border-radius: 12px;
+    background: #fafafa;
+    border: 1px solid rgba(184, 134, 11, 0.2);
+}
+
+.hormonal-datos .longevity-section-title.hormonal-datos-title {
+    margin-bottom: 8px;
+    font-size: 1.05rem;
+}
+
+.hormonal-datos-intro,
+.longevity-datos-intro {
+    margin: 0 0 12px;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: #555;
+}
+
+.hormonal-legend-desc {
+    margin: 0 0 10px;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: #666;
+}
+
+.longevity-result-note {
+    margin: 0 0 12px;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: #666;
+    font-style: italic;
+}
+
+.hormonal-datos-group {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.hormonal-datos-group:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.hormonal-datos-group-title {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--golden-dark, #8b6914);
+}
+
+.hormonal-datos-group-desc {
+    margin: 0 0 8px;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: #444;
+}
+
+.hormonal-datos-group--hormonas {
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: #fff;
+    border: 1px solid rgba(184, 134, 11, 0.25);
+    border-bottom: 1px solid rgba(184, 134, 11, 0.25);
+}
+
+.hormonal-field-grid {
+    display: grid;
+    gap: 8px 10px;
+    grid-template-columns: 1fr;
+}
+
+.hormonal-field-grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.hormonal-field-grid--ident {
+    grid-template-columns: 1fr 88px;
+}
+
+.hormonal-field-grid--ident .hormonal-field--full {
+    grid-column: 1 / -1;
+}
+
+@media (min-width: 480px) {
+    .hormonal-field-grid--ident {
+        grid-template-columns: 1.4fr 0.7fr 1fr;
+    }
+
+    .hormonal-field-grid--ident .hormonal-field--full {
+        grid-column: 1 / -1;
+    }
+}
+
+.hormonal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.hormonal-field--full {
+    grid-column: 1 / -1;
+}
+
+.hormonal-field-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.hormonal-field-hint {
+    font-size: 0.7rem;
+    color: #888;
+    line-height: 1.25;
+}
+
+/* Controles compactos en datos generales hormonales */
+.hormonal-datos .hormonal-field input.hormonal-input-control,
+.hormonal-datos .hormonal-field input:not([type="radio"]),
+.hormonal-datos .hormonal-field select {
+    width: 100%;
+    height: 34px;
+    min-height: 34px;
+    max-height: 34px;
+    padding: 0 10px;
+    border: 1px solid #d4c4a8;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    background: #fff;
+    color: var(--text-color);
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.hormonal-datos .hormonal-field input[type="date"].hormonal-input-control,
+.hormonal-datos .hormonal-field input[type="time"] {
+    padding-right: 8px;
+}
+
+.hormonal-datos .hormonal-field input:focus {
+    outline: none;
+    border-color: var(--golden-dark, #8b6914);
+    box-shadow: 0 0 0 2px rgba(184, 134, 11, 0.2);
+}
+
+.hormonal-input-readonly {
+    background: #f7f4ef !important;
+    color: #444;
+    cursor: default;
+    text-align: center;
+    font-weight: 600;
+}
+
+.hormonal-field-grid--2 .hormonal-field {
+    min-width: 0;
+}
+
+.hormonal-choice-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    max-width: 220px;
+    margin-bottom: 8px;
+}
+
+.hormonal-choice-pill {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 34px;
+    padding: 0 12px;
+    margin: 0;
+    border-radius: 8px;
+    border: 1px solid #d4c4a8;
+    background: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    user-select: none;
+}
+
+.hormonal-choice-pill:has(.hormonal-choice-input:checked) {
+    border-color: var(--golden-dark, #8b6914);
+    background: rgba(184, 134, 11, 0.1);
+    box-shadow: 0 0 0 1px rgba(184, 134, 11, 0.15);
+}
+
+.hormonal-choice-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.hormonal-choice-radio {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    border: 2px solid #c4a574;
+    border-radius: 50%;
+    background: #fff;
+    box-sizing: border-box;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.hormonal-choice-pill:has(.hormonal-choice-input:checked) .hormonal-choice-radio {
+    border-color: var(--golden-dark, #8b6914);
+    background: var(--golden-dark, #8b6914);
+    box-shadow: inset 0 0 0 3px #fff;
+}
+
+.hormonal-choice-text {
+    line-height: 1;
+}
+
+.hormonal-hormonas-detail {
+    padding-top: 4px;
+    animation: formRecoveryFadeIn 0.25s ease-out;
+}
+
+.hormonal-section-note {
+    font-size: 0.9rem;
+    color: #666;
+    margin: -4px 0 12px;
+    line-height: 1.45;
+    font-style: italic;
+}
+
+/* Cuestionario hormonal — vista compacta por hormona */
+.hormonal-hormone-step {
+    padding: 0;
+}
+
+.hormonal-hormone-title {
+    margin: 0 0 10px;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--golden-dark, #a67c00);
+    line-height: 1.2;
+}
+
+.hormonal-scale-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(184, 134, 11, 0.2);
+    font-size: 0.72rem;
+    line-height: 1.3;
+    color: #666;
+}
+
+.hormonal-scale-inline-item {
+    white-space: nowrap;
+}
+
+.hormonal-scale-inline-num {
+    color: #1565c0;
+    font-weight: 700;
+}
+
+.hormonal-scale-inline-word {
+    color: #555;
+}
+
+.hormonal-q-list {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.hormonal-q-row {
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    min-width: 0;
+}
+
+.hormonal-q-row:last-child {
+    border-bottom: none;
+}
+
+.hormonal-q-row.q-wizard-fieldset--missing {
+    background: rgba(198, 40, 40, 0.06);
+    box-shadow: inset 0 0 0 2px rgba(198, 40, 40, 0.25);
+}
+
+.hormonal-q-legend {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.hormonal-q-row-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px 12px;
+    align-items: center;
+    padding: 10px 12px;
+}
+
+.hormonal-q-text {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.4;
+    color: #333;
+}
+
+.hormonal-q-num {
+    font-weight: 700;
+    color: var(--golden-dark, #8b6914);
+}
+
+.hormonal-q-scale {
+    display: flex;
+    flex-shrink: 0;
+    gap: 4px;
+}
+
+.hormonal-scale-btn {
+    position: relative;
+    cursor: pointer;
+    margin: 0;
+}
+
+.hormonal-scale-input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+}
+
+.hormonal-scale-btn-face {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(0, 0, 0, 0.18);
+    border-radius: 6px;
+    background: #fff;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #444;
+    transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+    user-select: none;
+}
+
+.hormonal-scale-btn:hover .hormonal-scale-btn-face {
+    border-color: var(--golden-dark, #a67c00);
+    background: rgba(184, 134, 11, 0.08);
+}
+
+.hormonal-scale-btn:has(.hormonal-scale-input:checked) .hormonal-scale-btn-face {
+    background: var(--golden-dark, #a67c00);
+    border-color: var(--golden-dark, #a67c00);
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.hormonal-section-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: rgba(184, 134, 11, 0.08);
+    border: 1px solid rgba(184, 134, 11, 0.22);
+}
+
+.hormonal-section-total-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #555;
+    text-transform: uppercase;
+}
+
+.hormonal-section-total-value {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--golden-dark, #8b6914);
+    min-width: 2rem;
+    text-align: right;
+}
+
+.hormonal-grand-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: var(--golden-dark, #8b6914);
+    color: #fff;
+    position: sticky;
+    bottom: 0;
+    z-index: 3;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.hormonal-grand-total-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    opacity: 0.95;
+}
+
+.hormonal-grand-total-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.modal-hormonal .q-wizard-step--section {
+    max-width: 100%;
+}
+
+@media (max-width: 520px) {
+    .hormonal-q-row-inner {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .hormonal-q-scale {
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    .hormonal-scale-btn-face {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+.hormonal-section--optional {
+    color: var(--golden-dark, #8b6914);
+}
+
+.hormonal-result-title {
+    margin-bottom: 6px;
+}
+
+.hormonal-result-subtitle {
+    margin: 0 0 14px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.hormonal-result-clinic {
+    margin-top: 16px;
+    font-weight: 600;
+}
+
+.hormonal-result-totals {
+    margin: 12px 0 16px;
+}
+
+.hormonal-result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    font-size: 0.95rem;
+}
+
+.hormonal-result-label {
+    font-weight: 600;
+    color: var(--text-color);
+    flex: 1 1 140px;
+}
+
+.hormonal-result-value {
+    text-align: right;
+}
+
+.hormonal-result-max {
+    font-size: 0.85em;
+    color: #777;
+    font-weight: 400;
+}
+
+.hormonal-result-grand {
+    margin-top: 14px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--golden-dark, #8b6914);
+}
+
+@media (max-width: 600px) {
+    .hormonal-field-grid--2 {
+        grid-template-columns: 1fr;
+    }
+
+    .hormonal-field-grid--ident {
+        grid-template-columns: 1fr;
+    }
+
+    .hormonal-choice-row {
+        max-width: none;
+    }
+}
+
+/* Calculadora TFG / K/DOQI */
+.tfg-sexo-row {
+    max-width: 320px;
+}
+
+.tfg-error {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: rgba(198, 40, 40, 0.1);
+    color: #b71c1c;
+    font-size: 0.88rem;
+}
+
+.tfg-result-clinic-sub {
+    margin: 0 0 16px;
+    font-size: 0.92rem;
+    color: #666;
+    font-weight: 600;
+}
+
+.tfg-result-highlight {
+    text-align: center;
+    padding: 18px 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.tfg-result-highlight--s1 { background: #e0f2f1; border: 2px solid #00897b; }
+.tfg-result-highlight--s2 { background: #f1f8e9; border: 2px solid #689f38; }
+.tfg-result-highlight--s3a { background: #fff8e1; border: 2px solid #f9a825; }
+.tfg-result-highlight--s3b { background: #fff3e0; border: 2px solid #fb8c00; }
+.tfg-result-highlight--s4 { background: #fbe9e7; border: 2px solid #e65100; }
+.tfg-result-highlight--s5 { background: #ffebee; border: 2px solid #c62828; }
+
+.tfg-result-highlight--s1 .tfg-result-value strong { color: #00695c; }
+.tfg-result-highlight--s2 .tfg-result-value strong { color: #558b2f; }
+.tfg-result-highlight--s3a .tfg-result-value strong { color: #f57f17; }
+.tfg-result-highlight--s3b .tfg-result-value strong { color: #ef6c00; }
+.tfg-result-highlight--s4 .tfg-result-value strong { color: #d84315; }
+.tfg-result-highlight--s5 .tfg-result-value strong { color: #b71c1c; }
+
+.tfg-result-value-label {
+    margin: 0 0 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.tfg-result-value {
+    margin: 0;
+    font-size: 2rem;
+    line-height: 1.2;
+    color: var(--text-color);
+}
+
+.tfg-result-value span {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.tfg-result-stage {
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    border-left: 5px solid #ccc;
+}
+
+.tfg-result-stage--s1 { background: #e0f2f1; border-left-color: #00897b; }
+.tfg-result-stage--s2 { background: #f1f8e9; border-left-color: #689f38; }
+.tfg-result-stage--s3a { background: #fff8e1; border-left-color: #f9a825; }
+.tfg-result-stage--s3b { background: #fff3e0; border-left-color: #fb8c00; }
+.tfg-result-stage--s4 { background: #fbe9e7; border-left-color: #e65100; }
+.tfg-result-stage--s5 { background: #ffebee; border-left-color: #c62828; }
+
+.tfg-result-stage-badge {
+    margin: 0 0 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.tfg-result-stage-name {
+    margin: 0 0 10px;
+    font-size: 1.15rem;
+    color: var(--text-color);
+}
+
+.tfg-result-stage-desc,
+.tfg-result-stage-sintomas {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #444;
+}
+
+.tfg-ref-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.8rem;
+    margin-top: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.tfg-ref-table th,
+.tfg-ref-table td {
+    padding: 10px 12px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.tfg-ref-table th {
+    background: #f5f0e8;
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* Etapa 1 — verde azulado (normal) */
+.tfg-ref-row--s1 td {
+    background: #e0f2f1;
+    border-color: rgba(0, 137, 123, 0.25);
+}
+.tfg-ref-row--s1 td:first-child { border-left: 4px solid #00897b; }
+.tfg-ref-row--s1 .tfg-ref-stage-num {
+    background: #00897b;
+    color: #fff;
+    border-radius: 6px;
+    padding: 2px 8px;
+}
+
+/* Etapa 2 — verde lima (leve) */
+.tfg-ref-row--s2 td {
+    background: #f1f8e9;
+    border-color: rgba(104, 159, 56, 0.28);
+}
+.tfg-ref-row--s2 td:first-child { border-left: 4px solid #689f38; }
+.tfg-ref-row--s2 .tfg-ref-stage-num {
+    background: #689f38;
+    color: #fff;
+    border-radius: 6px;
+    padding: 2px 8px;
+}
+
+/* Etapa 3a — amarillo dorado (moderada) */
+.tfg-ref-row--s3a td {
+    background: #fff8e1;
+    border-color: rgba(249, 168, 37, 0.35);
+}
+.tfg-ref-row--s3a td:first-child { border-left: 4px solid #f9a825; }
+.tfg-ref-row--s3a .tfg-ref-stage-num {
+    background: #f9a825;
+    color: #3e2723;
+    border-radius: 6px;
+    padding: 2px 8px;
+}
+
+/* Etapa 3b — ámbar (moderada-severa) */
+.tfg-ref-row--s3b td {
+    background: #fff3e0;
+    border-color: rgba(251, 140, 0, 0.35);
+}
+.tfg-ref-row--s3b td:first-child { border-left: 4px solid #fb8c00; }
+.tfg-ref-row--s3b .tfg-ref-stage-num {
+    background: #fb8c00;
+    color: #fff;
+    border-radius: 6px;
+    padding: 2px 8px;
+}
+
+/* Etapa 4 — naranja intenso (severa) */
+.tfg-ref-row--s4 td {
+    background: #fbe9e7;
+    border-color: rgba(230, 81, 0, 0.3);
+}
+.tfg-ref-row--s4 td:first-child { border-left: 4px solid #e65100; }
+.tfg-ref-row--s4 .tfg-ref-stage-num {
+    background: #e65100;
+    color: #fff;
+    border-radius: 6px;
+    padding: 2px 8px;
+}
+
+/* Etapa 5 — rojo (falla renal) */
+.tfg-ref-row--s5 td {
+    background: #ffebee;
+    border-color: rgba(198, 40, 40, 0.28);
+}
+.tfg-ref-row--s5 td:first-child { border-left: 4px solid #c62828; }
+.tfg-ref-row--s5 .tfg-ref-stage-num {
+    background: #c62828;
+    color: #fff;
+    border-radius: 6px;
+    padding: 2px 8px;
+}
+
+.tfg-ref-stage-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.75rem;
+    font-weight: 700;
+}
+
+.tfg-ref-you-marker {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    vertical-align: middle;
+}
+
+.tfg-ref-row--active td {
+    font-weight: 600;
+}
+
+.tfg-ref-row--active td:first-child {
+    border-left-width: 6px;
+}
+
+.tfg-ref-row--active.tfg-ref-row--s1 td {
+    background: #b2dfdb;
+    box-shadow: inset 0 0 0 2px #00897b;
+}
+.tfg-ref-row--active.tfg-ref-row--s1 .tfg-ref-you-marker { background: #00695c; color: #fff; }
+
+.tfg-ref-row--active.tfg-ref-row--s2 td {
+    background: #dcedc8;
+    box-shadow: inset 0 0 0 2px #689f38;
+}
+.tfg-ref-row--active.tfg-ref-row--s2 .tfg-ref-you-marker { background: #558b2f; color: #fff; }
+
+.tfg-ref-row--active.tfg-ref-row--s3a td {
+    background: #ffecb3;
+    box-shadow: inset 0 0 0 2px #f9a825;
+}
+.tfg-ref-row--active.tfg-ref-row--s3a .tfg-ref-you-marker { background: #f57f17; color: #fff; }
+
+.tfg-ref-row--active.tfg-ref-row--s3b td {
+    background: #ffe0b2;
+    box-shadow: inset 0 0 0 2px #fb8c00;
+}
+.tfg-ref-row--active.tfg-ref-row--s3b .tfg-ref-you-marker { background: #ef6c00; color: #fff; }
+
+.tfg-ref-row--active.tfg-ref-row--s4 td {
+    background: #ffccbc;
+    box-shadow: inset 0 0 0 2px #e65100;
+}
+.tfg-ref-row--active.tfg-ref-row--s4 .tfg-ref-you-marker { background: #d84315; color: #fff; }
+
+.tfg-ref-row--active.tfg-ref-row--s5 td {
+    background: #ffcdd2;
+    box-shadow: inset 0 0 0 2px #c62828;
+}
+.tfg-ref-row--active.tfg-ref-row--s5 .tfg-ref-you-marker { background: #b71c1c; color: #fff; }
+
+.tfg-result-visual {
+    margin: 1.25rem 0 0;
+    padding: 0;
+    text-align: center;
+}
+
+.tfg-result-diagram {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.tfg-result-visual-caption {
+    margin: 0.625rem auto 0;
+    max-width: 480px;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #666;
+}
+
+.tfg-footnote {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #666;
+    font-weight: 400;
+}
+
+.tfg-result-card {
+    max-width: 100%;
+}
+
+/* Banners e indicador de recuperación de progreso (localStorage) */
+.form-recovery-banner {
+    margin-bottom: 20px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(184, 134, 11, 0.45);
+    background: linear-gradient(135deg, rgba(255, 248, 220, 0.95), rgba(255, 236, 179, 0.85));
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.form-recovery-banner--modal {
+    margin-top: 4px;
+}
+
+.form-recovery-banner.form-recovery-banner--visible {
+    animation: formRecoveryFadeIn 0.35s ease-out;
+}
+
+.form-recovery-message {
+    margin: 0 0 12px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #3d3422;
+}
+
+.form-recovery-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.form-recovery-btn {
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.form-recovery-btn--primary {
+    background: var(--golden-dark, #8b6914);
+    color: #fff;
+}
+
+.form-recovery-btn--primary:hover {
+    filter: brightness(1.08);
+}
+
+.form-recovery-btn--secondary {
+    background: transparent;
+    color: #5c4a1f;
+    border: 1px solid rgba(139, 105, 20, 0.5);
+}
+
+.form-recovery-btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.form-recovery-indicator {
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1e5631;
+    background: rgba(46, 125, 50, 0.12);
+    border-left: 4px solid #2e7d32;
+}
+
+.form-recovery-indicator.form-recovery-indicator--visible {
+    animation: formRecoveryFadeIn 0.35s ease-out;
+}
+
+@keyframes formRecoveryFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 @media (max-width: 768px) {
     .longevity-datos-grid {
         grid-template-columns: 1fr;
+    }
+
+    .form-recovery-actions {
+        flex-direction: column;
+    }
+
+    .form-recovery-btn {
+        width: 100%;
     }
 }
 
@@ -3261,6 +4321,155 @@ body {
 
 .modal-longevity-scroll .longevity-title {
     margin-right: 36px;
+}
+
+/* Wizard por bloques (longevidad + hormonales) */
+.q-wizard {
+    margin-top: 1rem;
+}
+
+.q-wizard-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    margin-bottom: 1.25rem;
+    padding: 0.75rem 0 1rem;
+    background: linear-gradient(to bottom, var(--bg-color) 70%, transparent);
+}
+
+.q-wizard-progress-track {
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(184, 134, 11, 0.15);
+    overflow: hidden;
+}
+
+.q-wizard-progress-fill {
+    height: 100%;
+    width: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--golden-dark), var(--golden-light, #d4a853));
+    transition: width 0.35s ease;
+}
+
+.q-wizard-progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted, #666);
+}
+
+.q-wizard-progress-text {
+    font-weight: 600;
+    color: var(--golden-dark);
+}
+
+.q-wizard-error {
+    margin: 0.75rem 0 0;
+    padding: 0.625rem 0.875rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #8b2e2e;
+    background: rgba(180, 50, 50, 0.08);
+    border: 1px solid rgba(180, 50, 50, 0.2);
+}
+
+.q-wizard-steps {
+    min-height: 120px;
+}
+
+.q-wizard-step {
+    animation: qWizardFadeIn 0.3s ease;
+}
+
+.q-wizard-step[hidden] {
+    display: none !important;
+}
+
+.q-wizard-step--active .longevity-section-title,
+.q-wizard-step--active .hormonal-section-title,
+.q-wizard-step--active .hormonal-hormone-title {
+    color: var(--golden-dark);
+}
+
+.q-wizard-fieldset--missing {
+    border-color: rgba(180, 50, 50, 0.45);
+    box-shadow: 0 0 0 2px rgba(180, 50, 50, 0.12);
+}
+
+.q-wizard-nav {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to top, var(--bg-color) 85%, transparent);
+    padding-bottom: 0.25rem;
+}
+
+.q-wizard-btn {
+    flex: 1;
+    max-width: 48%;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    border: 1px solid rgba(184, 134, 11, 0.35);
+    background: #fff;
+    color: var(--golden-dark);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.q-wizard-btn:hover:not(:disabled) {
+    background: rgba(184, 134, 11, 0.08);
+    transform: translateY(-1px);
+}
+
+.q-wizard-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.q-wizard-btn-next--primary {
+    background: var(--golden-dark);
+    color: #fff;
+    border-color: var(--golden-dark);
+}
+
+.q-wizard-btn-next--primary:hover:not(:disabled) {
+    background: var(--golden-light, #c49a3a);
+    color: #fff;
+}
+
+.q-wizard[hidden] {
+    display: none !important;
+}
+
+@keyframes qWizardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .q-wizard-nav {
+        flex-direction: column-reverse;
+    }
+
+    .q-wizard-btn {
+        max-width: none;
+    }
 }
 
 /* Modal experiencias: solo encima del mapa, tamaño mini Short */
