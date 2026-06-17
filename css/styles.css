@@ -2329,6 +2329,118 @@ body {
     font-weight: 600;
 }
 
+.tfg-result-card {
+    max-width: 100%;
+    padding: 14px 16px;
+}
+
+.tfg-result-card .longevity-result-title,
+.tfg-result-card .tfg-result-title {
+    margin: 0 0 10px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.tfg-result-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tfg-result-summary {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border-left: 4px solid #ccc;
+}
+
+.tfg-result-summary--s1 { background: #e0f2f1; border-left-color: #00897b; }
+.tfg-result-summary--s2 { background: #f1f8e9; border-left-color: #689f38; }
+.tfg-result-summary--s3a { background: #fff8e1; border-left-color: #f9a825; }
+.tfg-result-summary--s3b { background: #fff3e0; border-left-color: #fb8c00; }
+.tfg-result-summary--s4 { background: #fbe9e7; border-left-color: #e65100; }
+.tfg-result-summary--s5 { background: #ffebee; border-left-color: #c62828; }
+
+.tfg-result-summary-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px 12px;
+}
+
+.tfg-result-summary--s1 .tfg-result-value strong { color: #00695c; }
+.tfg-result-summary--s2 .tfg-result-value strong { color: #558b2f; }
+.tfg-result-summary--s3a .tfg-result-value strong { color: #f57f17; }
+.tfg-result-summary--s3b .tfg-result-value strong { color: #ef6c00; }
+.tfg-result-summary--s4 .tfg-result-value strong { color: #d84315; }
+.tfg-result-summary--s5 .tfg-result-value strong { color: #b71c1c; }
+
+.tfg-result-value-label {
+    margin: 0 0 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.tfg-result-summary .tfg-result-value {
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    color: var(--text-color);
+}
+
+.tfg-result-summary .tfg-result-value strong {
+    font-size: 1.65rem;
+    font-weight: 700;
+}
+
+.tfg-result-summary .tfg-result-value span {
+    font-size: 0.72rem;
+    font-weight: 500;
+}
+
+.tfg-result-stage-chip {
+    margin: 0;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: #444;
+    text-align: right;
+    flex: 1 1 120px;
+}
+
+.tfg-result-stage-name {
+    margin: 6px 0 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-color);
+    line-height: 1.3;
+}
+
+.tfg-result-summary .tfg-result-stage-desc,
+.tfg-result-summary .tfg-result-stage-sintomas {
+    margin: 6px 0 0;
+    font-size: 0.76rem;
+    line-height: 1.4;
+    color: #444;
+}
+
+.tfg-result-summary .tfg-result-stage-sintomas {
+    margin-bottom: 0;
+}
+
+.tfg-result-ref-block {
+    width: 100%;
+}
+
+.tfg-result-ref-block .tfg-ref-table,
+.tfg-result-ref-block .tfg-result-visual {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Legacy highlight/stage blocks (mantener por compatibilidad) */
 .tfg-result-highlight {
     text-align: center;
     padding: 18px 16px;
@@ -2356,14 +2468,14 @@ body {
     font-weight: 600;
 }
 
-.tfg-result-value {
+.tfg-result-highlight .tfg-result-value {
     margin: 0;
     font-size: 2rem;
     line-height: 1.2;
     color: var(--text-color);
 }
 
-.tfg-result-value span {
+.tfg-result-highlight .tfg-result-value span {
     font-size: 1rem;
     font-weight: 500;
 }
@@ -2408,27 +2520,28 @@ body {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    font-size: 0.8rem;
-    margin-top: 8px;
-    border-radius: 10px;
+    font-size: 0.68rem;
+    margin: 0;
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
 .tfg-ref-table th,
 .tfg-ref-table td {
-    padding: 10px 12px;
+    padding: 5px 6px;
     border: 1px solid rgba(0, 0, 0, 0.06);
     text-align: left;
     vertical-align: middle;
+    line-height: 1.25;
 }
 
 .tfg-ref-table th {
     background: #f5f0e8;
     font-weight: 700;
-    font-size: 0.78rem;
+    font-size: 0.64rem;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.03em;
 }
 
 /* Etapa 1 — verde azulado (normal) */
@@ -2440,8 +2553,8 @@ body {
 .tfg-ref-row--s1 .tfg-ref-stage-num {
     background: #00897b;
     color: #fff;
-    border-radius: 6px;
-    padding: 2px 8px;
+    border-radius: 4px;
+    padding: 1px 5px;
 }
 
 /* Etapa 2 — verde lima (leve) */
@@ -2453,8 +2566,8 @@ body {
 .tfg-ref-row--s2 .tfg-ref-stage-num {
     background: #689f38;
     color: #fff;
-    border-radius: 6px;
-    padding: 2px 8px;
+    border-radius: 4px;
+    padding: 1px 5px;
 }
 
 /* Etapa 3a — amarillo dorado (moderada) */
@@ -2466,8 +2579,8 @@ body {
 .tfg-ref-row--s3a .tfg-ref-stage-num {
     background: #f9a825;
     color: #3e2723;
-    border-radius: 6px;
-    padding: 2px 8px;
+    border-radius: 4px;
+    padding: 1px 5px;
 }
 
 /* Etapa 3b — ámbar (moderada-severa) */
@@ -2479,8 +2592,8 @@ body {
 .tfg-ref-row--s3b .tfg-ref-stage-num {
     background: #fb8c00;
     color: #fff;
-    border-radius: 6px;
-    padding: 2px 8px;
+    border-radius: 4px;
+    padding: 1px 5px;
 }
 
 /* Etapa 4 — naranja intenso (severa) */
@@ -2492,8 +2605,8 @@ body {
 .tfg-ref-row--s4 .tfg-ref-stage-num {
     background: #e65100;
     color: #fff;
-    border-radius: 6px;
-    padding: 2px 8px;
+    border-radius: 4px;
+    padding: 1px 5px;
 }
 
 /* Etapa 5 — rojo (falla renal) */
@@ -2505,27 +2618,28 @@ body {
 .tfg-ref-row--s5 .tfg-ref-stage-num {
     background: #c62828;
     color: #fff;
-    border-radius: 6px;
-    padding: 2px 8px;
+    border-radius: 4px;
+    padding: 1px 5px;
 }
 
 .tfg-ref-stage-num {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 1.75rem;
+    min-width: 1.35rem;
     font-weight: 700;
+    font-size: 0.66rem;
 }
 
 .tfg-ref-you-marker {
     display: inline-block;
-    margin-left: 6px;
-    padding: 2px 8px;
+    margin-left: 4px;
+    padding: 1px 5px;
     border-radius: 999px;
-    font-size: 0.68rem;
+    font-size: 0.58rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
     vertical-align: middle;
 }
 
@@ -2574,7 +2688,7 @@ body {
 .tfg-ref-row--active.tfg-ref-row--s5 .tfg-ref-you-marker { background: #b71c1c; color: #fff; }
 
 .tfg-result-visual {
-    margin: 1.25rem 0 0;
+    margin: 8px 0 0;
     padding: 0;
     text-align: center;
 }
@@ -2582,11 +2696,11 @@ body {
 .tfg-result-diagram {
     display: block;
     width: 100%;
-    max-width: 520px;
+    max-width: 100%;
     height: auto;
-    margin: 0 auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    margin: 0;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .tfg-result-visual-caption {
@@ -2598,15 +2712,21 @@ body {
 }
 
 .tfg-footnote {
-    margin-top: 14px;
-    font-size: 0.78rem;
-    line-height: 1.45;
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 0.68rem;
+    line-height: 1.35;
     color: #666;
     font-weight: 400;
+    text-align: center;
 }
 
-.tfg-result-card {
-    max-width: 100%;
+.tfg-result-brand {
+    margin-top: 4px !important;
+    margin-bottom: 0 !important;
+    font-size: 0.72rem !important;
+    text-align: center;
+    font-weight: 600;
 }
 
 /* Banners e indicador de recuperación de progreso (localStorage) */

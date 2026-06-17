@@ -43,8 +43,12 @@
             rangoEn: '> 90',
             nombreEs: 'TFG Normal',
             nombreEn: 'Normal GFR',
+            nombreCortoEs: 'Normal',
+            nombreCortoEn: 'Normal',
             descripcionEs: 'Daño renal y función renal normal o elevada.',
             descripcionEn: 'Kidney damage with normal or increased kidney function.',
+            resumenEs: 'Filtrado normal. Por lo general sin síntomas.',
+            resumenEn: 'Normal filtration. Usually no symptoms.',
             sintomasEs: 'Generalmente no se presentan síntomas.',
             sintomasEn: 'Symptoms are generally not present.',
             color: 's1'
@@ -55,8 +59,12 @@
             rangoEn: '60 – 89',
             nombreEs: 'TFG Levemente disminuida',
             nombreEn: 'Mildly decreased GFR',
+            nombreCortoEs: 'Leve',
+            nombreCortoEn: 'Mild',
             descripcionEs: 'Daño renal y disminución leve de la función renal.',
             descripcionEn: 'Kidney damage with mildly decreased kidney function.',
+            resumenEs: 'Disminución leve. A menudo sin síntomas; vigilar presión y estudios.',
+            resumenEn: 'Mild decrease. Often no symptoms; monitor blood pressure and tests.',
             sintomasEs: 'Pueden no presentarse síntomas. En otras ocasiones: presión arterial alta, niveles elevados de creatinina o urea en sangre, sangre o proteínas en la orina.',
             sintomasEn: 'Symptoms may be absent. Sometimes: high blood pressure, elevated creatinine or BUN, blood or protein in urine.',
             color: 's2'
@@ -67,8 +75,12 @@
             rangoEn: '45 – 59',
             nombreEs: 'TFG Moderadamente disminuida',
             nombreEn: 'Moderately decreased GFR',
+            nombreCortoEs: 'Moderada',
+            nombreCortoEn: 'Moderate',
             descripcionEs: 'Disminución moderada de la función renal.',
             descripcionEn: 'Moderate decrease in kidney function.',
+            resumenEs: 'Disminución moderada. Posible anemia; cuidar corazón y presión.',
+            resumenEn: 'Moderate decrease. Possible anemia; protect heart and blood pressure.',
             sintomasEs: 'Pueden presentarse síntomas: anemia o trastornos del metabolismo mineral. Pueden iniciar complicaciones. Es importante la prevención del riesgo cardiovascular.',
             sintomasEn: 'Symptoms may appear: anemia or mineral metabolism disorders. Complications may begin. Cardiovascular risk prevention is important.',
             color: 's3a'
@@ -79,8 +91,12 @@
             rangoEn: '30 – 44',
             nombreEs: 'TFG Moderadamente a severamente disminuida',
             nombreEn: 'Moderately to severely decreased GFR',
+            nombreCortoEs: 'Mod.–severa',
+            nombreCortoEn: 'Mod.–severe',
             descripcionEs: 'Disminución moderada a severa de la función renal.',
             descripcionEn: 'Moderate to severe decrease in kidney function.',
+            resumenEs: 'Disminución notable. Seguimiento cercano con nefrólogo.',
+            resumenEn: 'Notable decrease. Close follow-up with a nephrologist.',
             sintomasEs: 'Pueden presentarse síntomas: anemia o trastornos del metabolismo mineral. Pueden iniciar complicaciones. Es importante la prevención del riesgo cardiovascular.',
             sintomasEn: 'Symptoms may appear: anemia or mineral metabolism disorders. Complications may begin. Cardiovascular risk prevention is important.',
             color: 's3b'
@@ -91,8 +107,12 @@
             rangoEn: '15 – 29',
             nombreEs: 'TFG Severamente disminuida',
             nombreEn: 'Severely decreased GFR',
+            nombreCortoEs: 'Severa',
+            nombreCortoEn: 'Severe',
             descripcionEs: 'Disminución grave de la función renal.',
             descripcionEn: 'Severe decrease in kidney function.',
+            resumenEs: 'Disminución grave. Planear tratamiento con tu especialista.',
+            resumenEn: 'Severe decrease. Plan treatment with your specialist.',
             sintomasEs: 'Normalmente el especialista sugiere preparación para tratamiento sustitutivo renal: diálisis y/o trasplante de riñón.',
             sintomasEn: 'Specialists usually recommend preparing for renal replacement therapy: dialysis and/or kidney transplant.',
             color: 's4'
@@ -103,8 +123,12 @@
             rangoEn: '< 15',
             nombreEs: 'Falla Renal',
             nombreEn: 'Kidney Failure',
+            nombreCortoEs: 'Falla renal',
+            nombreCortoEn: 'Kidney failure',
             descripcionEs: 'Enfermedad Renal Terminal (ERT).',
             descripcionEn: 'End-stage renal disease (ESRD).',
+            resumenEs: 'Filtrado muy bajo. Puede requerir diálisis o trasplante.',
+            resumenEn: 'Very low filtration. Dialysis or transplant may be needed.',
             sintomasEs: 'Los riñones han perdido casi toda su capacidad de funcionar con eficacia; puede requerirse diálisis o trasplante. Atención del riesgo cardiovascular.',
             sintomasEn: 'Kidneys have lost most of their ability to function; dialysis or transplant may be needed. Cardiovascular risk attention is required.',
             color: 's5'
@@ -126,7 +150,9 @@
             estadio: base.estadio,
             rango: en ? base.rangoEn : base.rangoEs,
             nombre: en ? base.nombreEn : base.nombreEs,
+            nombreCorto: en ? base.nombreCortoEn : base.nombreCortoEs,
             descripcion: en ? base.descripcionEn : base.descripcionEs,
+            resumen: en ? base.resumenEn : base.resumenEs,
             sintomas: en ? base.sintomasEn : base.sintomasEs,
             color: base.color
         };
@@ -189,17 +215,13 @@
 
             '<div id="tfg-result" class="longevity-result tfg-result" hidden>' +
             '<div id="tfg-result-card" class="longevity-result-card tfg-result-card">' +
-            '<h4 class="longevity-result-title">' + lbl('Resultado sobre tus riñones', 'Result about your kidneys') + '</h4>' +
-            '<p class="tfg-result-clinic-sub">' + lbl(
-                'Guía según etapas de enfermedad renal crónica (tabla K/DOQI)',
-                'Guide by chronic kidney disease stages (K/DOQI table)'
-            ) + '</p>' +
+            '<h4 class="longevity-result-title tfg-result-title">' + lbl('Resultado renal', 'Kidney result') + '</h4>' +
             '<div id="tfg-result-body" class="tfg-result-body"></div>' +
             '<p class="longevity-result-clinic tfg-footnote">' + lbl(
-                'Cálculo con fórmula CKD-EPI 2021. La etapa solo aplica si un médico confirmó enfermedad renal por al menos 3 meses. Este resultado no es un diagnóstico: confírmalo con tu doctor y tus estudios.',
-                'Calculated with the CKD-EPI 2021 formula. The stage only applies if a doctor confirmed kidney disease for at least 3 months. This is not a diagnosis—confirm with your doctor and your tests.'
+                'CKD-EPI 2021 · Orientativo. Confirma con tu médico.',
+                'CKD-EPI 2021 · For guidance only. Confirm with your doctor.'
             ) + '</p>' +
-            '<p class="longevity-result-clinic">Clínica CAMSA · Medicina Regenerativa y Longevidad</p>' +
+            '<p class="longevity-result-clinic tfg-result-brand">Clínica CAMSA</p>' +
             '</div>' +
             '<div class="longevity-result-actions">' +
             '<button type="button" class="btn-longevity-action btn-longevity-imagen" id="btn-tfg-imagen">' + lbl('Guardar imagen', 'Save image') + '</button>' +
@@ -216,28 +238,23 @@
         if (!body) return;
         var c = result.clasificacion;
         body.innerHTML =
-            '<div class="tfg-result-highlight tfg-result-highlight--' + c.color + '">' +
+            '<div class="tfg-result-summary tfg-result-summary--' + c.color + '">' +
             '<p class="tfg-result-value-label">' + lbl('Qué tan bien filtran tus riñones (estimado)', 'How well your kidneys filter (estimate)') + '</p>' +
+            '<div class="tfg-result-summary-row">' +
             '<p class="tfg-result-value"><strong>' + result.tfg + '</strong> <span>ml/min/1.73 m²</span></p>' +
+            '<p class="tfg-result-stage-chip">' + stageLabel(c) + ' · ' + c.rango + ' ml/min/1.73 m²</p>' +
             '</div>' +
-            '<div class="tfg-result-stage tfg-result-stage--' + c.color + '">' +
-            '<p class="tfg-result-stage-badge">' + stageLabel(c) + ' · ' + c.rango + ' ml/min/1.73 m²</p>' +
-            '<h5 class="tfg-result-stage-name">' + c.nombre + '</h5>' +
+            '<p class="tfg-result-stage-name">' + c.nombre + '</p>' +
             '<p class="tfg-result-stage-desc"><strong>' + lbl('Qué significa:', 'What it means:') + '</strong> ' + c.descripcion + '</p>' +
             '<p class="tfg-result-stage-sintomas"><strong>' + lbl('Qué podrías notar y qué hacer:', 'What you might notice and what to do:') + '</strong> ' + c.sintomas + '</p>' +
             '</div>' +
+            '<div class="tfg-result-ref-block">' +
             '<table class="tfg-ref-table" aria-label="' + lbl('Tabla de referencia por etapas', 'Reference table by stage') + '">' +
             '<thead><tr><th>' + lbl('Etapa', 'Stage') + '</th><th>' + lbl('Filtración', 'Filtration') + '</th><th>' + lbl('En palabras sencillas', 'In simple terms') + '</th></tr></thead>' +
             '<tbody>' + buildRefTableRows(c.estadio) + '</tbody></table>' +
             '<figure class="tfg-result-visual">' +
-            '<img src="img/tfg.png" alt="' + lbl(
-                'Diagrama visual de las etapas de función renal',
-                'Visual diagram of kidney function stages'
-            ) + '" class="tfg-result-diagram" width="800" height="500" loading="lazy" decoding="async">' +
-            '<figcaption class="tfg-result-visual-caption">' + lbl(
-                'Referencia visual de las etapas. La fila resaltada en la tabla corresponde a tu estimación.',
-                'Visual reference of the stages. The highlighted row in the table matches your estimate.'
-            ) + '</figcaption></figure>';
+            '<img src="img/tfg.png" alt="' + lbl('Diagrama visual de las etapas de función renal', 'Visual diagram of kidney function stages') + '" class="tfg-result-diagram" loading="lazy" decoding="async">' +
+            '</figure></div>';
     }
 
     function buildRefTableRows(activeEstadio) {
@@ -249,7 +266,7 @@
             var rowClass = 'tfg-ref-row tfg-ref-row--' + s.color + (isActive ? ' tfg-ref-row--active' : '');
             var stageCell = isActive
                 ? '<td><span class="tfg-ref-stage-num">' + s.estadio + '</span>' +
-                  '<span class="tfg-ref-you-marker">' + lbl('Tu resultado', 'Your result') + '</span></td>'
+                  '<span class="tfg-ref-you-marker">' + lbl('Tú', 'You') + '</span></td>'
                 : '<td><span class="tfg-ref-stage-num">' + s.estadio + '</span></td>';
             return '<tr class="' + rowClass + '">' +
                 stageCell +
@@ -316,7 +333,8 @@
             '*' + lbl('Filtración estimada', 'Estimated filtration') + ':* ' + lastResult.tfg + ' ml/min/1.73 m²',
             '*' + stageLabel(c) + ':* ' + c.nombre,
             lbl('Rango K/DOQI', 'K/DOQI range') + ': ' + c.rango + ' ml/min/1.73 m²',
-            lbl('Descripción', 'Description') + ': ' + c.descripcion,
+            lbl('Resumen', 'Summary') + ': ' + c.resumen,
+            lbl('Detalle', 'Detail') + ': ' + c.descripcion,
             lbl('Síntomas y actuación', 'Symptoms and guidance') + ': ' + c.sintomas
         ].join('\n');
     }
@@ -379,7 +397,12 @@
                 if (!lastResult || typeof html2canvas !== 'function') return;
                 var card = document.getElementById('tfg-result-card');
                 if (!card) return;
-                html2canvas(card).then(function(canvas) {
+                html2canvas(card, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false
+                }).then(function(canvas) {
                     var link = document.createElement('a');
                     link.download = 'tfg_kdoqi_' + lastResult.tfg + '.png';
                     link.href = canvas.toDataURL('image/png');
@@ -442,17 +465,12 @@
         var closeBtn = document.getElementById('modal-tfg-close');
         if (closeBtn) closeBtn.setAttribute('aria-label', lbl('Cerrar', 'Close'));
 
-        var resultTitle = modal.querySelector('.longevity-result-title');
-        if (resultTitle) resultTitle.textContent = lbl('Resultado sobre tus riñones', 'Result about your kidneys');
-        var resultSub = modal.querySelector('.tfg-result-clinic-sub');
-        if (resultSub) resultSub.textContent = lbl(
-            'Guía según etapas de enfermedad renal crónica (tabla K/DOQI)',
-            'Guide by chronic kidney disease stages (K/DOQI table)'
-        );
+        var resultTitle = modal.querySelector('.tfg-result-title');
+        if (resultTitle) resultTitle.textContent = lbl('Resultado renal', 'Kidney result');
         var footnote = modal.querySelector('.tfg-footnote');
         if (footnote) footnote.textContent = lbl(
-            'Cálculo con fórmula CKD-EPI 2021. La etapa solo aplica si un médico confirmó enfermedad renal por al menos 3 meses. Este resultado no es un diagnóstico: confírmalo con tu doctor y tus estudios.',
-            'Calculated with the CKD-EPI 2021 formula. The stage only applies if a doctor confirmed kidney disease for at least 3 months. This is not a diagnosis—confirm with your doctor and your tests.'
+            'CKD-EPI 2021 · Orientativo. Confirma con tu médico.',
+            'CKD-EPI 2021 · For guidance only. Confirm with your doctor.'
         );
 
         if (lastResult) {
