@@ -42,6 +42,7 @@
             card_longevidad_li1: 'No necesitas llenar antes el formulario de arriba.',
             card_longevidad_li2: 'Si ya enviaste tu solicitud, esto ayuda a que el equipo te conozca mejor.',
             card_longevidad_btn: 'Empezar cuestionario',
+            form_page_back: 'Volver al inicio',
             card_horm_mujer_title: 'Cuestionario hormonal — Mujer',
             card_horm_mujer_text: 'Preguntas sobre cómo te sientes en el día a día: energía, sueño, ánimo, cambios del ciclo y más. No reemplaza una consulta médica; sirve para orientar la conversación con tu doctor.',
             card_horm_mujer_li1: 'Temas como cansancio, estrés, tiroides, menopausia y otros, en lenguaje cotidiano.',
@@ -183,7 +184,14 @@
             long_q20_a3: 'No',
             long_btn_finalizar: 'Ver mi puntuación',
             long_result_title: 'Tu resumen de hábitos',
-            long_result_score: 'Puntuación:',
+            long_score_label: 'Longevity Score',
+            long_score_clinic: 'Clínica CAMSA',
+            long_score_max: 'de 100',
+            long_tier_90: 'Perfil óptimo',
+            long_tier_80: 'Preventiva sólida',
+            long_tier_70: 'Mejora posible',
+            long_tier_60: 'Atención preventiva',
+            long_tier_0: 'Priorizar cambios',
             long_result_note: 'Orientación general. No sustituye una consulta ni estudios de laboratorio.',
             long_result_clinic: 'Clínica CAMSA · Medicina Regenerativa y Longevidad',
             long_btn_imagen: 'Guardar imagen',
@@ -191,6 +199,8 @@
             long_btn_compartir_title: 'Comparte el enlace del cuestionario por WhatsApp para que otra persona lo complete.',
             long_btn_enviar: 'Enviar resultados',
             long_btn_enviar_title: 'Envía tus respuestas completadas a la clínica por WhatsApp.',
+            form_btn_restart: 'Realizar nuevamente',
+            form_btn_restart_title: 'Borrar lo guardado y empezar de nuevo (para ti o un familiar).',
             long_aria_close: 'Cerrar cuestionario',
             long_int_90: '¡Muy bien! Tus hábitos van encaminados a una buena calidad de vida.',
             long_int_80: 'Vas por buen camino. Sigue reforzando lo que ya haces bien.',
@@ -235,6 +245,7 @@
             card_longevidad_li1: 'You do not need to fill out the form above first.',
             card_longevidad_li2: 'If you already sent your request, this helps our team know you better.',
             card_longevidad_btn: 'Start questionnaire',
+            form_page_back: 'Back to home',
             card_horm_mujer_title: 'Hormonal questionnaire — Women',
             card_horm_mujer_text: 'Questions about how you feel day to day: energy, sleep, mood, cycle changes, and more. This is not a diagnosis; it helps guide the conversation with your doctor.',
             card_horm_mujer_li1: 'Topics like tiredness, stress, thyroid, menopause, and more in everyday language.',
@@ -376,7 +387,14 @@
             long_q20_a3: 'No',
             long_btn_finalizar: 'See my score',
             long_result_title: 'Your habits summary',
-            long_result_score: 'Score:',
+            long_score_label: 'Longevity Score',
+            long_score_clinic: 'CAMSA Clinic',
+            long_score_max: 'of 100',
+            long_tier_90: 'Optimal profile',
+            long_tier_80: 'Solid prevention',
+            long_tier_70: 'Room to improve',
+            long_tier_60: 'Preventive attention',
+            long_tier_0: 'Prioritize changes',
             long_result_note: 'General guidance only. Does not replace a medical visit or lab tests.',
             long_result_clinic: 'CAMSA Clinic · Regenerative Medicine and Longevity',
             long_btn_imagen: 'Save image',
@@ -384,6 +402,8 @@
             long_btn_compartir_title: 'Share the questionnaire link via WhatsApp so someone else can complete it.',
             long_btn_enviar: 'Send results',
             long_btn_enviar_title: 'Send your completed answers to the clinic via WhatsApp.',
+            form_btn_restart: 'Take again',
+            form_btn_restart_title: 'Clear saved answers and start over (for you or a family member).',
             long_aria_close: 'Close questionnaire',
             long_int_90: 'Excellent! Your habits are on track for good quality of life.',
             long_int_80: 'You are on the right path. Keep reinforcing what you already do well.',
@@ -424,6 +444,11 @@
         document.querySelectorAll('[data-i18n-aria-label]').forEach(function(el) {
             var key = el.getAttribute('data-i18n-aria-label');
             if (L[key] !== undefined) el.setAttribute('aria-label', L[key]);
+        });
+
+        document.querySelectorAll('[data-i18n-title]').forEach(function(el) {
+            var key = el.getAttribute('data-i18n-title');
+            if (L[key] !== undefined) el.setAttribute('title', L[key]);
         });
 
         // Imágenes ES/EN (usan el mapa de recursos en assets.js)
@@ -484,16 +509,16 @@
         var estudiosInput = document.getElementById('estudios');
         if (estudiosInput && L.estudios_placeholder) estudiosInput.value = L.estudios_placeholder;
 
-        // Modal Cuestionario de Longevidad
-        var modalLong = document.getElementById('modal-longevity');
-        if (modalLong && L.long_title) {
+        // Cuestionario de longevidad (página dedicada o modal legacy)
+        var longevityRoot = document.getElementById('longevity-form-root') || document.getElementById('modal-longevity');
+        if (longevityRoot && L.long_title) {
             var titleEl = document.getElementById('modal-longevity-title');
             if (titleEl) titleEl.textContent = L.long_title;
-            var subEl = modalLong.querySelector('.longevity-subtitle');
+            var subEl = longevityRoot.querySelector('.longevity-subtitle');
             if (subEl) subEl.textContent = L.long_subtitle;
-            var datosTitles = modalLong.querySelectorAll('.longevity-datos .longevity-section-title');
+            var datosTitles = longevityRoot.querySelectorAll('.longevity-datos .longevity-section-title');
             if (datosTitles.length) datosTitles[0].textContent = L.long_datos_title;
-            var datosIntro = modalLong.querySelector('.longevity-datos-intro');
+            var datosIntro = longevityRoot.querySelector('.longevity-datos-intro');
             if (datosIntro && L.long_datos_intro) datosIntro.textContent = L.long_datos_intro;
             var ln = document.getElementById('long-nombre');
             var le = document.getElementById('long-edad');
@@ -515,13 +540,13 @@
                     opts[3].textContent = L.long_sexo_o || '';
                 }
             }
-            var sectionTitles = modalLong.querySelectorAll('.q-wizard-step--section .longevity-section-title, .longevity-questions .longevity-section-title');
+            var sectionTitles = longevityRoot.querySelectorAll('.q-wizard-step--section .longevity-section-title, .longevity-questions .longevity-section-title');
             var secKeys = ['long_sec1', 'long_sec2', 'long_sec3', 'long_sec4', 'long_sec5', 'long_sec6', 'long_sec7', 'long_sec8', 'long_sec9'];
             sectionTitles.forEach(function(h, i) {
                 if (L[secKeys[i]]) h.textContent = L[secKeys[i]];
             });
             for (var q = 1; q <= 20; q++) {
-                var fs = modalLong.querySelector('.longevity-fieldset[data-q="' + q + '"]');
+                var fs = longevityRoot.querySelector('.longevity-fieldset[data-q="' + q + '"]');
                 if (!fs) continue;
                 var leg = fs.querySelector('legend');
                 if (leg && L['long_q' + q]) {
@@ -547,17 +572,17 @@
             }
             var btnFin = document.getElementById('btn-longevity-finalizar');
             if (btnFin && L.long_btn_finalizar) btnFin.textContent = L.long_btn_finalizar;
-            var resultTitle = modalLong.querySelector('.longevity-result-title');
+            var resultTitle = longevityRoot.querySelector('.longevity-result-title');
             if (resultTitle && L.long_result_title) resultTitle.textContent = L.long_result_title;
-            var resultScore = modalLong.querySelector('.longevity-result-score');
-            if (resultScore && L.long_result_score) {
-                var totalEl = document.getElementById('longevity-total');
-                var totalVal = totalEl ? totalEl.textContent : '0';
-                resultScore.innerHTML = L.long_result_score + ' <strong id="longevity-total">' + totalVal + '</strong> / 100';
-            }
-            var resultNote = modalLong.querySelector('.longevity-result-note');
+            var scoreLabel = longevityRoot.querySelector('.longevity-score-card__badge-label');
+            if (scoreLabel && L.long_score_label) scoreLabel.textContent = L.long_score_label;
+            var scoreClinic = longevityRoot.querySelector('.longevity-score-card__clinic-name');
+            if (scoreClinic && L.long_score_clinic) scoreClinic.textContent = L.long_score_clinic;
+            var scoreMax = longevityRoot.querySelector('.longevity-score-ring__max');
+            if (scoreMax && L.long_score_max) scoreMax.textContent = L.long_score_max;
+            var resultNote = longevityRoot.querySelector('.longevity-result-note');
             if (resultNote && L.long_result_note) resultNote.textContent = L.long_result_note;
-            var resultClinic = modalLong.querySelector('.longevity-result-clinic');
+            var resultClinic = longevityRoot.querySelector('.longevity-result-clinic');
             if (resultClinic && L.long_result_clinic) resultClinic.textContent = L.long_result_clinic;
             var btnImg = document.getElementById('btn-longevity-imagen');
             var btnEnv = document.getElementById('btn-longevity-enviar');
@@ -579,13 +604,18 @@
             }
             var closeBtn = document.getElementById('modal-longevity-close');
             if (closeBtn && L.long_aria_close) closeBtn.setAttribute('aria-label', L.long_aria_close);
-            var resultBlock = modalLong.querySelector('#longevity-result');
+            var resultBlock = longevityRoot.querySelector('#longevity-result');
             if (resultBlock && !resultBlock.hasAttribute('hidden')) {
                 var totalEl = document.getElementById('longevity-total');
                 var interpEl = document.getElementById('longevity-interpretacion');
-                if (totalEl && interpEl && typeof window.getLongevityInterpretacionText === 'function') {
+                if (totalEl && typeof window.getLongevityInterpretacionText === 'function') {
                     var totalScore = parseInt(totalEl.textContent, 10) || 0;
-                    interpEl.textContent = window.getLongevityInterpretacionText(totalScore, lang);
+                    var interp = window.getLongevityInterpretacionText(totalScore, lang);
+                    if (typeof window.updateLongevityResultUI === 'function') {
+                        window.updateLongevityResultUI(totalScore, interp);
+                    } else if (interpEl) {
+                        interpEl.textContent = interp;
+                    }
                 }
             }
             if (window.longevityWizard && typeof window.longevityWizard.updateProgress === 'function') {
@@ -665,6 +695,18 @@
         initI18n();
     }
 
+    function getLongevityTierLabelText(total, langOverride) {
+        var lang = langOverride || getPreferredLang();
+        var L = t[lang];
+        if (!L) return '';
+        var score = parseInt(total, 10) || 0;
+        if (score >= 90) return L.long_tier_90 || '';
+        if (score >= 80) return L.long_tier_80 || '';
+        if (score >= 70) return L.long_tier_70 || '';
+        if (score >= 60) return L.long_tier_60 || '';
+        return L.long_tier_0 || '';
+    }
+
     function getLongevityInterpretacionText(total, langOverride) {
         var lang = langOverride || getPreferredLang();
         var L = t[lang];
@@ -678,4 +720,5 @@
 
     window.getPreferredLang = getPreferredLang;
     window.getLongevityInterpretacionText = getLongevityInterpretacionText;
+    window.getLongevityTierLabelText = getLongevityTierLabelText;
 })();

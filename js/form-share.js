@@ -38,6 +38,9 @@
     }
 
     function getFormShareUrl(formId) {
+        if (window.CamsaFormPage && typeof window.CamsaFormPage.getFormPageUrl === 'function') {
+            return window.CamsaFormPage.getFormPageUrl(formId);
+        }
         var url = new URL(window.location.href);
         url.search = '';
         url.hash = '';
@@ -126,28 +129,27 @@
 
     function openFormFromDeepLink(formId) {
         switch (formId) {
-            case 'longevity':
-                if (typeof window.showLongevityModal === 'function') window.showLongevityModal();
-                break;
-            case 'hormonal-mujer':
-                if (window.HormonalQuestionnaires && typeof window.HormonalQuestionnaires.open === 'function') {
-                    window.HormonalQuestionnaires.open('mujer');
-                }
-                break;
-            case 'hormonal-hombre':
-                if (window.HormonalQuestionnaires && typeof window.HormonalQuestionnaires.open === 'function') {
-                    window.HormonalQuestionnaires.open('hombre');
-                }
-                break;
             case 'tfg':
                 if (window.TfgCalculator && typeof window.TfgCalculator.open === 'function') {
                     window.TfgCalculator.open();
                 }
-                break;
+                return true;
             default:
                 return false;
         }
-        return true;
+    }
+
+    function redirectToFormPage(formId) {
+        if (window.CamsaFormPage && typeof window.CamsaFormPage.getFormPageUrl === 'function') {
+            window.location.replace(window.CamsaFormPage.getFormPageUrl(formId));
+            return true;
+        }
+        return false;
+    }
+
+    function isIndexPage() {
+        var path = window.location.pathname || '';
+        return path.endsWith('/') || path.endsWith('index.html');
     }
 
     function cleanFormParamFromUrl() {
@@ -164,12 +166,19 @@
         var formId = params.get('form');
         if (!formId || !getFormMeta(formId)) return;
 
-        scrollToFormularioSection();
-        setTimeout(function() {
-            if (openFormFromDeepLink(formId)) {
-                cleanFormParamFromUrl();
-            }
-        }, 450);
+        if (formId === 'tfg' && isIndexPage()) {
+            scrollToFormularioSection();
+            setTimeout(function() {
+                if (openFormFromDeepLink(formId)) {
+                    cleanFormParamFromUrl();
+                }
+            }, 450);
+            return;
+        }
+
+        if (formId !== 'tfg') {
+            redirectToFormPage(formId);
+        }
     }
 
     function bindShareButtons() {

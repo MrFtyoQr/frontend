@@ -18,6 +18,10 @@
             '<span class="q-wizard-step-counter"></span>' +
             '<span class="q-wizard-progress-text">0%</span>' +
             '</div></div>' +
+            '<p class="q-wizard-optional-note">' + lbl(
+                'Puedes omitir preguntas que no apliquen. Vuelve a pulsar la opción elegida para dejarla en blanco.',
+                'You may skip questions that don\'t apply. Click a selected option again to clear it.'
+            ) + '</p>' +
             '<p class="q-wizard-error" role="alert" hidden></p>' +
             '</div>'
         );
@@ -42,6 +46,7 @@
         this.onStepChange = options.onStepChange || null;
         this.onFinish = options.onFinish || null;
         this.validateStep = options.validateStep || null;
+        this.requireAllAnswers = options.requireAllAnswers === true;
         this.resultEl = options.resultEl || null;
 
         this.progressFill = this.root.querySelector('.q-wizard-progress-fill');
@@ -73,6 +78,20 @@
                 self.goToStep(self.currentStep + 1);
             });
         }
+        this.root.addEventListener('mousedown', function(e) {
+            var radio = e.target;
+            if (!radio || radio.type !== 'radio' || !self.root.contains(radio)) return;
+            radio.dataset.qWizardWasChecked = radio.checked ? '1' : '0';
+        });
+        this.root.addEventListener('click', function(e) {
+            var radio = e.target;
+            if (!radio || radio.type !== 'radio' || !self.root.contains(radio)) return;
+            if (radio.dataset.qWizardWasChecked === '1') {
+                radio.checked = false;
+                radio.dataset.qWizardWasChecked = '0';
+                radio.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
         this.root.addEventListener('change', function() {
             self.clearError();
             self.updateProgress();
@@ -95,6 +114,8 @@
                 return false;
             }
         }
+
+        if (!this.requireAllAnswers) return true;
 
         var step = this.steps[this.currentStep];
         if (!step) return true;
@@ -186,11 +207,11 @@
         this.goToStep(0, true);
     };
 
-    function wrapLongevityModal(modal) {
-        if (!modal || modal.querySelector('.q-wizard')) return null;
+    function wrapLongevityForm(container) {
+        if (!container || container.querySelector('.q-wizard')) return null;
 
-        var datos = modal.querySelector('.longevity-datos');
-        var questions = modal.querySelector('.longevity-questions');
+        var datos = container.querySelector('.longevity-datos');
+        var questions = container.querySelector('.longevity-questions');
         var finishBtn = document.getElementById('btn-longevity-finalizar');
         if (!datos || !questions) return null;
 
@@ -231,7 +252,15 @@
 
         if (finishBtn) finishBtn.setAttribute('hidden', '');
 
+        if (window.QuestionnaireIcons) {
+            window.QuestionnaireIcons.decorateWizardSteps(wizard);
+        }
+
         return wizard;
+    }
+
+    function wrapLongevityModal(modal) {
+        return wrapLongevityForm(modal);
     }
 
     window.QuestionnaireWizard = {
@@ -240,6 +269,7 @@
         },
         buildProgressHtml: buildProgressHtml,
         buildNavHtml: buildNavHtml,
+        wrapLongevityForm: wrapLongevityForm,
         wrapLongevityModal: wrapLongevityModal,
         lbl: lbl
     };

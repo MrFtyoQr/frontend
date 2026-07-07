@@ -96,6 +96,14 @@
 
     // ——— Cuestionario de longevidad ———
 
+    function getLongevityRoot() {
+        return document.getElementById('longevity-form-root') || document.getElementById('modal-longevity');
+    }
+
+    function isLongevityPage() {
+        return !!document.getElementById('longevity-form-root');
+    }
+
     function collectLongevityAnswers() {
         var answers = {};
         for (var i = 1; i <= 20; i++) {
@@ -170,11 +178,11 @@
      */
     function initLongevityWizard() {
         if (!window.QuestionnaireWizard) return;
-        var modal = document.getElementById('modal-longevity');
-        if (!modal) return;
+        var root = getLongevityRoot();
+        if (!root) return;
 
         if (!document.getElementById('longevity-wizard')) {
-            window.QuestionnaireWizard.wrapLongevityModal(modal);
+            window.QuestionnaireWizard.wrapLongevityForm(root);
         }
 
         if (window.longevityWizard) return;
@@ -190,10 +198,6 @@
             onStepChange: function(step) {
                 currentLongevitySectionIndex = step;
                 scheduleLongevitySave();
-            },
-            validateStep: function(idx, step) {
-                if (step.classList.contains('q-wizard-step--datos')) return true;
-                return null;
             }
         });
     }
@@ -236,8 +240,14 @@
             var totalEl = document.getElementById('longevity-total');
             var interpEl = document.getElementById('longevity-interpretacion');
             var resultBlock = document.getElementById('longevity-result');
-            if (totalEl) totalEl.textContent = data.resultTotal;
-            if (interpEl && data.resultInterpretacion) interpEl.textContent = data.resultInterpretacion;
+            var totalScore = parseInt(data.resultTotal, 10) || 0;
+            var interp = data.resultInterpretacion || '';
+            if (typeof window.updateLongevityResultUI === 'function') {
+                window.updateLongevityResultUI(totalScore, interp);
+            } else {
+                if (totalEl) totalEl.textContent = data.resultTotal;
+                if (interpEl && data.resultInterpretacion) interpEl.textContent = data.resultInterpretacion;
+            }
             if (resultBlock) resultBlock.removeAttribute('hidden');
             var wiz = document.getElementById('longevity-wizard');
             if (wiz) wiz.setAttribute('hidden', '');
@@ -336,13 +346,13 @@
     }
 
     function bindLongevityPersistence() {
-        var modal = document.getElementById('modal-longevity');
-        if (!modal || longevityWizardBound) return;
+        var root = getLongevityRoot();
+        if (!root || longevityWizardBound) return;
 
         longevityWizardBound = true;
         initLongevityWizard();
 
-        var fields = modal.querySelectorAll(
+        var fields = root.querySelectorAll(
             '#long-nombre, #long-edad, #long-sexo, #long-fecha, #long-profesion, #long-contacto, ' +
             '.longevity-fieldset input[type="radio"]'
         );
@@ -356,7 +366,9 @@
             applyLongevityData(saved);
             showLongevityRecoveryBanner(saved);
             longevityRestoredThisSession = true;
-            flashRecoveryIndicator('longevity-card-recovery-hint');
+            if (!isLongevityPage()) {
+                flashRecoveryIndicator('longevity-card-recovery-hint');
+            }
         }
 
         var btnContinue = document.getElementById('longevity-recovery-continue');
@@ -364,7 +376,11 @@
         if (btnContinue) {
             btnContinue.addEventListener('click', function() {
                 hideLongevityRecoveryBanner();
-                restoreLongevitySession({ openModal: true, scrollWhenOpen: true });
+                if (isLongevityPage()) {
+                    restoreLongevitySession({ scrollWhenOpen: true });
+                } else {
+                    restoreLongevitySession({ openModal: true, scrollWhenOpen: true });
+                }
             });
         }
         if (btnDiscard) {
@@ -372,6 +388,12 @@
                 clearLongevityProgress();
                 resetLongevityFormFields();
             });
+        }
+    }
+
+    function flashLongevityCardHint() {
+        if (parseStoredJson(safeGetItem(STORAGE_KEY_LONGEVITY))) {
+            flashRecoveryIndicator('longevity-card-recovery-hint');
         }
     }
 
@@ -388,8 +410,19 @@
         return window.HORMONAL_QUESTIONNAIRES[id].prefix;
     }
 
-    function getHormonalModal(id) {
+    function getHormonalRoot(id) {
+        var pageRoot = document.getElementById('hormonal-page-root');
+        if (pageRoot && pageRoot.getAttribute('data-hormonal-id') === id) return pageRoot;
         return document.getElementById('modal-hormonal-' + id);
+    }
+
+    function isHormonalPage(id) {
+        var pageRoot = document.getElementById('hormonal-page-root');
+        return !!(pageRoot && pageRoot.getAttribute('data-hormonal-id') === id);
+    }
+
+    function getHormonalModal(id) {
+        return getHormonalRoot(id);
     }
 
     function fieldIdHormonal(prefix, key) {
@@ -583,14 +616,14 @@
     }
 
     function resetHormonalFormFields(id) {
-        var modal = getHormonalModal(id);
+        var root = getHormonalRoot(id);
         var prefix = getHormonalPrefix(id);
-        if (!modal || !prefix) return;
+        if (!root || !prefix) return;
 
-        modal.querySelectorAll('input[type="text"], input[type="tel"], input[type="date"], input[type="time"]').forEach(function(el) {
+        root.querySelectorAll('input[type="text"], input[type="tel"], input[type="date"], input[type="time"]').forEach(function(el) {
             el.value = '';
         });
-        modal.querySelectorAll('input[type="radio"]').forEach(function(r) { r.checked = false; });
+        root.querySelectorAll('input[type="radio"]').forEach(function(r) { r.checked = false; });
         syncHormonalHormonasDetail(prefix, { 'toma-hormonas': 'No' });
         var result = document.getElementById('hormonal-result-' + id);
         if (result) result.setAttribute('hidden', '');
@@ -633,16 +666,16 @@
 
     function bindHormonalPersistence(id) {
         if (hormonalBound[id]) return;
-        var modal = getHormonalModal(id);
+        var root = getHormonalRoot(id);
         var prefix = getHormonalPrefix(id);
-        if (!modal || !prefix) return;
+        if (!root || !prefix) return;
 
         hormonalBound[id] = true;
 
-        modal.addEventListener('change', function() {
+        root.addEventListener('change', function() {
             scheduleHormonalSave(id);
         });
-        modal.addEventListener('input', function() {
+        root.addEventListener('input', function() {
             scheduleHormonalSave(id);
         });
 
@@ -652,17 +685,23 @@
             applyHormonalData(id, saved);
             showHormonalRecoveryBanner(id, saved);
             hormonalRestoredThisSession[id] = true;
-            flashRecoveryIndicator('hormonal-' + id + '-card-recovery-hint');
+            if (!isHormonalPage(id)) {
+                flashRecoveryIndicator('hormonal-' + id + '-card-recovery-hint');
+            }
         } else if (window.HormonalQuestionnaires && typeof window.HormonalQuestionnaires.initWizard === 'function') {
             window.HormonalQuestionnaires.initWizard(id, 0);
         }
 
-        var btnContinue = modal.querySelector('[data-hormonal-recovery-continue="' + id + '"]');
-        var btnDiscard = modal.querySelector('[data-hormonal-recovery-discard="' + id + '"]');
+        var btnContinue = root.querySelector('[data-hormonal-recovery-continue="' + id + '"]');
+        var btnDiscard = root.querySelector('[data-hormonal-recovery-discard="' + id + '"]');
         if (btnContinue) {
             btnContinue.addEventListener('click', function() {
                 hideHormonalRecoveryBanner(id);
-                restoreHormonalSession(id, { openModal: true, scrollWhenOpen: true });
+                if (isHormonalPage(id)) {
+                    restoreHormonalSession(id, { scrollWhenOpen: true });
+                } else {
+                    restoreHormonalSession(id, { openModal: true, scrollWhenOpen: true });
+                }
             });
         }
         if (btnDiscard) {
@@ -673,20 +712,96 @@
         }
     }
 
+    function flashHormonalCardHint(id) {
+        var key = getHormonalStorageKey(id);
+        if (parseStoredJson(safeGetItem(key))) {
+            flashRecoveryIndicator('hormonal-' + id + '-card-recovery-hint');
+        }
+    }
+
     function resetLongevityFormFields() {
-        var modal = document.getElementById('modal-longevity');
-        if (!modal) return;
-        modal.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], select').forEach(function(el) {
+        var root = getLongevityRoot();
+        if (!root) return;
+        root.querySelectorAll('input[type="text"], input[type="number"], input[type="date"], select').forEach(function(el) {
             if (el.id === 'long-fecha') return;
             el.value = el.tagName === 'SELECT' ? '' : '';
         });
-        modal.querySelectorAll('input[type="radio"]').forEach(function(r) { r.checked = false; });
+        root.querySelectorAll('input[type="radio"]').forEach(function(r) { r.checked = false; });
         var result = document.getElementById('longevity-result');
         if (result) result.setAttribute('hidden', '');
         var wiz = document.getElementById('longevity-wizard');
         if (wiz) wiz.removeAttribute('hidden');
         currentLongevitySectionIndex = 0;
         goToLongevityWizardStep(0);
+    }
+
+    function prefillLongevityDateField() {
+        var dateInput = document.getElementById('long-fecha');
+        if (!dateInput) return;
+        var today = new Date();
+        dateInput.value = today.getFullYear() + '-' +
+            String(today.getMonth() + 1).padStart(2, '0') + '-' +
+            String(today.getDate()).padStart(2, '0');
+    }
+
+    function restartLongevityQuestionnaire() {
+        clearLongevityProgress();
+        resetLongevityFormFields();
+        prefillLongevityDateField();
+        if (typeof window.clearLongevityResult === 'function') {
+            window.clearLongevityResult();
+        }
+        if (typeof window.updateLongevityResultUI === 'function') {
+            window.updateLongevityResultUI(0, '');
+        }
+        var root = getLongevityRoot();
+        if (root) root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function restartHormonalQuestionnaire(id) {
+        clearHormonalProgress(id);
+        resetHormonalFormFields(id);
+        if (window.HormonalQuestionnaires && typeof window.HormonalQuestionnaires.restart === 'function') {
+            window.HormonalQuestionnaires.restart(id);
+        }
+        var root = getHormonalRoot(id);
+        if (root) root.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function renderRestartButton(attrs) {
+        var extra = attrs ? ' ' + attrs : '';
+        return (
+            '<button type="button" class="btn-longevity-action btn-longevity-restart"' + extra +
+            ' title="Borrar lo guardado y empezar de nuevo (para ti o un familiar)." data-i18n-title="form_btn_restart_title">' +
+            '<svg class="btn-restart-icon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" focusable="false">' +
+            '<path fill="currentColor" d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46A7.96 7.96 0 0 0 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74A7.96 7.96 0 0 0 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>' +
+            '</svg>' +
+            '<span data-i18n="form_btn_restart">Realizar nuevamente</span></button>'
+        );
+    }
+
+    function bindRestartButtons() {
+        document.querySelectorAll('[data-longevity-restart]').forEach(function(btn) {
+            if (btn.dataset.restartBound) return;
+            btn.dataset.restartBound = '1';
+            btn.addEventListener('click', restartLongevityQuestionnaire);
+        });
+        document.querySelectorAll('[data-hormonal-restart]').forEach(function(btn) {
+            if (btn.dataset.restartBound) return;
+            btn.dataset.restartBound = '1';
+            btn.addEventListener('click', function() {
+                restartHormonalQuestionnaire(btn.getAttribute('data-hormonal-restart'));
+            });
+        });
+        document.querySelectorAll('[data-tfg-restart]').forEach(function(btn) {
+            if (btn.dataset.restartBound) return;
+            btn.dataset.restartBound = '1';
+            btn.addEventListener('click', function() {
+                if (window.TfgCalculator && typeof window.TfgCalculator.restart === 'function') {
+                    window.TfgCalculator.restart();
+                }
+            });
+        });
     }
 
     // ——— Formulario de protocolo ———
@@ -834,12 +949,32 @@
         }
     }
 
+    function getPageHormonalId() {
+        var pageId = document.body.getAttribute('data-form-page');
+        if (pageId === 'hormonal-mujer') return 'mujer';
+        if (pageId === 'hormonal-hombre') return 'hombre';
+        return null;
+    }
+
     function initFormPersistence() {
         bindProtocolPersistence();
-        bindLongevityPersistence();
-        ['mujer', 'hombre'].forEach(function(hormonalId) {
-            bindHormonalPersistence(hormonalId);
-        });
+        if (getLongevityRoot()) {
+            bindLongevityPersistence();
+        } else if (document.getElementById('longevity-card-recovery-hint')) {
+            flashLongevityCardHint();
+        }
+        var pageHormonalId = getPageHormonalId();
+        if (pageHormonalId) {
+            bindHormonalPersistence(pageHormonalId);
+        } else {
+            ['mujer', 'hombre'].forEach(function(hormonalId) {
+                if (getHormonalRoot(hormonalId)) {
+                    bindHormonalPersistence(hormonalId);
+                } else if (document.getElementById('hormonal-' + hormonalId + '-card-recovery-hint')) {
+                    flashHormonalCardHint(hormonalId);
+                }
+            });
+        }
     }
 
     // API pública para main.js
@@ -852,6 +987,17 @@
         bindHormonal: bindHormonalPersistence,
         resetHormonalBindState: resetHormonalBindState,
         onLongevityModalOpened: function() {
+            initLongevityWizard();
+            if (longevityRestoredThisSession) {
+                var saved = parseStoredJson(safeGetItem(STORAGE_KEY_LONGEVITY));
+                if (saved && !saved.resultVisible) {
+                    setTimeout(function() {
+                        goToLongevityWizardStep(saved.wizardStep ?? saved.currentSectionIndex ?? 0);
+                    }, 200);
+                }
+            }
+        },
+        onLongevityPageOpened: function() {
             initLongevityWizard();
             if (longevityRestoredThisSession) {
                 var saved = parseStoredJson(safeGetItem(STORAGE_KEY_LONGEVITY));
@@ -880,14 +1026,33 @@
                 }
             }
         },
+        onHormonalPageOpened: function(id) {
+            if (hormonalRestoredThisSession[id]) {
+                var key = getHormonalStorageKey(id);
+                var saved = parseStoredJson(safeGetItem(key));
+                if (saved && !saved.resultVisible) {
+                    setTimeout(function() {
+                        goToHormonalWizardStep(id, saved.wizardStep ?? saved.currentSectionIndex ?? 0);
+                    }, 200);
+                }
+            }
+        },
         onHormonalFinalized: function(id) {
             scheduleHormonalSave(id);
-        }
+        },
+        restartLongevityQuestionnaire: restartLongevityQuestionnaire,
+        restartHormonalQuestionnaire: restartHormonalQuestionnaire,
+        renderRestartButton: renderRestartButton,
+        bindRestartButtons: bindRestartButtons
     };
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initFormPersistence);
+        document.addEventListener('DOMContentLoaded', function() {
+            initFormPersistence();
+            bindRestartButtons();
+        });
     } else {
         initFormPersistence();
+        bindRestartButtons();
     }
 })();

@@ -75,60 +75,84 @@
         return getLang() === 'en' ? en : es;
     }
 
+    function renderSectionHeading(iconKey, title, titleClass, titleAttrs, note) {
+        if (window.QuestionnaireIcons) {
+            return window.QuestionnaireIcons.renderBlockHeading({
+                iconKey: iconKey,
+                title: title,
+                titleClass: titleClass,
+                titleAttrs: titleAttrs || '',
+                note: note || '',
+                iconSizeClass: iconKey === 'datos' ? 'q-block-icon--sm' : ''
+            });
+        }
+        var html = '<h4 class="' + titleClass + '"' + (titleAttrs || '') + '>' + title + '</h4>';
+        if (note) html += '<p class="hormonal-section-note">' + note + '</p>';
+        return html;
+    }
+
     function renderDatosGrid(prefix) {
         var id = function(key) { return fieldId(prefix, key); };
         var tomaName = prefix + '-toma-hormonas';
 
         return (
-            '<div class="longevity-datos hormonal-datos" data-hormonal-section="0">' +
-            '<h4 class="longevity-section-title hormonal-datos-title">' + lbl('Datos generales', 'General information') + '</h4>' +
+            '<div class="longevity-datos hormonal-datos form-datos-block hormonal-datos--compact" data-hormonal-section="0">' +
+            renderSectionHeading(
+                'datos',
+                lbl('Datos generales', 'General information'),
+                'longevity-section-title hormonal-datos-title',
+                '',
+                ''
+            ) +
             '<p class="hormonal-datos-intro">' + lbl(
-                'Estos datos ayudan a personalizar tu resumen. Completa lo que puedas; cuanto más contexto, más útil para tu médico.',
-                'These details help personalize your summary. Fill in what you can—the more context, the more useful for your doctor.'
+                'Opcional. Ayudan a personalizar tu resumen.',
+                'Optional. Helps personalize your summary.'
             ) + '</p>' +
 
-            '<div class="hormonal-datos-group">' +
-            '<h5 class="hormonal-datos-group-title">' + lbl('Identificación', 'Identification') + '</h5>' +
-            '<div class="hormonal-field-grid hormonal-field-grid--2 hormonal-field-grid--ident">' +
+            '<div class="hormonal-datos-group hormonal-datos-group--flush">' +
+            '<div class="hormonal-field-grid form-datos-grid hormonal-field-grid--ident">' +
             '<label class="hormonal-field hormonal-field--full">' +
             '<span class="hormonal-field-label">' + lbl('Nombre completo', 'Full name') + '</span>' +
-            '<input type="text" id="' + id('nombre') + '" class="hormonal-input-control" autocomplete="name">' +
+            '<input type="text" id="' + id('nombre') + '" class="hormonal-input-control form-datos-control" autocomplete="name">' +
             '</label>' +
             '<label class="hormonal-field">' +
-            '<span class="hormonal-field-label">' + lbl('Fecha de nacimiento', 'Date of birth') + '</span>' +
-            '<input type="date" id="' + id('fnac') + '" class="hormonal-input-control" data-hormonal-fnac="' + prefix + '" max="' + new Date().toISOString().slice(0, 10) + '">' +
+            '<span class="hormonal-field-label">' + lbl('Fecha nac.', 'Birth date') + '</span>' +
+            '<input type="date" id="' + id('fnac') + '" class="hormonal-input-control form-datos-control" data-hormonal-fnac="' + prefix + '" max="' + new Date().toISOString().slice(0, 10) + '">' +
             '</label>' +
             '<label class="hormonal-field hormonal-field--compact">' +
             '<span class="hormonal-field-label">' + lbl('Edad', 'Age') + '</span>' +
-            '<input type="text" id="' + id('edad') + '" readonly class="hormonal-input-control hormonal-input-readonly" inputmode="numeric" aria-readonly="true" tabindex="-1">' +
-            '<span class="hormonal-field-hint">' + lbl('Automática', 'Automatic') + '</span>' +
+            '<input type="text" id="' + id('edad') + '" readonly class="hormonal-input-control form-datos-control hormonal-input-readonly" inputmode="numeric" aria-readonly="true" tabindex="-1" title="' + lbl('Calculada automáticamente', 'Calculated automatically') + '">' +
             '</label>' +
             '<label class="hormonal-field">' +
             '<span class="hormonal-field-label">' + lbl('Ocupación', 'Occupation') + '</span>' +
-            '<input type="text" id="' + id('ocupacion') + '" class="hormonal-input-control">' +
+            '<input type="text" id="' + id('ocupacion') + '" class="hormonal-input-control form-datos-control">' +
             '</label>' +
             '</div></div>' +
 
-            '<div class="hormonal-datos-group">' +
-            '<h5 class="hormonal-datos-group-title">' + lbl('Medidas', 'Measurements') + '</h5>' +
-            '<div class="hormonal-field-grid hormonal-field-grid--2">' +
+            '<div class="hormonal-datos-group hormonal-datos-group--flush">' +
+            '<div class="hormonal-field-grid form-datos-grid hormonal-field-grid--4">' +
             '<label class="hormonal-field">' +
             '<span class="hormonal-field-label">' + lbl('Peso', 'Weight') + '</span>' +
-            '<input type="text" id="' + id('peso') + '" class="hormonal-input-control" placeholder="' + lbl('Ej. 65 kg', 'e.g. 65 kg') + '">' +
+            '<input type="text" id="' + id('peso') + '" class="hormonal-input-control form-datos-control" placeholder="' + lbl('65 kg', '65 kg') + '">' +
             '</label>' +
             '<label class="hormonal-field">' +
             '<span class="hormonal-field-label">' + lbl('Talla', 'Height') + '</span>' +
-            '<input type="text" id="' + id('talla') + '" class="hormonal-input-control" placeholder="' + lbl('Ej. 1.65 m', 'e.g. 5 ft 5 in') + '">' +
+            '<input type="text" id="' + id('talla') + '" class="hormonal-input-control form-datos-control" placeholder="' + lbl('1.65 m', '5 ft 5 in') + '">' +
+            '</label>' +
+            '<label class="hormonal-field">' +
+            '<span class="hormonal-field-label">' + lbl('Dormir', 'Bedtime') + '</span>' +
+            '<input type="time" id="' + id('hora-dormir') + '" class="hormonal-input-control form-datos-control">' +
+            '</label>' +
+            '<label class="hormonal-field">' +
+            '<span class="hormonal-field-label">' + lbl('Levantarse', 'Wake up') + '</span>' +
+            '<input type="time" id="' + id('hora-levantar') + '" class="hormonal-input-control form-datos-control">' +
             '</label>' +
             '</div></div>' +
 
-            '<div class="hormonal-datos-group hormonal-datos-group--hormonas">' +
-            '<h5 class="hormonal-datos-group-title">' + lbl('Medicamentos o suplementos hormonales', 'Hormone medicines or supplements') + '</h5>' +
-            '<p class="hormonal-datos-group-desc">' + lbl(
-                '¿Tomas actualmente algún medicamento o suplemento relacionado con hormonas (con o sin receta)?',
-                'Are you currently taking any medicine or supplement related to hormones (with or without a prescription)?'
-            ) + '</p>' +
-            '<div class="hormonal-choice-row" role="radiogroup" aria-label="' + lbl('Toma hormonas', 'Takes hormones') + '">' +
+            '<div class="hormonal-datos-group hormonal-datos-group--hormonas hormonal-datos-group--inline">' +
+            '<div class="hormonal-datos-inline-row">' +
+            '<span class="hormonal-datos-inline-label">' + lbl('¿Toma hormonas o suplementos?', 'Taking hormones or supplements?') + '</span>' +
+            '<div class="hormonal-choice-row hormonal-choice-row--inline" role="radiogroup" aria-label="' + lbl('Toma hormonas', 'Takes hormones') + '">' +
             '<label class="hormonal-choice-pill">' +
             '<input type="radio" class="hormonal-choice-input" name="' + tomaName + '" value="No" data-hormonal-toma="' + prefix + '">' +
             '<span class="hormonal-choice-radio" aria-hidden="true"></span>' +
@@ -137,40 +161,26 @@
             '<input type="radio" class="hormonal-choice-input" name="' + tomaName + '" value="Sí" data-hormonal-toma="' + prefix + '">' +
             '<span class="hormonal-choice-radio" aria-hidden="true"></span>' +
             '<span class="hormonal-choice-text">' + lbl('Sí', 'Yes') + '</span></label>' +
-            '</div>' +
+            '</div></div>' +
             '<div class="hormonal-hormonas-detail" id="' + prefix + '-hormonas-detail" hidden>' +
             '<label class="hormonal-field hormonal-field--full">' +
-            '<span class="hormonal-field-label">' + lbl('¿Cuáles hormonas o suplementos?', 'Which hormones or supplements?') + '</span>' +
-            '<input type="text" id="' + id('cuales-hormonas') + '" class="hormonal-input-control" placeholder="' + lbl('Ej. progesterona, DHEA, vitamina D…', 'e.g. progesterone, DHEA, vitamin D…') + '">' +
+            '<span class="hormonal-field-label">' + lbl('¿Cuáles?', 'Which ones?') + '</span>' +
+            '<input type="text" id="' + id('cuales-hormonas') + '" class="hormonal-input-control form-datos-control" placeholder="' + lbl('Ej. progesterona, DHEA…', 'e.g. progesterone, DHEA…') + '">' +
             '</label></div></div>' +
 
-            '<div class="hormonal-datos-group">' +
-            '<h5 class="hormonal-datos-group-title">' + lbl('Sueño', 'Sleep') + '</h5>' +
-            '<div class="hormonal-field-grid hormonal-field-grid--2">' +
+            '<div class="hormonal-datos-group hormonal-datos-group--flush">' +
+            '<div class="hormonal-field-grid form-datos-grid hormonal-field-grid--2">' +
             '<label class="hormonal-field">' +
-            '<span class="hormonal-field-label">' + lbl('Hora de dormir', 'Bedtime') + '</span>' +
-            '<input type="time" id="' + id('hora-dormir') + '" class="hormonal-input-control">' +
+            '<span class="hormonal-field-label">' + lbl('Enfermedades / diagnósticos', 'Conditions / diagnoses') + '</span>' +
+            '<input type="text" id="' + id('enfermedades') + '" class="hormonal-input-control form-datos-control">' +
             '</label>' +
             '<label class="hormonal-field">' +
-            '<span class="hormonal-field-label">' + lbl('Hora de levantarse', 'Wake time') + '</span>' +
-            '<input type="time" id="' + id('hora-levantar') + '" class="hormonal-input-control">' +
-            '</label>' +
-            '</div></div>' +
-
-            '<div class="hormonal-datos-group">' +
-            '<h5 class="hormonal-datos-group-title">' + lbl('Antecedentes y contacto', 'History and contact') + '</h5>' +
-            '<div class="hormonal-field-grid">' +
-            '<label class="hormonal-field hormonal-field--full">' +
-            '<span class="hormonal-field-label">' + lbl('Enfermedades o diagnósticos que ya tienes', 'Conditions or diagnoses you already have') + '</span>' +
-            '<input type="text" id="' + id('enfermedades') + '" class="hormonal-input-control">' +
-            '</label>' +
-            '<label class="hormonal-field hormonal-field--full">' +
             '<span class="hormonal-field-label">' + lbl('Medicamentos', 'Medications') + '</span>' +
-            '<input type="text" id="' + id('medicamentos') + '" class="hormonal-input-control">' +
+            '<input type="text" id="' + id('medicamentos') + '" class="hormonal-input-control form-datos-control">' +
             '</label>' +
             '<label class="hormonal-field hormonal-field--full">' +
             '<span class="hormonal-field-label">' + lbl('Teléfono / WhatsApp', 'Phone / WhatsApp') + '</span>' +
-            '<input type="tel" id="' + id('contacto') + '" class="hormonal-input-control" autocomplete="tel">' +
+            '<input type="tel" id="' + id('contacto') + '" class="hormonal-input-control form-datos-control" autocomplete="tel">' +
             '</label>' +
             '</div></div></div>'
         );
@@ -206,12 +216,12 @@
 
     function updateHormonalTotals(id) {
         var config = window.HORMONAL_QUESTIONNAIRES[id];
-        var modal = document.getElementById('modal-hormonal-' + id);
-        if (!config || !modal) return;
+        var root = getHormonalRoot(id);
+        if (!config || !root) return;
 
         var grand = 0;
         config.sections.forEach(function(section, sIdx) {
-            var step = modal.querySelector('.hormonal-hormone-step[data-hormonal-section="' + sIdx + '"]');
+            var step = root.querySelector('.hormonal-hormone-step[data-hormonal-section="' + sIdx + '"]');
             var sectionTotal = 0;
             if (step) {
                 step.querySelectorAll('input[type="radio"]:checked').forEach(function(inp) {
@@ -219,19 +229,19 @@
                 });
             }
             grand += sectionTotal;
-            var valEl = modal.querySelector('[data-section-total-value="' + sIdx + '"]');
+            var valEl = root.querySelector('[data-section-total-value="' + sIdx + '"]');
             if (valEl) valEl.textContent = String(sectionTotal);
         });
 
-        var grandEl = modal.querySelector('#hormonal-grand-total-' + id + ' .hormonal-grand-total-value');
+        var grandEl = root.querySelector('#hormonal-grand-total-' + id + ' .hormonal-grand-total-value');
         if (grandEl) grandEl.textContent = String(grand);
     }
 
     function bindTotalsListeners(id) {
-        var modal = document.getElementById('modal-hormonal-' + id);
-        if (!modal || modal.dataset.totalsBound === '1') return;
-        modal.dataset.totalsBound = '1';
-        modal.addEventListener('change', function(e) {
+        var root = getHormonalRoot(id);
+        if (!root || root.dataset.totalsBound === '1') return;
+        root.dataset.totalsBound = '1';
+        root.addEventListener('change', function(e) {
             if (e.target && e.target.matches('input[type="radio"][name*="_q"]')) {
                 updateHormonalTotals(id);
             }
@@ -239,9 +249,14 @@
     }
 
     function bindAllTotalsListeners() {
-        Object.keys(window.HORMONAL_QUESTIONNAIRES).forEach(function(key) {
-            bindTotalsListeners(key);
-        });
+        var pageId = getPageHormonalId();
+        if (pageId) {
+            bindTotalsListeners(pageId);
+        } else {
+            Object.keys(window.HORMONAL_QUESTIONNAIRES).forEach(function(key) {
+                bindTotalsListeners(key);
+            });
+        }
     }
 
     function calcAgeFromBirthdate(dateStr) {
@@ -298,13 +313,17 @@
             var optionalClass = section.optional ? ' q-wizard-step--optional hormonal-section--optional' : '';
             html += '<div class="q-wizard-step q-wizard-step--section hormonal-hormone-step' + optionalClass +
                 '" data-hormonal-section="' + sIdx + '" data-section-id="' + section.id + '">';
-            html += '<h4 class="hormonal-hormone-title hormonal-section-title' +
-                (section.optional ? ' hormonal-section--optional' : '') +
-                '" data-hormonal-section="' + sIdx + '">' + title + '</h4>';
-            if (section.noteEs) {
-                var note = getLang() === 'en' ? (section.noteEn || section.noteEs) : section.noteEs;
-                html += '<p class="hormonal-section-note" data-hormonal-section="' + sIdx + '">' + note + '</p>';
-            }
+            var note = section.noteEs
+                ? (getLang() === 'en' ? (section.noteEn || section.noteEs) : section.noteEs)
+                : '';
+            html += renderSectionHeading(
+                section.id,
+                title,
+                'hormonal-hormone-title hormonal-section-title' +
+                    (section.optional ? ' hormonal-section--optional' : ''),
+                ' data-hormonal-section="' + sIdx + '"',
+                note
+            );
             html += renderCompactScaleLegend();
             html += '<div class="hormonal-q-list">';
             section.questions.forEach(function(qItem, localIdx) {
@@ -387,11 +406,6 @@
                 if (window.CamsaFormPersistence && typeof window.CamsaFormPersistence.onHormonalWizardStep === 'function') {
                     window.CamsaFormPersistence.onHormonalWizardStep(id);
                 }
-            },
-            validateStep: function(idx, step) {
-                if (step.classList.contains('q-wizard-step--datos')) return true;
-                if (step.classList.contains('q-wizard-step--optional')) return true;
-                return null;
             }
         });
         return hormonalWizards[id];
@@ -405,25 +419,12 @@
         return String(str).replace(/"/g, '&quot;');
     }
 
-    function renderModal(config) {
+    function renderFormInner(config) {
         var id = config.id;
         var prefix = config.prefix;
         var modalId = 'modal-hormonal-' + id;
 
-        var wrapper = document.createElement('div');
-        wrapper.id = modalId;
-        wrapper.className = 'modal-overlay modal-longevity modal-hormonal';
-        wrapper.setAttribute('role', 'dialog');
-        wrapper.setAttribute('aria-modal', 'true');
-        wrapper.setAttribute('aria-labelledby', modalId + '-title');
-        wrapper.setAttribute('hidden', '');
-
-        wrapper.innerHTML =
-            '<div class="modal-longevity-backdrop modal-hormonal-backdrop" data-hormonal-id="' + id + '" aria-hidden="true"></div>' +
-            '<div class="modal-longevity-box">' +
-            '<button type="button" class="modal-longevity-close" data-hormonal-close="' + id + '" aria-label="Cerrar">' +
-            '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>' +
-            '<div class="modal-longevity-scroll">' +
+        return (
             '<div id="hormonal-recovery-banner-' + id + '" class="form-recovery-banner form-recovery-banner--modal" role="status" hidden>' +
             '<p class="form-recovery-message"></p>' +
             '<div class="form-recovery-actions">' +
@@ -442,9 +443,10 @@
             '<div id="hormonal-result-card-' + id + '" class="longevity-result-card">' +
             '<h4 class="longevity-result-title hormonal-result-title">' + t(config, 'resultTitleEs', 'resultTitleEn') + '</h4>' +
             '<p class="hormonal-result-subtitle">' + lbl(
-                'Suma por tema. Un número más alto indica que reportaste esos síntomas con más frecuencia.',
-                'Total per topic. A higher number means you reported those symptoms more often.'
+                'Resumen por hormona. Amarillo o rojo: posibles síntomas a comentar con tu médico.',
+                'Summary per hormone. Yellow or red: possible symptoms to discuss with your doctor.'
             ) + '</p>' +
+            '<div class="hormonal-result-meta" id="hormonal-result-meta-' + id + '"></div>' +
             '<div class="hormonal-result-totals" id="hormonal-result-totals-' + id + '"></div>' +
             '<p class="longevity-result-clinic hormonal-result-clinic">' + t(config, 'resultClinicEs', 'resultClinicEn') + '</p>' +
             '</div>' +
@@ -455,7 +457,32 @@
                 '<button type="button" class="btn-longevity-action btn-longevity-compartir" data-form-share="hormonal-' + id + '">Enviar enlace</button>') +
             (window.CamsaFormShare ? window.CamsaFormShare.renderResultsButton('data-hormonal-enviar="' + id + '"') :
                 '<button type="button" class="btn-longevity-action btn-longevity-enviar" data-hormonal-enviar="' + id + '">Enviar resultados</button>') +
-            '</div></div></div></div>';
+            (window.CamsaFormPersistence ? window.CamsaFormPersistence.renderRestartButton('data-hormonal-restart="' + id + '"') :
+                '<button type="button" class="btn-longevity-action btn-longevity-restart" data-hormonal-restart="' + id + '"><span data-i18n="form_btn_restart">Realizar nuevamente</span></button>') +
+            '</div></div>'
+        );
+    }
+
+    function renderModal(config) {
+        var id = config.id;
+        var modalId = 'modal-hormonal-' + id;
+
+        var wrapper = document.createElement('div');
+        wrapper.id = modalId;
+        wrapper.className = 'modal-overlay modal-longevity modal-hormonal';
+        wrapper.setAttribute('role', 'dialog');
+        wrapper.setAttribute('aria-modal', 'true');
+        wrapper.setAttribute('aria-labelledby', modalId + '-title');
+        wrapper.setAttribute('hidden', '');
+
+        wrapper.innerHTML =
+            '<div class="modal-longevity-backdrop modal-hormonal-backdrop" data-hormonal-id="' + id + '" aria-hidden="true"></div>' +
+            '<div class="modal-longevity-box">' +
+            '<button type="button" class="modal-longevity-close" data-hormonal-close="' + id + '" aria-label="Cerrar">' +
+            '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>' +
+            '<div class="modal-longevity-scroll">' +
+            renderFormInner(config) +
+            '</div></div>';
 
         return wrapper;
     }
@@ -510,6 +537,13 @@
 
         var grandTotal = sectionsOut.reduce(function(sum, s) { return sum + s.total; }, 0);
         var grandMax = sectionsOut.reduce(function(sum, s) { return sum + s.max; }, 0);
+        sectionsOut.forEach(function(s) {
+            if (window.HormonalEvaluation) {
+                s.evaluation = window.HormonalEvaluation.evaluateSection(
+                    s.id, s.total, config.id, s.answered, s.optional
+                );
+            }
+        });
         return {
             sections: sectionsOut,
             answers: answers,
@@ -523,18 +557,82 @@
         var container = document.getElementById('hormonal-result-totals-' + config.id);
         if (!container) return;
 
-        var html = '';
+        var metaEl = document.getElementById('hormonal-result-meta-' + config.id);
+        if (metaEl) {
+            var patient = result.datos.nombre || lbl('Sin nombre', 'No name');
+            var dateStr = new Date().toLocaleDateString(getLang() === 'en' ? 'en-US' : 'es-MX', {
+                year: 'numeric', month: '2-digit', day: '2-digit'
+            });
+            metaEl.textContent = lbl('Paciente', 'Patient') + ': ' + patient + ' · ' +
+                lbl('Fecha', 'Date') + ': ' + dateStr;
+        }
+
+        var rowsHtml = '';
         result.sections.forEach(function(s) {
             if (s.optional && s.answered === 0) return;
-            html += '<div class="hormonal-result-row">';
-            html += '<span class="hormonal-result-label">' + s.title + '</span>';
-            html += '<span class="hormonal-result-value"><strong>' + s.total + '</strong>';
-            html += ' <span class="hormonal-result-max">/ ' + s.max + '</span></span>';
-            html += '</div>';
+            var ev = s.evaluation;
+            if (!ev && window.HormonalEvaluation) {
+                ev = window.HormonalEvaluation.evaluateSection(s.id, s.total, config.id, s.answered, s.optional);
+            }
+            if (!ev) ev = { level: 'none', scoreLabel: String(s.total), label: '—', showSymptoms: false, symptomsBrief: '' };
+
+            var level = ev.level && ev.level !== 'none' && ev.level !== 'optional' ? ev.level : 'neutral';
+            var statusHtml =
+                '<span class="hormonal-result-badge hormonal-result-badge--' + level + '">' +
+                '<span class="hormonal-result-dot" aria-hidden="true"></span>' +
+                escapeHtml(ev.label) + '</span>';
+
+            var briefCell = '—';
+            if (ev.showSymptoms && ev.symptomsBrief) {
+                briefCell = escapeHtml(ev.symptomsBrief);
+            } else if (level === 'green') {
+                briefCell = '<span class="hormonal-result-symptoms-na">—</span>';
+            }
+
+            rowsHtml +=
+                '<tr class="hormonal-result-compact-row hormonal-result-compact-row--' + level + '">' +
+                '<td class="hormonal-result-compact-name" data-label="' + lbl('Hormona', 'Hormone') + '">' +
+                '<span class="hormonal-result-name-cell">' +
+                (window.QuestionnaireIcons
+                    ? window.QuestionnaireIcons.renderIconBadge(s.id, 'q-block-icon--xs')
+                    : '') +
+                '<span>' + escapeHtml(s.title) + '</span></span></td>' +
+                '<td class="hormonal-result-compact-score" data-label="' + lbl('Puntos', 'Points') + '">' +
+                escapeHtml(ev.scoreLabel) + '</td>' +
+                '<td class="hormonal-result-compact-status" data-label="' + lbl('Estado', 'Status') + '">' +
+                statusHtml + '</td>' +
+                '<td class="hormonal-result-compact-brief" data-label="' + lbl('Posibles síntomas', 'Possible symptoms') + '">' +
+                briefCell + '</td></tr>';
         });
-        html += '<p class="hormonal-result-grand">' + lbl('Total general:', 'Grand total:') +
-            ' <strong>' + result.grandTotal + '</strong> / ' + result.grandMax + '</p>';
-        container.innerHTML = html;
+
+        container.innerHTML =
+            '<div class="hormonal-result-compact-wrap">' +
+            '<table class="hormonal-result-compact-table">' +
+            '<thead><tr>' +
+            '<th scope="col">' + lbl('Hormona', 'Hormone') + '</th>' +
+            '<th scope="col">' + lbl('Pts', 'Pts') + '</th>' +
+            '<th scope="col">' + lbl('Estado', 'Status') + '</th>' +
+            '<th scope="col">' + lbl('Posibles síntomas', 'Possible symptoms') + '</th>' +
+            '</tr></thead><tbody>' + rowsHtml + '</tbody></table></div>' +
+            '<p class="hormonal-result-grand">' + lbl('Total:', 'Total:') +
+            ' <strong>' + result.grandTotal + '</strong></p>';
+    }
+
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
+    function restartQuestionnaire(id) {
+        delete resultsById[id];
+        var totalsEl = document.getElementById('hormonal-result-totals-' + id);
+        if (totalsEl) totalsEl.innerHTML = '';
+        var metaEl = document.getElementById('hormonal-result-meta-' + id);
+        if (metaEl) metaEl.innerHTML = '';
+        updateHormonalTotals(id);
     }
 
     function finalizeQuestionnaire(id) {
@@ -552,6 +650,9 @@
         if (wizard) wizard.setAttribute('hidden', '');
         if (window.CamsaFormPersistence && typeof window.CamsaFormPersistence.onHormonalFinalized === 'function') {
             window.CamsaFormPersistence.onHormonalFinalized(id);
+        }
+        if (window.CamsaFormPersistence && typeof window.CamsaFormPersistence.bindRestartButtons === 'function') {
+            window.CamsaFormPersistence.bindRestartButtons();
         }
     }
 
@@ -581,18 +682,36 @@
             lineas.push(labels[key] + ': ' + (result.datos[key] || '—'));
         });
         lineas.push('');
-        lineas.push('*' + lbl('Totales por tema (escala 0–4)', 'Totals by topic (scale 0–4)') + '*');
+        lineas.push('*' + lbl('Cuadro comparativo — semáforo por hormona', 'Comparative chart — traffic light by hormone') + '*');
         result.sections.forEach(function(s) {
             if (s.optional && s.answered === 0) return;
-            lineas.push('• *' + s.title + ':* ' + s.total + ' / ' + s.max);
+            var ev = s.evaluation;
+            if (!ev && window.HormonalEvaluation) {
+                ev = window.HormonalEvaluation.evaluateSection(s.id, s.total, id, s.answered, s.optional);
+            }
+            if (!ev) return;
+            lineas.push('• *' + s.title + ':* ' + ev.scoreLabel + ' pts — *' + ev.label + '*');
+            if (ev.showSymptoms && ev.symptomsBrief) {
+                lineas.push('  _' + lbl('Posibles síntomas', 'Possible symptoms') + ':_ ' + ev.symptomsBrief);
+            }
         });
         lineas.push('');
-        lineas.push('*' + lbl('Total general', 'Grand total') + ':* ' + result.grandTotal + ' / ' + result.grandMax);
+        lineas.push('*' + lbl('Total general (suma de puntos)', 'Grand total (sum of points)') + ':* ' +
+            result.grandTotal + ' / ' + result.grandMax);
         lineas.push('');
         lineas.push('*' + lbl('Respuestas', 'Answers') + '*');
-        result.answers.forEach(function(a) {
-            lineas.push('*P' + a.num + '.* (' + a.sectionTitle + ') ' + a.question);
-            lineas.push('→ ' + a.answer + ' (' + a.points + ')');
+        var qList = questionIndexById[id] || [];
+        qList.forEach(function(q, idx) {
+            var selected = document.querySelector('input[name="' + q.name + '"]:checked');
+            var sec = config.sections[q.sectionIndex];
+            var sectionTitle = sec ? (getLang() === 'en' ? sec.titleEn : sec.titleEs) : '';
+            lineas.push('*P' + (idx + 1) + '.* (' + sectionTitle + ') ' + q.text);
+            if (selected) {
+                lineas.push('→ ' + (selected.getAttribute('data-answer') || selected.value) +
+                    ' (' + (parseInt(selected.value, 10) || 0) + ')');
+            } else {
+                lineas.push('→ ' + lbl('Sin respuesta', 'No answer'));
+            }
         });
         return lineas.join('\n');
     }
@@ -643,6 +762,35 @@
         });
     }
 
+    function getHormonalRoot(id) {
+        var pageRoot = document.getElementById('hormonal-page-root');
+        if (pageRoot && pageRoot.getAttribute('data-hormonal-id') === id) return pageRoot;
+        return document.getElementById('modal-hormonal-' + id);
+    }
+
+    function getPageHormonalId() {
+        var pageId = document.body.getAttribute('data-form-page');
+        if (pageId === 'hormonal-mujer') return 'mujer';
+        if (pageId === 'hormonal-hombre') return 'hombre';
+        return null;
+    }
+
+    function openPage(id) {
+        var config = window.HORMONAL_QUESTIONNAIRES[id];
+        if (!config) return;
+        prefillFromProtocolForm(config.prefix);
+        var fnacEl = document.getElementById(fieldId(config.prefix, 'fnac'));
+        var edadEl = document.getElementById(fieldId(config.prefix, 'edad'));
+        if (fnacEl && edadEl && fnacEl.value) edadEl.value = calcAgeFromBirthdate(fnacEl.value);
+        var wizard = document.getElementById('hormonal-wizard-' + id);
+        var resultBlock = document.getElementById('hormonal-result-' + id);
+        if (wizard && resultBlock && resultBlock.hasAttribute('hidden')) {
+            wizard.removeAttribute('hidden');
+        }
+        initHormonalWizard(id);
+        updateHormonalTotals(id);
+    }
+
     function openModal(id) {
         var modal = document.getElementById('modal-hormonal-' + id);
         if (!modal) return;
@@ -664,6 +812,20 @@
         updateHormonalTotals(id);
         if (window.CamsaFormPersistence && typeof window.CamsaFormPersistence.onHormonalModalOpened === 'function') {
             window.CamsaFormPersistence.onHormonalModalOpened(id);
+        }
+    }
+
+    function mountPage(id) {
+        var pageRoot = document.getElementById('hormonal-page-root');
+        if (!pageRoot || pageRoot.getAttribute('data-hormonal-id') !== id) return;
+        var config = window.HORMONAL_QUESTIONNAIRES[id];
+        if (!config) return;
+        pageRoot.innerHTML = renderFormInner(config);
+        openPage(id);
+        bindTotalsListeners(id);
+        updateHormonalTotals(id);
+        if (window.CamsaFormPersistence && typeof window.CamsaFormPersistence.bindRestartButtons === 'function') {
+            window.CamsaFormPersistence.bindRestartButtons();
         }
     }
 
@@ -739,15 +901,15 @@
     function updateDatosLabels(prefix) {
         var map = [
             ['nombre', lbl('Nombre completo', 'Full name')],
-            ['fnac', lbl('Fecha de nacimiento', 'Date of birth')],
-            ['edad', lbl('Edad', 'Age'), lbl('Automática', 'Automatic')],
+            ['fnac', lbl('Fecha nac.', 'Birth date')],
+            ['edad', lbl('Edad', 'Age')],
             ['ocupacion', lbl('Ocupación', 'Occupation')],
             ['peso', lbl('Peso', 'Weight')],
             ['talla', lbl('Talla', 'Height')],
-            ['cuales-hormonas', lbl('¿Cuáles hormonas o suplementos?', 'Which hormones or supplements?')],
-            ['hora-dormir', lbl('Hora de dormir', 'Bedtime')],
-            ['hora-levantar', lbl('Hora de levantarse', 'Wake time')],
-            ['enfermedades', lbl('Enfermedades o diagnósticos que ya tienes', 'Conditions or diagnoses you already have')],
+            ['cuales-hormonas', lbl('¿Cuáles?', 'Which ones?')],
+            ['hora-dormir', lbl('Dormir', 'Bedtime')],
+            ['hora-levantar', lbl('Levantarse', 'Wake up')],
+            ['enfermedades', lbl('Enfermedades / diagnósticos', 'Conditions / diagnoses')],
             ['medicamentos', lbl('Medicamentos', 'Medications')],
             ['contacto', lbl('Teléfono / WhatsApp', 'Phone / WhatsApp')]
         ];
@@ -758,32 +920,21 @@
             if (!wrap) return;
             var lab = wrap.querySelector('.hormonal-field-label');
             if (lab) lab.textContent = row[1];
-            if (row[2]) {
-                var hint = wrap.querySelector('.hormonal-field-hint');
-                if (hint) hint.textContent = row[2];
-            }
         });
         var pesoInp = document.getElementById(fieldId(prefix, 'peso'));
         var tallaInp = document.getElementById(fieldId(prefix, 'talla'));
-        if (pesoInp) pesoInp.placeholder = lbl('Ej. 65 kg', 'e.g. 65 kg');
-        if (tallaInp) tallaInp.placeholder = lbl('Ej. 1.65 m', 'e.g. 5 ft 5 in');
+        if (pesoInp) pesoInp.placeholder = lbl('65 kg', '65 kg');
+        if (tallaInp) tallaInp.placeholder = lbl('1.65 m', '5 ft 5 in');
         if (document.getElementById(fieldId(prefix, 'cuales-hormonas'))) {
             document.getElementById(fieldId(prefix, 'cuales-hormonas')).placeholder =
-                lbl('Ej. progesterona, DHEA, vitamina D…', 'e.g. progesterone, DHEA, vitamin D…');
+                lbl('Ej. progesterona, DHEA…', 'e.g. progesterone, DHEA…');
         }
-        var modal = document.getElementById('modal-hormonal-' + (prefix === 'hmujer' ? 'mujer' : 'hombre'));
+        var modal = getHormonalRoot(prefix === 'hmujer' ? 'mujer' : 'hombre');
         if (modal) {
-            var groups = modal.querySelectorAll('.hormonal-datos-group-title');
-            if (groups[0]) groups[0].textContent = lbl('Identificación', 'Identification');
-            if (groups[1]) groups[1].textContent = lbl('Medidas', 'Measurements');
-            if (groups[2]) groups[2].textContent = lbl('Medicamentos o suplementos hormonales', 'Hormone medicines or supplements');
-            if (groups[3]) groups[3].textContent = lbl('Sueño', 'Sleep');
-            if (groups[4]) groups[4].textContent = lbl('Antecedentes y contacto', 'History and contact');
-            var desc = modal.querySelector('.hormonal-datos-group--hormonas .hormonal-datos-group-desc');
-            if (desc) desc.textContent = lbl(
-                '¿Tomas actualmente algún medicamento o suplemento relacionado con hormonas (con o sin receta)?',
-                'Are you currently taking any medicine or supplement related to hormones (with or without a prescription)?'
-            );
+            var inlineLabel = modal.querySelector('.hormonal-datos-inline-label');
+            if (inlineLabel) {
+                inlineLabel.textContent = lbl('¿Toma hormonas o suplementos?', 'Taking hormones or supplements?');
+            }
         }
     }
 
@@ -823,31 +974,32 @@
         buildQuestionIndex();
         Object.keys(window.HORMONAL_QUESTIONNAIRES).forEach(function(id) {
             var config = window.HORMONAL_QUESTIONNAIRES[id];
-            var modal = document.getElementById('modal-hormonal-' + id);
-            if (!modal) return;
+            var root = getHormonalRoot(id);
+            if (!root) return;
 
-            var titleEl = modal.querySelector('.longevity-title');
+            var titleEl = root.querySelector('.longevity-title');
             if (titleEl) titleEl.textContent = t(config, 'modalTitleEs', 'modalTitleEn');
-            var subEl = modal.querySelector('.longevity-subtitle');
+            var subEl = root.querySelector('.longevity-subtitle');
             if (subEl) subEl.textContent = t(config, 'modalSubtitleEs', 'modalSubtitleEn');
-            var intro = modal.querySelector('.hormonal-datos-intro');
+            var intro = root.querySelector('.hormonal-datos-intro');
             if (intro) intro.textContent = lbl(
-                'Estos datos ayudan a personalizar tu resumen. Completa lo que puedas; cuanto más contexto, más útil para tu médico.',
-                'These details help personalize your summary. Fill in what you can—the more context, the more useful for your doctor.'
+                'Opcional. Ayudan a personalizar tu resumen.',
+                'Optional. Helps personalize your summary.'
             );
-            var datosTitle = modal.querySelector('.hormonal-datos-title');
+            var datosTitle = root.querySelector('.hormonal-datos-title');
             if (datosTitle) datosTitle.textContent = lbl('Datos generales', 'General information');
 
             updateDatosLabels(config.prefix);
 
             config.sections.forEach(function(section, sIdx) {
-                var secTitle = modal.querySelector('.hormonal-hormone-title[data-hormonal-section="' + sIdx + '"]');
+                var secTitle = root.querySelector('.hormonal-hormone-title[data-hormonal-section="' + sIdx + '"]');
                 if (secTitle) secTitle.textContent = getLang() === 'en' ? section.titleEn : section.titleEs;
                 if (section.noteEs) {
-                    var noteEl = modal.querySelector('.hormonal-section-note[data-hormonal-section="' + sIdx + '"]');
+                    var stepEl = root.querySelector('.q-wizard-step[data-hormonal-section="' + sIdx + '"]');
+                    var noteEl = stepEl ? stepEl.querySelector('.hormonal-section-note') : null;
                     if (noteEl) noteEl.textContent = getLang() === 'en' ? (section.noteEn || section.noteEs) : section.noteEs;
                 }
-                var totalLabel = modal.querySelector('.hormonal-section-total[data-section-index="' + sIdx + '"] .hormonal-section-total-label');
+                var totalLabel = root.querySelector('.hormonal-section-total[data-section-index="' + sIdx + '"] .hormonal-section-total-label');
                 if (totalLabel) {
                     var title = getLang() === 'en' ? section.titleEn : section.titleEs;
                     var maxScore = section.questions.length * 4;
@@ -856,11 +1008,11 @@
                 }
             });
 
-            modal.querySelectorAll('.hormonal-scale-inline').forEach(function(el) {
+            root.querySelectorAll('.hormonal-scale-inline').forEach(function(el) {
                 el.outerHTML = renderCompactScaleLegend();
             });
 
-            var grandLabel = modal.querySelector('.hormonal-grand-total-label');
+            var grandLabel = root.querySelector('.hormonal-grand-total-label');
             if (grandLabel) {
                 grandLabel.textContent = lbl('TOTAL GENERAL (todas las hormonas)', 'GRAND TOTAL (all hormones)');
             }
@@ -872,26 +1024,26 @@
                 if (hormonalWizards[id]) hormonalWizards[id].updateProgress();
             }
 
-            var resultTitle = modal.querySelector('.hormonal-result-title');
+            var resultTitle = root.querySelector('.hormonal-result-title');
             if (resultTitle) resultTitle.textContent = t(config, 'resultTitleEs', 'resultTitleEn');
-            var resultSub = modal.querySelector('.hormonal-result-subtitle');
+            var resultSub = root.querySelector('.hormonal-result-subtitle');
             if (resultSub) resultSub.textContent = lbl(
-                'Suma por tema. Un número más alto indica que reportaste esos síntomas con más frecuencia.',
-                'Total per topic. A higher number means you reported those symptoms more often.'
+                'Resumen por hormona. Amarillo o rojo: posibles síntomas a comentar con tu médico.',
+                'Summary per hormone. Yellow or red: possible symptoms to discuss with your doctor.'
             );
-            var resultClinic = modal.querySelector('.hormonal-result-clinic');
+            var resultClinic = root.querySelector('.hormonal-result-clinic');
             if (resultClinic) resultClinic.textContent = t(config, 'resultClinicEs', 'resultClinicEn');
 
-            var imgBtn = modal.querySelector('[data-hormonal-imagen]');
-            var shareBtn = modal.querySelector('[data-form-share="hormonal-' + id + '"]');
-            var envBtn = modal.querySelector('[data-hormonal-enviar]');
+            var imgBtn = root.querySelector('[data-hormonal-imagen]');
+            var shareBtn = root.querySelector('[data-form-share="hormonal-' + id + '"]');
+            var envBtn = root.querySelector('[data-hormonal-enviar]');
             if (imgBtn) imgBtn.textContent = lbl('Guardar imagen', 'Save image');
             if (window.CamsaFormShare) {
                 if (shareBtn) window.CamsaFormShare.applyShareButton(shareBtn);
                 if (envBtn) window.CamsaFormShare.applyResultsButton(envBtn);
             }
 
-            var closeBtn = modal.querySelector('[data-hormonal-close]');
+            var closeBtn = root.querySelector('[data-hormonal-close]');
             if (closeBtn) closeBtn.setAttribute('aria-label', lbl('Cerrar', 'Close'));
 
             refreshQuestionsBlock(config);
@@ -903,6 +1055,11 @@
                 result.sections.forEach(function(s, idx) {
                     var sec = config.sections[idx];
                     if (sec) s.title = getLang() === 'en' ? sec.titleEn : sec.titleEs;
+                    if (window.HormonalEvaluation) {
+                        s.evaluation = window.HormonalEvaluation.evaluateSection(
+                            s.id, s.total, id, s.answered, s.optional
+                        );
+                    }
                 });
                 result.answers.forEach(function(a, i) {
                     var q = qList[i];
@@ -918,11 +1075,7 @@
 
     function mountModals() {
         var root = document.getElementById('hormonal-modals-root');
-        if (!root) {
-            root = document.createElement('div');
-            root.id = 'hormonal-modals-root';
-            document.body.appendChild(root);
-        }
+        if (!root) return;
         Object.keys(window.HORMONAL_QUESTIONNAIRES).forEach(function(key) {
             root.appendChild(renderModal(window.HORMONAL_QUESTIONNAIRES[key]));
         });
@@ -932,22 +1085,28 @@
         if (!window.HORMONAL_QUESTIONNAIRES) return;
         normalizeQuestions();
         buildQuestionIndex();
-        mountModals();
+        var pageId = getPageHormonalId();
+        if (pageId) {
+            mountPage(pageId);
+        } else {
+            mountModals();
+        }
         bindEvents();
         bindAllDatosInteractions();
         bindAllTotalsListeners();
-        if (window.CamsaFormPersistence && typeof window.CamsaFormPersistence.bindHormonal === 'function') {
-            Object.keys(window.HORMONAL_QUESTIONNAIRES).forEach(function(key) {
-                window.CamsaFormPersistence.bindHormonal(key);
-            });
+        if (window.CamsaFormPersistence && typeof window.CamsaFormPersistence.bindRestartButtons === 'function') {
+            window.CamsaFormPersistence.bindRestartButtons();
         }
     }
 
     window.HormonalQuestionnaires = {
         open: openModal,
+        openPage: openPage,
+        mountPage: mountPage,
         close: closeModal,
         closeAnyActive: closeAnyActiveHormonalModal,
         finalize: finalizeQuestionnaire,
+        restart: restartQuestionnaire,
         initWizard: initHormonalWizard,
         getWizardStep: function(id) {
             return hormonalWizards[id] ? hormonalWizards[id].getCurrentStep() : 0;

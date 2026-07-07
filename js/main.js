@@ -21,7 +21,7 @@ if (estudiosFile && estudiosInput) {
 
 // Envío del formulario vía WhatsApp con modal de confirmación
 var pendingWhatsAppUrl = null;
-/** 'protocol' | 'longevity' | 'hormonal-mujer' | 'hormonal-hombre — origen del envío WhatsApp */
+/** 'protocol' | 'hormonal-mujer' | 'hormonal-hombre — origen del envío WhatsApp */
 var pendingWhatsAppSource = null;
 
 /** Usado por cuestionarios hormonales para abrir el modal de confirmación WhatsApp */
@@ -31,44 +31,6 @@ function setPendingWhatsApp(url, source) {
     showModal();
 }
 window.setPendingWhatsApp = setPendingWhatsApp;
-var longevityResult = null;
-
-function getLongevityInterpretacion(total) {
-    if (typeof window.getLongevityInterpretacionText === 'function') {
-        return window.getLongevityInterpretacionText(total);
-    }
-    if (total >= 90) return 'Perfil óptimo de longevidad';
-    if (total >= 80) return 'Salud preventiva sólida';
-    if (total >= 70) return 'Riesgo metabólico moderado';
-    if (total >= 60) return 'Requiere intervención preventiva';
-    return 'Riesgo cardiometabólico elevado';
-}
-
-function buildLongevityMessage() {
-    if (!longevityResult) return '';
-    var lineas = [
-        '———',
-        '*CUESTIONARIO DE LONGEVIDAD - CLÍNICA CAMSA*',
-        '*Longevity Score (100 puntos)*',
-        '',
-        '*Datos generales*',
-        'Nombre: ' + (longevityResult.datos.nombre || '—'),
-        'Edad: ' + (longevityResult.datos.edad || '—'),
-        'Sexo: ' + (longevityResult.datos.sexo || '—'),
-        'Fecha: ' + (longevityResult.datos.fecha || '—'),
-        'Profesión: ' + (longevityResult.datos.profesion || '—'),
-        'Teléfono o correo: ' + (longevityResult.datos.contacto || '—'),
-        ''
-    ];
-    longevityResult.answers.forEach(function(a) {
-        lineas.push('*P' + a.q + '.* ' + a.question);
-        lineas.push('→ ' + a.answer);
-        lineas.push('');
-    });
-    lineas.push('*Puntaje total: ' + longevityResult.total + ' / 100*');
-    lineas.push('*Interpretación:* ' + longevityResult.interpretacion);
-    return lineas.join('\n');
-}
 
 function buildWhatsAppUrl() {
     var num = (typeof window.__rs === 'function' && window.__rs('fw')) ? window.__rs('fw') : '527443514149';
@@ -78,10 +40,10 @@ function buildWhatsAppUrl() {
     var diagnostico = document.getElementById('diagnostico').value.trim();
     var medicamentos = document.getElementById('medicamentos').value.trim();
     var estudios = document.getElementById('estudios').value.trim();
-    var estudiosFile = document.getElementById('estudios-file');
+    var estudiosFileInput = document.getElementById('estudios-file');
 
     var tieneArchivo = false;
-    if (estudiosFile && estudiosFile.files && estudiosFile.files.length > 0) {
+    if (estudiosFileInput && estudiosFileInput.files && estudiosFileInput.files.length > 0) {
         tieneArchivo = true;
     }
 
@@ -109,13 +71,6 @@ function buildWhatsAppUrl() {
     }
 
     var mensaje = lineas.join('\n');
-    return 'https://wa.me/' + num + '?text=' + encodeURIComponent(mensaje);
-}
-
-function buildLongevityWhatsAppUrl() {
-    if (!longevityResult) return null;
-    var num = (typeof window.__rs === 'function' && window.__rs('fw')) ? window.__rs('fw') : '527443514149';
-    var mensaje = '*ENVÍO DE CUESTIONARIO DE LONGEVIDAD - CLÍNICA CAMSA*' + '\n\n' + buildLongevityMessage();
     return 'https://wa.me/' + num + '?text=' + encodeURIComponent(mensaje);
 }
 
@@ -148,137 +103,6 @@ if (protocoloForm) {
     });
 }
 
-// Modal Cuestionario de Longevidad: abrir/cerrar
-function showLongevityModal() {
-    var modal = document.getElementById('modal-longevity');
-    if (modal) {
-        var dateInput = document.getElementById('long-fecha');
-        if (dateInput) {
-            var today = new Date();
-            dateInput.value = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
-        }
-        var nombreInput = document.getElementById('nombre');
-        var telefonoInput = document.getElementById('telefono');
-        var longNombre = document.getElementById('long-nombre');
-        var longContacto = document.getElementById('long-contacto');
-        if (longNombre && nombreInput && !longNombre.value.trim()) longNombre.value = nombreInput.value.trim();
-        if (longContacto && telefonoInput && !longContacto.value.trim()) longContacto.value = telefonoInput.value.trim();
-        modal.removeAttribute('hidden');
-        modal.offsetHeight;
-        modal.classList.add('active');
-        if (window.CamsaFormPersistence && typeof window.CamsaFormPersistence.onLongevityModalOpened === 'function') {
-            window.CamsaFormPersistence.onLongevityModalOpened();
-        }
-    }
-}
-// Expuesto para el módulo de persistencia (restaurar sesión y abrir modal)
-window.showLongevityModal = showLongevityModal;
-
-function hideLongevityModal() {
-    var modal = document.getElementById('modal-longevity');
-    if (modal) {
-        modal.classList.remove('active');
-        setTimeout(function() { modal.setAttribute('hidden', ''); }, 300);
-    }
-}
-
-var btnAbrirLongevity = document.getElementById('btn-abrir-longevity');
-if (btnAbrirLongevity) {
-    btnAbrirLongevity.addEventListener('click', showLongevityModal);
-}
-
-var modalLongevityClose = document.getElementById('modal-longevity-close');
-if (modalLongevityClose) {
-    modalLongevityClose.addEventListener('click', hideLongevityModal);
-}
-
-var modalLongevityBackdrop = document.querySelector('.modal-longevity-backdrop');
-if (modalLongevityBackdrop) {
-    modalLongevityBackdrop.addEventListener('click', hideLongevityModal);
-}
-
-// Cuestionario de longevidad: finalizar y obtener resultado (wizard o botón legacy)
-function finalizeLongevityQuestionnaire() {
-    var total = 0;
-    var answers = [];
-    for (var i = 1; i <= 20; i++) {
-        var name = 'q' + i;
-        var fieldset = document.querySelector('.longevity-fieldset[data-q="' + i + '"]');
-        var selected = document.querySelector('input[name="' + name + '"]:checked');
-        if (fieldset && selected) {
-            var pts = parseInt(selected.value, 10);
-            total += pts;
-            answers.push({
-                q: i,
-                question: fieldset.getAttribute('data-question') || fieldset.querySelector('legend').textContent,
-                answer: selected.getAttribute('data-answer') || selected.value,
-                points: pts
-            });
-        }
-    }
-    var interpretacion = getLongevityInterpretacion(total);
-    longevityResult = {
-        total: total,
-        interpretacion: interpretacion,
-        answers: answers,
-        datos: {
-            nombre: document.getElementById('long-nombre') && document.getElementById('long-nombre').value.trim(),
-            edad: document.getElementById('long-edad') && document.getElementById('long-edad').value.trim(),
-            sexo: document.getElementById('long-sexo') && document.getElementById('long-sexo').value.trim(),
-            fecha: document.getElementById('long-fecha') && document.getElementById('long-fecha').value.trim(),
-            profesion: document.getElementById('long-profesion') && document.getElementById('long-profesion').value.trim(),
-            contacto: document.getElementById('long-contacto') && document.getElementById('long-contacto').value.trim()
-        }
-    };
-    document.getElementById('longevity-total').textContent = total;
-    document.getElementById('longevity-interpretacion').textContent = interpretacion;
-    document.getElementById('longevity-result').removeAttribute('hidden');
-    var wiz = document.getElementById('longevity-wizard');
-    if (wiz) wiz.setAttribute('hidden', '');
-    document.getElementById('longevity-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    if (window.CamsaFormPersistence && typeof window.CamsaFormPersistence.onLongevityFinalized === 'function') {
-        window.CamsaFormPersistence.onLongevityFinalized();
-    }
-}
-window.finalizeLongevityQuestionnaire = finalizeLongevityQuestionnaire;
-
-var btnLongevityFinalizar = document.getElementById('btn-longevity-finalizar');
-if (btnLongevityFinalizar) {
-    btnLongevityFinalizar.addEventListener('click', finalizeLongevityQuestionnaire);
-}
-
-// Guardar imagen del resultado
-var btnLongevityImagen = document.getElementById('btn-longevity-imagen');
-if (btnLongevityImagen) {
-    btnLongevityImagen.addEventListener('click', function() {
-        if (!longevityResult || typeof html2canvas !== 'function') return;
-        var card = document.getElementById('longevity-result-card');
-        if (!card) return;
-        html2canvas(card).then(function(canvas) {
-            var link = document.createElement('a');
-            var nombre = (longevityResult.datos && longevityResult.datos.nombre) ? longevityResult.datos.nombre.replace(/\s+/g, '_') : 'resultado';
-            link.download = 'longevity_score_' + nombre + '.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-        }).catch(function(e) {
-            console.error('Error al generar la imagen', e);
-        });
-    });
-}
-
-// Enviar cuestionario por WhatsApp
-var btnLongevityEnviar = document.getElementById('btn-longevity-enviar');
-if (btnLongevityEnviar) {
-    btnLongevityEnviar.addEventListener('click', function() {
-        if (!longevityResult) return;
-        var url = buildLongevityWhatsAppUrl();
-        if (!url) return;
-        pendingWhatsAppUrl = url;
-        pendingWhatsAppSource = 'longevity';
-        showModal();
-    });
-}
-
 var modalConfirm = document.querySelector('.modal-btn-confirm');
 var modalCancel = document.querySelector('.modal-btn-cancel');
 
@@ -288,9 +112,7 @@ if (modalConfirm) {
             window.open(pendingWhatsAppUrl, '_blank', 'noopener,noreferrer');
             // Envío exitoso: eliminar progreso guardado del formulario correspondiente
             if (window.CamsaFormPersistence) {
-                if (pendingWhatsAppSource === 'longevity' && typeof window.CamsaFormPersistence.clearLongevityProgress === 'function') {
-                    window.CamsaFormPersistence.clearLongevityProgress();
-                } else if (pendingWhatsAppSource === 'protocol' && typeof window.CamsaFormPersistence.clearProtocolProgress === 'function') {
+                if (pendingWhatsAppSource === 'protocol' && typeof window.CamsaFormPersistence.clearProtocolProgress === 'function') {
                     window.CamsaFormPersistence.clearProtocolProgress();
                 } else if (pendingWhatsAppSource === 'hormonal-mujer' && typeof window.CamsaFormPersistence.clearHormonalProgress === 'function') {
                     window.CamsaFormPersistence.clearHormonalProgress('mujer');
@@ -317,9 +139,7 @@ if (modalWhatsapp) {
 document.addEventListener('keydown', function(e) {
     if (e.key !== 'Escape') return;
     var mw = document.getElementById('modal-whatsapp');
-    var ml = document.getElementById('modal-longevity');
     if (mw && mw.classList.contains('active')) hideModal();
-    else if (ml && ml.classList.contains('active')) hideLongevityModal();
     else if (document.querySelector('.modal-hormonal.active') && window.HormonalQuestionnaires && typeof window.HormonalQuestionnaires.closeAnyActive === 'function') {
         window.HormonalQuestionnaires.closeAnyActive();
     } else if (window.TfgCalculator && typeof window.TfgCalculator.close === 'function') {

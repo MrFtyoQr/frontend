@@ -271,7 +271,7 @@
                                 <li data-i18n="card_longevidad_li1">No necesitas llenar antes el formulario de arriba.</li>
                                 <li data-i18n="card_longevidad_li2">Si ya enviaste tu solicitud, esto ayuda a que el equipo te conozca mejor.</li>
                             </ul>
-                            <button type="button" class="btn-form-card" id="btn-abrir-longevity" data-i18n="card_longevidad_btn">Empezar cuestionario</button>
+                            <a href="longevidad.html" class="btn-form-card" data-i18n="card_longevidad_btn">Empezar cuestionario</a>
                         </div>
                     </article>
 
@@ -289,7 +289,7 @@
                                 <li data-i18n="card_horm_mujer_li1">Temas como cansancio, estrés, tiroides, menopausia y otros, en lenguaje cotidiano.</li>
                                 <li data-i18n="card_horm_mujer_li2">Hay preguntas opcionales sobre tu menstruación o tratamientos hormonales, si aplica.</li>
                             </ul>
-                            <button type="button" class="btn-form-card" data-hormonal-open="mujer" data-i18n="card_horm_btn">Empezar cuestionario</button>
+                            <a href="hormonal-mujer.html" class="btn-form-card" data-i18n="card_horm_btn">Empezar cuestionario</a>
                         </div>
                     </article>
 
@@ -307,7 +307,7 @@
                                 <li data-i18n="card_horm_hombre_li1">Incluye temas como estrés, libido, presión y metabolismo, explicados de forma sencilla.</li>
                                 <li data-i18n="card_horm_hombre_li2">Puedes usarlo aunque ya llenaste el cuestionario de hábitos o el formulario de arriba.</li>
                             </ul>
-                            <button type="button" class="btn-form-card" data-hormonal-open="hombre" data-i18n="card_horm_btn">Empezar cuestionario</button>
+                            <a href="hormonal-hombre.html" class="btn-form-card" data-i18n="card_horm_btn">Empezar cuestionario</a>
                         </div>
                     </article>
 
@@ -385,204 +385,6 @@
         </div>
     </footer>
 
-    <!-- Modal Cuestionario de Longevidad -->
-    <div id="modal-longevity" class="modal-overlay modal-longevity" role="dialog" aria-modal="true" aria-labelledby="modal-longevity-title" hidden>
-        <div class="modal-longevity-backdrop" aria-hidden="true"></div>
-        <div class="modal-longevity-box">
-            <button type="button" class="modal-longevity-close" id="modal-longevity-close" aria-label="Cerrar cuestionario">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-            </button>
-            <div class="modal-longevity-scroll">
-                <div id="longevity-recovery-banner" class="form-recovery-banner form-recovery-banner--modal" role="status" hidden>
-                    <p class="form-recovery-message"></p>
-                    <div class="form-recovery-actions">
-                        <button type="button" class="form-recovery-btn form-recovery-btn--primary" id="longevity-recovery-continue" data-i18n="persist_continue">Continuar donde lo dejé</button>
-                        <button type="button" class="form-recovery-btn form-recovery-btn--secondary" id="longevity-recovery-discard" data-i18n="persist_discard">Descartar y empezar de nuevo</button>
-                    </div>
-                </div>
-                <p id="longevity-recovery-indicator" class="form-recovery-indicator" role="status" hidden data-i18n="persist_restored">Progreso recuperado. Sus respuestas se restauraron automáticamente.</p>
-                <h3 id="modal-longevity-title" class="longevity-title">Cuestionario de hábitos y longevidad</h3>
-                <p class="longevity-subtitle">Responde con sinceridad sobre tu día a día. No hay respuestas buenas o malas: al final verás una puntuación de 0 a 100 que resume tus hábitos. Tu médico puede usarla como punto de partida.</p>
-
-                <div class="longevity-datos">
-                    <h4 class="longevity-section-title">Tus datos (opcional)</h4>
-                    <p class="longevity-datos-intro">Sirven para identificarte en el resultado. Puedes pasar directo a las preguntas si lo prefieres.</p>
-                    <div class="longevity-datos-grid">
-                        <div class="form-group"><input type="text" id="long-nombre" placeholder="Nombre"></div>
-                        <div class="form-group"><input type="number" id="long-edad" placeholder="Edad" min="1" max="120"></div>
-                        <div class="form-group">
-                            <select id="long-sexo">
-                                <option value="">Sexo</option>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Femenino">Femenino</option>
-                                <option value="Otro">Otro</option>
-                            </select>
-                        </div>
-                        <div class="form-group"><input type="date" id="long-fecha" placeholder="Fecha" readonly></div>
-                        <div class="form-group"><input type="text" id="long-profesion" placeholder="Profesión"></div>
-                        <div class="form-group"><input type="text" id="long-contacto" placeholder="WhatsApp"></div>
-                    </div>
-                </div>
-
-                <div class="longevity-questions">
-                    <h4 class="longevity-section-title">1. Cómo comes (20 pts)</h4>
-                    <fieldset class="longevity-fieldset" data-q="1" data-question="Frutas y verduras al día">
-                        <legend>1. Frutas y verduras al día (ej. manzana, jitomate, ensalada)</legend>
-                        <label><input type="radio" name="q1" value="5" data-answer="5 o más"> 5 o más</label>
-                        <label><input type="radio" name="q1" value="3" data-answer="3 a 4"> 3 a 4</label>
-                        <label><input type="radio" name="q1" value="1" data-answer="2 o menos"> 2 o menos</label>
-                    </fieldset>
-                    <fieldset class="longevity-fieldset" data-q="2" data-question="Alimentos ultraprocesados">
-                        <legend>2. Alimentos ultraprocesados (ej. comida rápida, refrescos, botanas)</legend>
-                        <label><input type="radio" name="q2" value="5" data-answer="Menos de 1 vez/semana"> Menos de 1 vez/semana</label>
-                        <label><input type="radio" name="q2" value="3" data-answer="2 a 4 veces/semana"> 2 a 4 veces/semana</label>
-                        <label><input type="radio" name="q2" value="0" data-answer="Diario"> Diario</label>
-                    </fieldset>
-                    <fieldset class="longevity-fieldset" data-q="3" data-question="Proteína de calidad">
-                        <legend>3. Proteína de calidad (ej. pescado, pollo, huevo, frijoles)</legend>
-                        <label><input type="radio" name="q3" value="5" data-answer="En cada comida"> En cada comida</label>
-                        <label><input type="radio" name="q3" value="3" data-answer="1 a 2 veces/día"> 1 a 2 veces/día</label>
-                        <label><input type="radio" name="q3" value="1" data-answer="Menos de 1 vez/día"> Menos de 1 vez/día</label>
-                    </fieldset>
-                    <fieldset class="longevity-fieldset" data-q="4" data-question="Grasas saludables">
-                        <legend>4. Grasas saludables (ej. aguacate, aceite de oliva, nueces)</legend>
-                        <label><input type="radio" name="q4" value="5" data-answer="Diario"> Diario</label>
-                        <label><input type="radio" name="q4" value="3" data-answer="3 a 4 veces/semana"> 3 a 4 veces/semana</label>
-                        <label><input type="radio" name="q4" value="1" data-answer="Rara vez"> Rara vez</label>
-                    </fieldset>
-
-                    <h4 class="longevity-section-title">2. Movimiento (15 pts)</h4>
-                    <fieldset class="longevity-fieldset" data-q="5" data-question="Ejercicio aeróbico semanal">
-                        <legend>5. Ejercicio aeróbico semanal (ej. caminar, nadar, bicicleta)</legend>
-                        <label><input type="radio" name="q5" value="7" data-answer="150 min o más"> 150 min o más</label>
-                        <label><input type="radio" name="q5" value="4" data-answer="90 a 149 min"> 90 a 149 min</label>
-                        <label><input type="radio" name="q5" value="1" data-answer="Menos de 90 min"> Menos de 90 min</label>
-                    </fieldset>
-                    <fieldset class="longevity-fieldset" data-q="6" data-question="Ejercicio de fuerza">
-                        <legend>6. Ejercicio de fuerza (ej. pesas, bandas elásticas)</legend>
-                        <label><input type="radio" name="q6" value="5" data-answer="2+ veces/semana"> 2+ veces/semana</label>
-                        <label><input type="radio" name="q6" value="3" data-answer="1 vez/semana"> 1 vez/semana</label>
-                        <label><input type="radio" name="q6" value="0" data-answer="No hago fuerza"> No hago fuerza</label>
-                    </fieldset>
-                    <fieldset class="longevity-fieldset" data-q="7" data-question="Horas sentado al día">
-                        <legend>7. Horas sentado al día</legend>
-                        <label><input type="radio" name="q7" value="3" data-answer="Menos de 6 h"> Menos de 6 h</label>
-                        <label><input type="radio" name="q7" value="2" data-answer="6 a 8 h"> 6 a 8 h</label>
-                        <label><input type="radio" name="q7" value="1" data-answer="Más de 8 h"> Más de 8 h</label>
-                    </fieldset>
-
-                    <h4 class="longevity-section-title">3. Sueño (10 pts)</h4>
-                    <fieldset class="longevity-fieldset" data-q="8" data-question="Horas de sueño por noche">
-                        <legend>8. Horas de sueño por noche</legend>
-                        <label><input type="radio" name="q8" value="5" data-answer="7 a 8 h"> 7 a 8 h</label>
-                        <label><input type="radio" name="q8" value="3" data-answer="6 o 9 h"> 6 o 9 h</label>
-                        <label><input type="radio" name="q8" value="1" data-answer="Menos de 6 h"> Menos de 6 h</label>
-                    </fieldset>
-                    <fieldset class="longevity-fieldset" data-q="9" data-question="Calidad del sueño">
-                        <legend>9. Calidad del sueño</legend>
-                        <label><input type="radio" name="q9" value="5" data-answer="Reparador"> Reparador</label>
-                        <label><input type="radio" name="q9" value="3" data-answer="A veces interrumpido"> A veces interrumpido</label>
-                        <label><input type="radio" name="q9" value="1" data-answer="Insomnio o mal sueño"> Insomnio o mal sueño</label>
-                    </fieldset>
-
-                    <h4 class="longevity-section-title">4. Metabólico (20 pts)</h4>
-                    <fieldset class="longevity-fieldset" data-q="10" data-question="Presión arterial">
-                        <legend>10. Presión arterial (último control médico)</legend>
-                        <label><input type="radio" name="q10" value="5" data-answer="Menor a 120/80"> &lt; 120/80</label>
-                        <label><input type="radio" name="q10" value="3" data-answer="120 a 139"> 120 a 139</label>
-                        <label><input type="radio" name="q10" value="1" data-answer="140 o más"> 140+</label>
-                    </fieldset>
-                    <fieldset class="longevity-fieldset" data-q="11" data-question="Glucosa en ayuno">
-                        <legend>11. Glucosa en ayuno (análisis de sangre)</legend>
-                        <label><input type="radio" name="q11" value="5" data-answer="Menor a 100 mg/dL"> &lt; 100 mg/dL</label>
-                        <label><input type="radio" name="q11" value="3" data-answer="100 a 125 mg/dL"> 100-125 mg/dL</label>
-                        <label><input type="radio" name="q11" value="1" data-answer="126 mg/dL o más"> 126+ mg/dL</label>
-                    </fieldset>
-                    <fieldset class="longevity-fieldset" data-q="12" data-question="Colesterol">
-                        <legend>12. Colesterol (según tu doctor o estudio)</legend>
-                        <label><input type="radio" name="q12" value="5" data-answer="Normal"> Normal</label>
-                        <label><input type="radio" name="q12" value="3" data-answer="Alteración leve"> Alteración leve</label>
-                        <label><input type="radio" name="q12" value="1" data-answer="Colesterol alto"> Colesterol alto</label>
-                    </fieldset>
-                    <fieldset class="longevity-fieldset" data-q="13" data-question="Inflamación (PCR)">
-                        <legend>13. Inflamación — PCR (proteína C reactiva, en sangre)</legend>
-                        <label><input type="radio" name="q13" value="5" data-answer="Baja"> Baja</label>
-                        <label><input type="radio" name="q13" value="3" data-answer="Moderada"> Moderada</label>
-                        <label><input type="radio" name="q13" value="1" data-answer="Alta"> Alta</label>
-                    </fieldset>
-
-                    <h4 class="longevity-section-title">5. Estrés (10 pts)</h4>
-                    <fieldset class="longevity-fieldset" data-q="14" data-question="Estrés diario">
-                        <legend>14. Estrés diario</legend>
-                        <label><input type="radio" name="q14" value="5" data-answer="Bajo"> Bajo</label>
-                        <label><input type="radio" name="q14" value="3" data-answer="Moderado"> Moderado</label>
-                        <label><input type="radio" name="q14" value="1" data-answer="Alto"> Alto</label>
-                    </fieldset>
-                    <fieldset class="longevity-fieldset" data-q="15" data-question="Manejo del estrés">
-                        <legend>15. Manejo del estrés (ej. caminar, meditar, platicar)</legend>
-                        <label><input type="radio" name="q15" value="5" data-answer="Sí, regular"> Sí, regular</label>
-                        <label><input type="radio" name="q15" value="3" data-answer="A veces"> A veces</label>
-                        <label><input type="radio" name="q15" value="1" data-answer="No uso estrategias"> No uso estrategias</label>
-                    </fieldset>
-
-                    <h4 class="longevity-section-title">6. Apoyo social (5 pts)</h4>
-                    <fieldset class="longevity-fieldset" data-q="16" data-question="Apoyo social">
-                        <legend>16. Apoyo social (familia o amigos cercanos)</legend>
-                        <label><input type="radio" name="q16" value="5" data-answer="Fuerte"> Fuerte</label>
-                        <label><input type="radio" name="q16" value="3" data-answer="Moderado"> Moderado</label>
-                        <label><input type="radio" name="q16" value="1" data-answer="Limitado"> Limitado</label>
-                    </fieldset>
-
-                    <h4 class="longevity-section-title">7. Tabaco y alcohol (10 pts)</h4>
-                    <fieldset class="longevity-fieldset" data-q="17" data-question="Tabaco">
-                        <legend>17. Tabaco</legend>
-                        <label><input type="radio" name="q17" value="5" data-answer="Nunca fumé"> Nunca fumé</label>
-                        <label><input type="radio" name="q17" value="3" data-answer="Exfumador"> Exfumador</label>
-                        <label><input type="radio" name="q17" value="0" data-answer="Fumador actual"> Fumador actual</label>
-                    </fieldset>
-                    <fieldset class="longevity-fieldset" data-q="18" data-question="Alcohol">
-                        <legend>18. Alcohol (copas por semana)</legend>
-                        <label><input type="radio" name="q18" value="5" data-answer="Moderado o nulo"> Moderado o nulo</label>
-                        <label><input type="radio" name="q18" value="2" data-answer="Frecuente"> Frecuente</label>
-                        <label><input type="radio" name="q18" value="0" data-answer="Alto"> Alto</label>
-                    </fieldset>
-
-                    <h4 class="longevity-section-title">8. Peso corporal (5 pts)</h4>
-                    <fieldset class="longevity-fieldset" data-q="19" data-question="IMC o grasa corporal">
-                        <legend>19. Peso corporal — IMC (según tu médico)</legend>
-                        <label><input type="radio" name="q19" value="5" data-answer="Normal"> Normal</label>
-                        <label><input type="radio" name="q19" value="3" data-answer="Sobrepeso"> Sobrepeso</label>
-                        <label><input type="radio" name="q19" value="1" data-answer="Obesidad"> Obesidad</label>
-                    </fieldset>
-
-                    <h4 class="longevity-section-title">9. Chequeos (5 pts)</h4>
-                    <fieldset class="longevity-fieldset" data-q="20" data-question="Chequeos anuales">
-                        <legend>20. Chequeos anuales (doctor y laboratorio)</legend>
-                        <label><input type="radio" name="q20" value="5" data-answer="Sí"> Sí</label>
-                        <label><input type="radio" name="q20" value="3" data-answer="A veces"> A veces</label>
-                        <label><input type="radio" name="q20" value="1" data-answer="No"> No</label>
-                    </fieldset>
-                </div>
-
-                <button type="button" class="btn-longevity-finalizar" id="btn-longevity-finalizar">Ver mi puntuación</button>
-                <div id="longevity-result" class="longevity-result" hidden>
-                    <div id="longevity-result-card" class="longevity-result-card">
-                        <h4 class="longevity-result-title">Tu resumen de hábitos</h4>
-                        <p class="longevity-result-score">Puntuación: <strong id="longevity-total">0</strong> / 100</p>
-                        <p class="longevity-result-interpretacion" id="longevity-interpretacion"></p>
-                        <p class="longevity-result-note">Orientación general. No sustituye una consulta ni estudios de laboratorio.</p>
-                        <p class="longevity-result-clinic">Clínica CAMSA · Medicina Regenerativa y Longevidad</p>
-                    </div>
-                    <div class="longevity-result-actions">
-                        <button type="button" class="btn-longevity-action btn-longevity-imagen" id="btn-longevity-imagen">Guardar imagen</button>
-                        <button type="button" class="btn-longevity-action btn-longevity-compartir" id="btn-longevity-compartir" data-form-share="longevity" data-i18n="long_btn_compartir" data-i18n-title="long_btn_compartir_title" title="Comparte el enlace del cuestionario por WhatsApp para que otra persona lo complete.">Compartir cuestionario</button>
-                        <button type="button" class="btn-longevity-action btn-longevity-enviar" id="btn-longevity-enviar" data-i18n="long_btn_enviar" data-i18n-title="long_btn_enviar_title" title="Envía tus respuestas completadas a la clínica por WhatsApp.">Enviar resultados</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal mini carrusel Shorts (Ver experiencias) -->
     <div id="modal-experiencias" class="modal-overlay modal-experiencias" role="dialog" aria-modal="true" aria-label="Videos de experiencias" hidden>
         <div class="modal-experiencias-content">
@@ -629,18 +431,14 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <div id="hormonal-modals-root" aria-hidden="true"></div>
     <div id="tfg-modal-root" aria-hidden="true"></div>
 
     <script src="js/assets.js"></script>
     <script src="js/i18n.js"></script>
-    <script src="js/hormonal-data.js"></script>
-    <script src="js/hormonal-questions-en.js"></script>
+    <script src="js/form-page.js"></script>
     <script src="js/form-share.js"></script>
-    <script src="js/hormonal-questionnaires.js"></script>
-    <script src="js/tfg-calculator.js"></script>
-    <script src="js/questionnaire-wizard.js"></script>
     <script src="js/form-persistence.js"></script>
+    <script src="js/tfg-calculator.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

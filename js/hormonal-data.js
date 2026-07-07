@@ -1,6 +1,5 @@
 /**
- * Definición de cuestionarios hormonales (escala 0–4 por pregunta, total por sección).
- * Fuente: PDFs test hormonas mujer / hombre — sin semáforo satisfactorio/alterado/deficiente.
+ * Definición de cuestionarios hormonales (escala 0–4 por pregunta, semáforo por hormona).
  */
 (function() {
     'use strict';

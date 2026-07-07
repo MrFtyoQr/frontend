@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cuestionario hormonal — Hombre — CLÍNICA CAMSA">
+    <title>Cuestionario hormonal — Hombre — CLÍNICA CAMSA</title>
+    <link rel="icon" type="image/png" href="./img/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="./img/favicon.png">
+    <link rel="apple-touch-icon" href="./img/favicon.png">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" crossorigin="anonymous">
+</head>
+<body class="form-page-body form-page-body--hormonal-hombre" data-form-page="hormonal-hombre">
+    <div class="form-page-controls">
+        <a href="index.html#formulario" class="form-page-back-btn" data-i18n="form_page_back">Volver al inicio</a>
+        <div class="lang-switcher form-page-lang" role="group" aria-label="Idioma">
+            <span class="lang-label" data-i18n="lang_heading">Cambiar idioma</span>
+            <div class="lang-buttons">
+                <button type="button" class="lang-btn active" id="btn-lang-es" data-lang="es" data-i18n="lang_es_full" aria-pressed="true">Español</button>
+                <span class="lang-sep">|</span>
+                <button type="button" class="lang-btn" id="btn-lang-en" data-lang="en" data-i18n="lang_en_full" aria-pressed="false">English</button>
+            </div>
+        </div>
+    </div>
+    <main class="form-page-main">
+        <div id="hormonal-page-root" class="form-page-shell form-page-shell--hormonal" data-hormonal-id="hombre"></div>
+    </main>
+    <div id="modal-whatsapp" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-whatsapp-title" hidden>
+        <div class="modal-content">
+            <h3 id="modal-whatsapp-title" class="modal-title">Confirmar envío</h3>
+            <p class="modal-text">La información ingresada será enviada a través de WhatsApp. Se abrirá una conversación con su mensaje listo para enviar.</p>
+            <p class="modal-text"><strong>Importante:</strong> Si enviará documentos de estudios, deberá adjuntarlos manualmente por WhatsApp una vez que haya enviado el mensaje de texto.</p>
+            <p class="modal-text modal-question">¿Autoriza el envío de su información por este medio?</p>
+            <div class="modal-buttons">
+                <button type="button" class="modal-btn modal-btn-cancel">Cancelar</button>
+                <button type="button" class="modal-btn modal-btn-confirm">Aceptar y enviar</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="js/assets.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/hormonal-data.js"></script>
+    <script src="js/hormonal-evaluation.js"></script>
+    <script src="js/hormonal-questions-en.js"></script>
+    <script src="js/form-page.js"></script>
+    <script src="js/form-share.js"></script>
+    <script src="js/questionnaire-icons.js"></script>
+    <script src="js/hormonal-questionnaires.js"></script>
+    <script src="js/questionnaire-wizard.js"></script>
+    <script src="js/form-persistence.js"></script>
+    <script src="js/hormonal-page.js"></script>
+</body>
+</html>

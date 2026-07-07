@@ -81,8 +81,8 @@
             descripcionEn: 'Moderate decrease in kidney function.',
             resumenEs: 'Disminución moderada. Posible anemia; cuidar corazón y presión.',
             resumenEn: 'Moderate decrease. Possible anemia; protect heart and blood pressure.',
-            sintomasEs: 'Pueden presentarse síntomas: anemia o trastornos del metabolismo mineral. Pueden iniciar complicaciones. Es importante la prevención del riesgo cardiovascular.',
-            sintomasEn: 'Symptoms may appear: anemia or mineral metabolism disorders. Complications may begin. Cardiovascular risk prevention is important.',
+            sintomasEs: 'Se presentan síntomas: anemia o trastornos del metabolismo mineral. Pueden iniciar complicaciones. Es importante la prevención del riesgo cardiovascular.',
+            sintomasEn: 'Symptoms appear: anemia or mineral metabolism disorders. Complications may begin. Cardiovascular risk prevention is important.',
             color: 's3a'
         },
         '3b': {
@@ -97,8 +97,8 @@
             descripcionEn: 'Moderate to severe decrease in kidney function.',
             resumenEs: 'Disminución notable. Seguimiento cercano con nefrólogo.',
             resumenEn: 'Notable decrease. Close follow-up with a nephrologist.',
-            sintomasEs: 'Pueden presentarse síntomas: anemia o trastornos del metabolismo mineral. Pueden iniciar complicaciones. Es importante la prevención del riesgo cardiovascular.',
-            sintomasEn: 'Symptoms may appear: anemia or mineral metabolism disorders. Complications may begin. Cardiovascular risk prevention is important.',
+            sintomasEs: 'Se presentan síntomas: anemia o trastornos del metabolismo mineral. Pueden iniciar complicaciones. Es importante la prevención del riesgo cardiovascular.',
+            sintomasEn: 'Symptoms appear: anemia or mineral metabolism disorders. Complications may begin. Cardiovascular risk prevention is important.',
             color: 's3b'
         },
         '4': {
@@ -113,7 +113,7 @@
             descripcionEn: 'Severe decrease in kidney function.',
             resumenEs: 'Disminución grave. Planear tratamiento con tu especialista.',
             resumenEn: 'Severe decrease. Plan treatment with your specialist.',
-            sintomasEs: 'Normalmente el especialista sugiere preparación para tratamiento sustitutivo renal: diálisis y/o trasplante de riñón.',
+            sintomasEs: 'Normalmente el especialista sugiere una preparación para un tratamiento sustitutivo renal: diálisis y/o un trasplante de riñón.',
             sintomasEn: 'Specialists usually recommend preparing for renal replacement therapy: dialysis and/or kidney transplant.',
             color: 's4'
         },
@@ -129,8 +129,8 @@
             descripcionEn: 'End-stage renal disease (ESRD).',
             resumenEs: 'Filtrado muy bajo. Puede requerir diálisis o trasplante.',
             resumenEn: 'Very low filtration. Dialysis or transplant may be needed.',
-            sintomasEs: 'Los riñones han perdido casi toda su capacidad de funcionar con eficacia; puede requerirse diálisis o trasplante. Atención del riesgo cardiovascular.',
-            sintomasEn: 'Kidneys have lost most of their ability to function; dialysis or transplant may be needed. Cardiovascular risk attention is required.',
+            sintomasEs: 'Enfermedad renal en etapa terminal (ERT). Los riñones han perdido casi toda su capacidad de funcionar; puede requerirse diálisis o trasplante. Atención del riesgo cardiovascular.',
+            sintomasEn: 'End-stage renal disease (ESRD). Kidneys have lost almost all function; dialysis or transplant may be needed. Cardiovascular risk attention is required.',
             color: 's5'
         }
     };
@@ -165,6 +165,22 @@
         return lbl('Estadio', 'Stage') + ' ' + stage.estadio;
     }
 
+    function formulaLegendText() {
+        return lbl(
+            'Estimación con fórmula CKD-EPI 2021 — la más reciente aprobada por KDIGO.',
+            'Estimate using the CKD-EPI 2021 formula — the latest approved by KDIGO.'
+        );
+    }
+
+    function formatRefDescCell(stage, en) {
+        var nombre = en ? stage.nombreEn : stage.nombreEs;
+        var desc = en ? stage.descripcionEn : stage.descripcionEs;
+        if (stage.estadio === '5') {
+            return '<span class="tfg-ref-nombre">' + nombre + '</span>';
+        }
+        return '<span class="tfg-ref-nombre">' + nombre + '</span>: ' + desc;
+    }
+
     function renderModal() {
         var root = document.getElementById('tfg-modal-root');
         if (!root) return;
@@ -182,24 +198,24 @@
                 'With your age, sex, and creatinine from a blood test, we estimate how well your kidneys are working. The result is for guidance only—share it with your doctor.'
             ) + '</p>' +
 
-            '<div class="tfg-form hormonal-datos">' +
-            '<h4 class="longevity-section-title">' + lbl('Tus datos del laboratorio', 'Your lab values') + '</h4>' +
+            '<div class="tfg-form hormonal-datos form-datos-block">' +
+            '<h4 class="longevity-section-title tfg-form-title">' + lbl('Tus datos del laboratorio', 'Your lab values') + '</h4>' +
             '<p class="hormonal-datos-intro tfg-datos-intro">' + lbl(
                 'La creatinina suele aparecer en tu reporte de análisis de sangre. Si no la tienes a la mano, pide orientación a tu médico antes de usar esta herramienta.',
                 'Creatinine is usually on your blood test report. If you do not have it handy, ask your doctor before using this tool.'
             ) + '</p>' +
-            '<div class="hormonal-field-grid hormonal-field-grid--2">' +
+            '<div class="hormonal-field-grid form-datos-grid hormonal-field-grid--2 tfg-field-grid">' +
             '<label class="hormonal-field">' +
             '<span class="hormonal-field-label">' + lbl('Edad (años)', 'Age (years)') + '</span>' +
-            '<input type="number" id="tfg-edad" class="hormonal-input-control" min="1" max="120" step="1" inputmode="numeric">' +
+            '<input type="number" id="tfg-edad" class="hormonal-input-control form-datos-control" min="1" max="120" step="1" inputmode="numeric">' +
             '</label>' +
             '<label class="hormonal-field">' +
             '<span class="hormonal-field-label">' + lbl('Creatinina en sangre (mg/dL)', 'Blood creatinine (mg/dL)') + '</span>' +
-            '<input type="number" id="tfg-creatinina" class="hormonal-input-control" min="0.1" max="20" step="0.01" inputmode="decimal">' +
+            '<input type="number" id="tfg-creatinina" class="hormonal-input-control form-datos-control" min="0.1" max="20" step="0.01" inputmode="decimal">' +
             '</label>' +
             '</div>' +
-            '<div class="hormonal-datos-group hormonal-datos-group--hormonas">' +
-            '<h5 class="hormonal-datos-group-title">' + lbl('Sexo', 'Sex') + '</h5>' +
+            '<div class="tfg-sexo-block">' +
+            '<span class="tfg-sexo-label">' + lbl('Sexo', 'Sex') + '</span>' +
             '<div class="hormonal-choice-row tfg-sexo-row" role="radiogroup">' +
             '<label class="hormonal-choice-pill"><input type="radio" class="hormonal-choice-input" name="tfg-sexo" value="M" checked>' +
             '<span class="hormonal-choice-radio" aria-hidden="true"></span><span class="hormonal-choice-text">' + lbl('Masculino', 'Male') + '</span></label>' +
@@ -218,8 +234,8 @@
             '<h4 class="longevity-result-title tfg-result-title">' + lbl('Resultado renal', 'Kidney result') + '</h4>' +
             '<div id="tfg-result-body" class="tfg-result-body"></div>' +
             '<p class="longevity-result-clinic tfg-footnote">' + lbl(
-                'CKD-EPI 2021 · Orientativo. Confirma con tu médico.',
-                'CKD-EPI 2021 · For guidance only. Confirm with your doctor.'
+                'Resultado orientativo. La etapa aplica si un médico confirmó enfermedad renal ≥3 meses. Confirma con tu doctor.',
+                'For guidance only. Stage applies if a doctor confirmed kidney disease for ≥3 months. Confirm with your doctor.'
             ) + '</p>' +
             '<p class="longevity-result-clinic tfg-result-brand">Clínica CAMSA</p>' +
             '</div>' +
@@ -229,6 +245,8 @@
                 '<button type="button" class="btn-longevity-action btn-longevity-compartir" data-form-share="tfg">Enviar enlace</button>') +
             (window.CamsaFormShare ? window.CamsaFormShare.renderResultsButton('id="btn-tfg-enviar"') :
                 '<button type="button" class="btn-longevity-action btn-longevity-enviar" id="btn-tfg-enviar">Enviar resultados</button>') +
+            (window.CamsaFormPersistence ? window.CamsaFormPersistence.renderRestartButton('data-tfg-restart') :
+                '<button type="button" class="btn-longevity-action btn-longevity-restart" data-tfg-restart><span data-i18n="form_btn_restart">Realizar nuevamente</span></button>') +
             '</div></div>' +
             '</div></div></div>';
     }
@@ -242,16 +260,22 @@
             '<p class="tfg-result-value-label">' + lbl('Qué tan bien filtran tus riñones (estimado)', 'How well your kidneys filter (estimate)') + '</p>' +
             '<div class="tfg-result-summary-row">' +
             '<p class="tfg-result-value"><strong>' + result.tfg + '</strong> <span>ml/min/1.73 m²</span></p>' +
-            '<p class="tfg-result-stage-chip">' + stageLabel(c) + ' · ' + c.rango + ' ml/min/1.73 m²</p>' +
+            '<p class="tfg-result-stage-chip">' + stageLabel(c) + ' · ' + c.rango + '</p>' +
             '</div>' +
             '<p class="tfg-result-stage-name">' + c.nombre + '</p>' +
-            '<p class="tfg-result-stage-desc"><strong>' + lbl('Qué significa:', 'What it means:') + '</strong> ' + c.descripcion + '</p>' +
-            '<p class="tfg-result-stage-sintomas"><strong>' + lbl('Qué podrías notar y qué hacer:', 'What you might notice and what to do:') + '</strong> ' + c.sintomas + '</p>' +
             '</div>' +
             '<div class="tfg-result-ref-block">' +
-            '<table class="tfg-ref-table" aria-label="' + lbl('Tabla de referencia por etapas', 'Reference table by stage') + '">' +
-            '<thead><tr><th>' + lbl('Etapa', 'Stage') + '</th><th>' + lbl('Filtración', 'Filtration') + '</th><th>' + lbl('En palabras sencillas', 'In simple terms') + '</th></tr></thead>' +
-            '<tbody>' + buildRefTableRows(c.estadio) + '</tbody></table>' +
+            '<p class="tfg-formula-legend">' + formulaLegendText() + '</p>' +
+            '<div class="tfg-ref-table-wrap">' +
+            '<table class="tfg-ref-table tfg-ref-table--full" aria-label="' + lbl('Tabla de referencia por etapas', 'Reference table by stage') + '">' +
+            '<colgroup><col class="tfg-col-estadio"><col class="tfg-col-rango"><col class="tfg-col-desc"><col class="tfg-col-sint"></colgroup>' +
+            '<thead><tr>' +
+            '<th scope="col">' + lbl('Estadio', 'Stage') + '</th>' +
+            '<th scope="col"><span class="tfg-ref-th-main">' + lbl('TFG', 'GFR') + '</span><span class="tfg-ref-th-unit">ml/min/1.73 m²</span></th>' +
+            '<th scope="col">' + lbl('TFG', 'GFR') + '</th>' +
+            '<th scope="col"><span class="tfg-ref-th-sint">' + lbl('Síntomas y actuación', 'Symptoms and guidance') + '</span></th>' +
+            '</tr></thead>' +
+            '<tbody>' + buildRefTableRows(c.estadio) + '</tbody></table></div>' +
             '<figure class="tfg-result-visual">' +
             '<img src="img/tfg.png" alt="' + lbl('Diagrama visual de las etapas de función renal', 'Visual diagram of kidney function stages') + '" class="tfg-result-diagram" loading="lazy" decoding="async">' +
             '</figure></div>';
@@ -265,13 +289,14 @@
             var isActive = key === activeEstadio;
             var rowClass = 'tfg-ref-row tfg-ref-row--' + s.color + (isActive ? ' tfg-ref-row--active' : '');
             var stageCell = isActive
-                ? '<td><span class="tfg-ref-stage-num">' + s.estadio + '</span>' +
+                ? '<td class="tfg-ref-col-estadio"><span class="tfg-ref-stage-num">' + s.estadio + '</span>' +
                   '<span class="tfg-ref-you-marker">' + lbl('Tú', 'You') + '</span></td>'
-                : '<td><span class="tfg-ref-stage-num">' + s.estadio + '</span></td>';
+                : '<td class="tfg-ref-col-estadio"><span class="tfg-ref-stage-num">' + s.estadio + '</span></td>';
             return '<tr class="' + rowClass + '">' +
                 stageCell +
-                '<td>' + (en ? s.rangoEn : s.rangoEs) + '</td>' +
-                '<td>' + (en ? s.nombreEn : s.nombreEs) + '</td></tr>';
+                '<td class="tfg-ref-col-rango">' + (en ? s.rangoEn : s.rangoEs) + '</td>' +
+                '<td class="tfg-ref-col-desc">' + formatRefDescCell(s, en) + '</td>' +
+                '<td class="tfg-ref-col-sint">' + (en ? s.sintomasEn : s.sintomasEs) + '</td></tr>';
         }).join('');
     }
 
@@ -295,6 +320,23 @@
         }
         if (err) err.setAttribute('hidden', '');
         return { edad: edad, creatinina: creatinina, sexo: sexoEl.value };
+    }
+
+    function restartTfg() {
+        lastResult = null;
+        var edad = document.getElementById('tfg-edad');
+        var creat = document.getElementById('tfg-creatinina');
+        if (edad) edad.value = '';
+        if (creat) creat.value = '';
+        document.querySelectorAll('input[name="tfg-sexo"]').forEach(function(r) { r.checked = false; });
+        var err = document.getElementById('tfg-error');
+        if (err) err.setAttribute('hidden', '');
+        var result = document.getElementById('tfg-result');
+        if (result) result.setAttribute('hidden', '');
+        var body = document.getElementById('tfg-result-body');
+        if (body) body.innerHTML = '';
+        var form = document.querySelector('.tfg-form');
+        if (form) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function runCalculation() {
@@ -436,7 +478,7 @@
             'Con tu edad, sexo y el valor de creatinina de un análisis de sangre, estimamos qué tan bien trabajan tus riñones. El resultado es orientativo: compártelo con tu médico.',
             'With your age, sex, and creatinine from a blood test, we estimate how well your kidneys are working. The result is for guidance only—share it with your doctor.'
         );
-        var secTitle = modal.querySelector('.tfg-form .longevity-section-title');
+        var secTitle = modal.querySelector('.tfg-form-title');
         if (secTitle) secTitle.textContent = lbl('Tus datos del laboratorio', 'Your lab values');
         var intro = modal.querySelector('.tfg-datos-intro');
         if (intro) intro.textContent = lbl(
@@ -446,8 +488,8 @@
         var labels = modal.querySelectorAll('.tfg-form .hormonal-field-label');
         if (labels[0]) labels[0].textContent = lbl('Edad (años)', 'Age (years)');
         if (labels[1]) labels[1].textContent = lbl('Creatinina en sangre (mg/dL)', 'Blood creatinine (mg/dL)');
-        var sexoTitle = modal.querySelector('.hormonal-datos-group-title');
-        if (sexoTitle) sexoTitle.textContent = lbl('Sexo', 'Sex');
+        var sexoLabel = modal.querySelector('.tfg-sexo-label');
+        if (sexoLabel) sexoLabel.textContent = lbl('Sexo', 'Sex');
         var sexoTexts = modal.querySelectorAll('.tfg-sexo-row .hormonal-choice-text');
         if (sexoTexts[0]) sexoTexts[0].textContent = lbl('Masculino', 'Male');
         if (sexoTexts[1]) sexoTexts[1].textContent = lbl('Femenino', 'Female');
@@ -469,8 +511,8 @@
         if (resultTitle) resultTitle.textContent = lbl('Resultado renal', 'Kidney result');
         var footnote = modal.querySelector('.tfg-footnote');
         if (footnote) footnote.textContent = lbl(
-            'CKD-EPI 2021 · Orientativo. Confirma con tu médico.',
-            'CKD-EPI 2021 · For guidance only. Confirm with your doctor.'
+            'Resultado orientativo. La etapa aplica si un médico confirmó enfermedad renal ≥3 meses. Confirma con tu doctor.',
+            'For guidance only. Stage applies if a doctor confirmed kidney disease for ≥3 months. Confirm with your doctor.'
         );
 
         if (lastResult) {
@@ -482,6 +524,9 @@
     function init() {
         renderModal();
         bindEvents();
+        if (window.CamsaFormPersistence && typeof window.CamsaFormPersistence.bindRestartButtons === 'function') {
+            window.CamsaFormPersistence.bindRestartButtons();
+        }
     }
 
     window.TfgCalculator = {
@@ -489,6 +534,7 @@
         clasificarTFG: clasificarTFG,
         open: openModal,
         close: closeModal,
+        restart: restartTfg,
         refreshLanguage: refreshLanguage
     };
 
