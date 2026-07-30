@@ -10,7 +10,7 @@
         if (typeof window.getLongevityInterpretacionText === 'function') {
             return window.getLongevityInterpretacionText(total);
         }
-        if (total >= 90) return 'Perfil óptimo de longevidad';
+        if (total > 90) return 'Perfil óptimo de longevidad';
         if (total >= 80) return 'Salud preventiva sólida';
         if (total >= 70) return 'Riesgo metabólico moderado';
         if (total >= 60) return 'Requiere intervención preventiva';
@@ -20,7 +20,7 @@
     function getLongevityScoreTier(total) {
         var score = parseInt(total, 10);
         if (isNaN(score)) score = 0;
-        if (score >= 90) return 'excellent';
+        if (score > 90) return 'excellent';
         if (score >= 80) return 'good';
         if (score >= 70) return 'moderate';
         if (score >= 60) return 'caution';
@@ -32,7 +32,7 @@
             return window.getLongevityTierLabelText(total);
         }
         var score = parseInt(total, 10) || 0;
-        if (score >= 90) return 'Perfil óptimo';
+        if (score > 90) return 'Perfil óptimo';
         if (score >= 80) return 'Preventiva sólida';
         if (score >= 70) return 'Mejora posible';
         if (score >= 60) return 'Atención preventiva';
@@ -43,11 +43,11 @@
     var RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 
     var RING_COLORS = {
-        excellent: '#6a9e3a',
-        good: '#b8860b',
-        moderate: '#c9922a',
-        caution: '#d9792a',
-        risk: '#c44a3a'
+        excellent: '#43a047',
+        good: '#9e9d24',
+        moderate: '#fbc02d',
+        caution: '#f57c00',
+        risk: '#e53935'
     };
 
     function applyRingProgress(progressEl, score, tier) {

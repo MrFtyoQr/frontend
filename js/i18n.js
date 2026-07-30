@@ -43,6 +43,24 @@
             card_longevidad_li2: 'Si ya enviaste tu solicitud, esto ayuda a que el equipo te conozca mejor.',
             card_longevidad_btn: 'Empezar cuestionario',
             form_page_back: 'Volver al inicio',
+            tests_promo_fab: 'Realiza un test de salud',
+            tests_promo_fab_sub: 'Gratis',
+            tests_promo_fab_sub2: 'Resultados al instante',
+            tests_promo_badge: 'Evalúate',
+            tests_promo_title: '¿Cómo está tu salud hoy?',
+            tests_promo_subtitle: 'Cuestionarios gratuitos para ti o un familiar. Resultado al instante.',
+            tests_promo_long: 'Hábitos y longevidad',
+            tests_promo_horm_mujer: 'Hormonal — Mujer',
+            tests_promo_horm_hombre: 'Hormonal — Hombre',
+            tests_promo_tfg: 'Salud renal',
+            tests_promo_cta: 'Empezar cuestionario',
+            tests_promo_cta_all: 'Ver todos los tests',
+            tests_promo_here: 'Aquí',
+            hormonal_chart_title: 'Resumen semáforo',
+            hormonal_chart_green: 'Verde — Satisfactorio',
+            hormonal_chart_yellow: 'Amarillo — Alterado',
+            hormonal_chart_red: 'Rojo — Deficiente',
+            hormonal_chart_empty: 'Sin hormonas evaluadas',
             card_horm_mujer_title: 'Cuestionario hormonal — Mujer',
             card_horm_mujer_text: 'Preguntas sobre cómo te sientes en el día a día: energía, sueño, ánimo, cambios del ciclo y más. No reemplaza una consulta médica; sirve para orientar la conversación con tu doctor.',
             card_horm_mujer_li1: 'Temas como cansancio, estrés, tiroides, menopausia y otros, en lenguaje cotidiano.',
@@ -246,6 +264,24 @@
             card_longevidad_li2: 'If you already sent your request, this helps our team know you better.',
             card_longevidad_btn: 'Start questionnaire',
             form_page_back: 'Back to home',
+            tests_promo_fab: 'Take a health test',
+            tests_promo_fab_sub: 'Free',
+            tests_promo_fab_sub2: 'Instant results',
+            tests_promo_badge: 'Take the test',
+            tests_promo_title: 'How is your health today?',
+            tests_promo_subtitle: 'Free questionnaires for you or a family member. Instant results.',
+            tests_promo_long: 'Habits & longevity',
+            tests_promo_horm_mujer: 'Hormonal — Women',
+            tests_promo_horm_hombre: 'Hormonal — Men',
+            tests_promo_tfg: 'Kidney health',
+            tests_promo_cta: 'Start questionnaire',
+            tests_promo_cta_all: 'See all tests',
+            tests_promo_here: 'Here',
+            hormonal_chart_title: 'Traffic-light summary',
+            hormonal_chart_green: 'Green — Satisfactory',
+            hormonal_chart_yellow: 'Yellow — Altered',
+            hormonal_chart_red: 'Red — Deficient',
+            hormonal_chart_empty: 'No hormones evaluated',
             card_horm_mujer_title: 'Hormonal questionnaire — Women',
             card_horm_mujer_text: 'Questions about how you feel day to day: energy, sleep, mood, cycle changes, and more. This is not a diagnosis; it helps guide the conversation with your doctor.',
             card_horm_mujer_li1: 'Topics like tiredness, stress, thyroid, menopause, and more in everyday language.',
@@ -700,7 +736,7 @@
         var L = t[lang];
         if (!L) return '';
         var score = parseInt(total, 10) || 0;
-        if (score >= 90) return L.long_tier_90 || '';
+        if (score > 90) return L.long_tier_90 || '';
         if (score >= 80) return L.long_tier_80 || '';
         if (score >= 70) return L.long_tier_70 || '';
         if (score >= 60) return L.long_tier_60 || '';
@@ -711,7 +747,7 @@
         var lang = langOverride || getPreferredLang();
         var L = t[lang];
         if (!L) return '';
-        if (total >= 90) return L.long_int_90 || '';
+        if (total > 90) return L.long_int_90 || '';
         if (total >= 80) return L.long_int_80 || '';
         if (total >= 70) return L.long_int_70 || '';
         if (total >= 60) return L.long_int_60 || '';

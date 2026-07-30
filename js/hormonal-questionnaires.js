@@ -528,6 +528,7 @@
             sectionsOut[sIdx].answered += 1;
             answers.push({
                 num: idx + 1,
+                sectionId: sectionsOut[sIdx].id,
                 sectionTitle: sectionsOut[sIdx].title,
                 question: q.text,
                 answer: selected.getAttribute('data-answer') || selected.value,
@@ -568,7 +569,7 @@
         }
 
         var rowsHtml = '';
-        result.sections.forEach(function(s) {
+        sortResultSections(result.sections).forEach(function(s) {
             if (s.optional && s.answered === 0) return;
             var ev = s.evaluation;
             if (!ev && window.HormonalEvaluation) {
@@ -576,15 +577,17 @@
             }
             if (!ev) ev = { level: 'none', scoreLabel: String(s.total), label: '—', showSymptoms: false, symptomsBrief: '' };
 
-            var level = ev.level && ev.level !== 'none' && ev.level !== 'optional' ? ev.level : 'neutral';
+            var level = resolveResultLevel(ev);
             var statusHtml =
                 '<span class="hormonal-result-badge hormonal-result-badge--' + level + '">' +
                 '<span class="hormonal-result-dot" aria-hidden="true"></span>' +
                 escapeHtml(ev.label) + '</span>';
 
             var briefCell = '—';
-            if (ev.showSymptoms && ev.symptomsBrief) {
-                briefCell = escapeHtml(ev.symptomsBrief);
+            if (s.optional) {
+                briefCell = '<span class="hormonal-result-symptoms-na">—</span>';
+            } else if (ev.showSymptoms && ev.symptoms) {
+                briefCell = escapeHtml(ev.symptoms);
             } else if (level === 'green') {
                 briefCell = '<span class="hormonal-result-symptoms-na">—</span>';
             }
@@ -601,18 +604,27 @@
                 escapeHtml(ev.scoreLabel) + '</td>' +
                 '<td class="hormonal-result-compact-status" data-label="' + lbl('Estado', 'Status') + '">' +
                 statusHtml + '</td>' +
-                '<td class="hormonal-result-compact-brief" data-label="' + lbl('Posibles síntomas', 'Possible symptoms') + '">' +
+                '<td class="hormonal-result-compact-brief" data-label="' + lbl('Síntomas asociados', 'Associated symptoms') + '">' +
                 briefCell + '</td></tr>';
         });
 
+        var trafficCounts = countTrafficLevels(result.sections, config.id);
+
         container.innerHTML =
+            renderTrafficPieChart(trafficCounts) +
             '<div class="hormonal-result-compact-wrap">' +
             '<table class="hormonal-result-compact-table">' +
+            '<colgroup>' +
+            '<col class="hormonal-result-col-name">' +
+            '<col class="hormonal-result-col-score">' +
+            '<col class="hormonal-result-col-status">' +
+            '<col class="hormonal-result-col-brief">' +
+            '</colgroup>' +
             '<thead><tr>' +
             '<th scope="col">' + lbl('Hormona', 'Hormone') + '</th>' +
             '<th scope="col">' + lbl('Pts', 'Pts') + '</th>' +
             '<th scope="col">' + lbl('Estado', 'Status') + '</th>' +
-            '<th scope="col">' + lbl('Posibles síntomas', 'Possible symptoms') + '</th>' +
+            '<th scope="col">' + lbl('Síntomas asociados', 'Associated symptoms') + '</th>' +
             '</tr></thead><tbody>' + rowsHtml + '</tbody></table></div>' +
             '<p class="hormonal-result-grand">' + lbl('Total:', 'Total:') +
             ' <strong>' + result.grandTotal + '</strong></p>';
@@ -624,6 +636,108 @@
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
+    }
+
+    function sortResultSections(sections) {
+        return sections.slice().sort(function(a, b) {
+            if (a.optional && !b.optional) return 1;
+            if (!a.optional && b.optional) return -1;
+            return 0;
+        });
+    }
+
+    function resolveResultLevel(ev) {
+        if (!ev || !ev.level) return 'neutral';
+        if (ev.level === 'green' || ev.level === 'yellow' || ev.level === 'red') return ev.level;
+        if (ev.level === 'optional') return 'optional';
+        return 'neutral';
+    }
+
+    function countTrafficLevels(sections, configId) {
+        var counts = { green: 0, yellow: 0, red: 0 };
+        sortResultSections(sections).forEach(function(s) {
+            if (s.optional || s.answered === 0) return;
+            var ev = s.evaluation;
+            if (!ev && window.HormonalEvaluation) {
+                ev = window.HormonalEvaluation.evaluateSection(s.id, s.total, configId, s.answered, s.optional);
+            }
+            var level = resolveResultLevel(ev);
+            if (level === 'green' || level === 'yellow' || level === 'red') {
+                counts[level] += 1;
+            }
+        });
+        return counts;
+    }
+
+    function polarToCartesian(cx, cy, r, angleDeg) {
+        var rad = (angleDeg - 90) * Math.PI / 180;
+        return {
+            x: cx + r * Math.cos(rad),
+            y: cy + r * Math.sin(rad)
+        };
+    }
+
+    function buildPieSlicePath(cx, cy, r, startAngle, sweepAngle) {
+        if (sweepAngle <= 0) return '';
+        if (sweepAngle >= 359.999) {
+            return 'M ' + cx + ' ' + cy +
+                ' m -' + r + ', 0 a ' + r + ',' + r + ' 0 1,0 ' + (r * 2) + ',0 a ' + r + ',' + r + ' 0 1,0 -' + (r * 2) + ',0';
+        }
+        var start = polarToCartesian(cx, cy, r, startAngle);
+        var end = polarToCartesian(cx, cy, r, startAngle + sweepAngle);
+        var largeArc = sweepAngle > 180 ? 1 : 0;
+        return 'M ' + cx + ' ' + cy +
+            ' L ' + start.x + ' ' + start.y +
+            ' A ' + r + ' ' + r + ' 0 ' + largeArc + ' 1 ' + end.x + ' ' + end.y + ' Z';
+    }
+
+    function renderTrafficPieChart(counts) {
+        var total = counts.green + counts.yellow + counts.red;
+        if (total === 0) {
+            return '<div class="hormonal-result-chart hormonal-result-chart--empty" role="img" aria-label="' +
+                lbl('Sin hormonas evaluadas', 'No hormones evaluated') + '">' +
+                '<p class="hormonal-result-chart__empty">' +
+                lbl('Sin hormonas evaluadas', 'No hormones evaluated') + '</p></div>';
+        }
+
+        var slices = [
+            { key: 'green', color: '#2e7d32' },
+            { key: 'yellow', color: '#f9a825' },
+            { key: 'red', color: '#c62828' }
+        ];
+        var angle = 0;
+        var paths = '';
+        slices.forEach(function(slice) {
+            var value = counts[slice.key];
+            if (!value) return;
+            var sweep = (value / total) * 360;
+            paths += '<path d="' + buildPieSlicePath(50, 50, 42, angle, sweep) +
+                '" fill="' + slice.color + '"></path>';
+            angle += sweep;
+        });
+
+        var legend = slices.map(function(slice) {
+            var labels = {
+                green: lbl('Verde — Satisfactorio', 'Green — Satisfactory'),
+                yellow: lbl('Amarillo — Alterado', 'Yellow — Altered'),
+                red: lbl('Rojo — Deficiente', 'Red — Deficient')
+            };
+            return '<li class="hormonal-result-chart__legend-item hormonal-result-chart__legend-item--' + slice.key + '">' +
+                '<span class="hormonal-result-chart__swatch" aria-hidden="true"></span>' +
+                '<span class="hormonal-result-chart__legend-label">' + labels[slice.key] + '</span>' +
+                '<strong class="hormonal-result-chart__legend-count">' + counts[slice.key] + '</strong></li>';
+        }).join('');
+
+        return '<div class="hormonal-result-chart" role="img" aria-label="' +
+            escapeHtml(lbl('Resumen semáforo', 'Traffic-light summary')) + '">' +
+            '<p class="hormonal-result-chart__title">' +
+            lbl('Resumen semáforo', 'Traffic-light summary') + '</p>' +
+            '<div class="hormonal-result-chart__body">' +
+            '<div class="hormonal-result-chart__pie">' +
+            '<svg viewBox="0 0 100 100" aria-hidden="true">' + paths + '</svg>' +
+            '</div>' +
+            '<ul class="hormonal-result-chart__legend">' + legend + '</ul>' +
+            '</div></div>';
     }
 
     function restartQuestionnaire(id) {
@@ -683,7 +797,7 @@
         });
         lineas.push('');
         lineas.push('*' + lbl('Cuadro comparativo — semáforo por hormona', 'Comparative chart — traffic light by hormone') + '*');
-        result.sections.forEach(function(s) {
+        sortResultSections(result.sections).forEach(function(s) {
             if (s.optional && s.answered === 0) return;
             var ev = s.evaluation;
             if (!ev && window.HormonalEvaluation) {
@@ -691,8 +805,8 @@
             }
             if (!ev) return;
             lineas.push('• *' + s.title + ':* ' + ev.scoreLabel + ' pts — *' + ev.label + '*');
-            if (ev.showSymptoms && ev.symptomsBrief) {
-                lineas.push('  _' + lbl('Posibles síntomas', 'Possible symptoms') + ':_ ' + ev.symptomsBrief);
+            if (!s.optional && ev.showSymptoms && ev.symptoms) {
+                lineas.push('  _' + lbl('Síntomas asociados', 'Associated symptoms') + ':_ ' + ev.symptoms);
             }
         });
         lineas.push('');
@@ -847,6 +961,39 @@
         });
     }
 
+    var HORMONAL_EXPORT_WIDTH = 1120;
+
+    function prepareHormonalResultForExport(doc, cardId) {
+        var clone = doc.getElementById(cardId);
+        if (clone) {
+            clone.classList.add('hormonal-result-card--export');
+            clone.style.width = HORMONAL_EXPORT_WIDTH + 'px';
+            clone.style.maxWidth = HORMONAL_EXPORT_WIDTH + 'px';
+        }
+        doc.querySelectorAll('.hormonal-result-compact-wrap').forEach(function(wrap) {
+            wrap.style.overflow = 'visible';
+        });
+        doc.querySelectorAll('.hormonal-result-compact-table').forEach(function(table) {
+            table.style.minWidth = (HORMONAL_EXPORT_WIDTH - 48) + 'px';
+            table.style.width = '100%';
+        });
+    }
+
+    function captureHormonalResultImage(card) {
+        return html2canvas(card, {
+            scale: 2,
+            backgroundColor: '#ffffff',
+            useCORS: true,
+            logging: false,
+            scrollX: 0,
+            scrollY: -window.scrollY,
+            windowWidth: HORMONAL_EXPORT_WIDTH,
+            onclone: function(doc) {
+                prepareHormonalResultForExport(doc, card.id);
+            }
+        });
+    }
+
     function bindEvents() {
         document.querySelectorAll('[data-hormonal-open]').forEach(function(btn) {
             btn.addEventListener('click', function() {
@@ -884,7 +1031,7 @@
                 if (!resultsById[id] || typeof html2canvas !== 'function') return;
                 var card = document.getElementById('hormonal-result-card-' + id);
                 if (!card) return;
-                html2canvas(card).then(function(canvas) {
+                captureHormonalResultImage(card).then(function(canvas) {
                     var link = document.createElement('a');
                     var nombre = (resultsById[id].datos && resultsById[id].datos.nombre)
                         ? resultsById[id].datos.nombre.replace(/\s+/g, '_') : 'test_hormonal';

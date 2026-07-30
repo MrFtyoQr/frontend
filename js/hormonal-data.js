@@ -125,22 +125,6 @@
                     ]
                 },
                 {
-                    id: 'ciclo_trh',
-                    titleEs: 'Menstruación y tratamientos hormonales (opcional)',
-                    titleEn: 'Period and hormone treatments (optional)',
-                    noteEs: 'Solo si aún tienes menstruación o estás en tratamiento hormonal prescrito por tu médico.',
-                    noteEn: 'Only if you still have periods or are on hormone treatment prescribed by your doctor.',
-                    optional: true,
-                    questions: [
-                        'Antes de mi periodo estoy agresiva e irritable',
-                        'Y pierdo el control',
-                        'Y mi bajo vientre está hinchado',
-                        'Y mis senos están hinchados, sensibles o adoloridos',
-                        'Mis periodos son continuamente dolorosos',
-                        'Y pesados'
-                    ]
-                },
-                {
                     id: 'pregnenolona',
                     titleEs: 'PREGNENOLONA',
                     titleEn: 'PREGNENOLONE',
@@ -206,6 +190,22 @@
                         'Habitualmente me siento cansada',
                         'He perdido tono muscular (los siento más flácidos)',
                         'Mi abdomen tiende a engordar'
+                    ]
+                },
+                {
+                    id: 'ciclo_trh',
+                    titleEs: 'Menstruación y tratamientos hormonales (opcional)',
+                    titleEn: 'Period and hormone treatments (optional)',
+                    noteEs: 'Solo si aún tienes menstruación o estás en tratamiento hormonal prescrito por tu médico.',
+                    noteEn: 'Only if you still have periods or are on hormone treatment prescribed by your doctor.',
+                    optional: true,
+                    questions: [
+                        'Antes de mi periodo estoy agresiva e irritable',
+                        'Y pierdo el control',
+                        'Y mi bajo vientre está hinchado',
+                        'Y mis senos están hinchados, sensibles o adoloridos',
+                        'Mis periodos son continuamente dolorosos',
+                        'Y pesados'
                     ]
                 }
             ]
